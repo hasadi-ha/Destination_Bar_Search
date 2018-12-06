@@ -88,6 +88,17 @@ let createMainPage = () => {
             }
         }
     });
+    let clean_airport_list= [];
     console.log(airport_list);
+    //cleanArray(clean_airport_list);
+    //console.log(clean_airport_list.length);
     $('#location').autocomplete({source: airport_list});
+}
+
+
+let cleanArray = (a) => {
+    var seen= {};
+    return a.filter(function(item) {
+        return seen.hasOwnProperty(item) ? false : (seem[item]=true);
+    });
 }
