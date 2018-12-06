@@ -26,5 +26,62 @@ $(document).ready(() => {
             }
         });
     });
+    $('#login_btn').on('click', () => {
+
+        let user = $('#login_user').val();
+        let pass = $('#login_pass').val();
+        console.log(user);
+        console.log(pass);
+
+        $.ajax(root_url + 'sessions', {
+            type: 'POST',
+            xhrFields: {withCredentials: true},
+            data: {
+                "user": {
+                    "username": user,
+                    "password": pass
+                }
+            },
+            success: (response) => {
+                alert('successful login');
+                createMainPage();
+            },
+            error: () => {
+                alert('error login');
+            }
+        });
+    });
 
 });
+
+
+let createMainPage = () => {
+    let body = $('body');
+    body.empty();
+    body.append('<nav class="navbar"><nav>');
+    $('.navbar').append('<button class="home">Home</button');
+    $('.navbar').append('<button class="user">Username</button');
+    $('.navbar').append('<button class="logout">Logout</button');
+    
+    body.append('<div class="search"><div>');
+    $('.search').append('<h2>Destination_Bar_Search</h2>');
+    $('.search').append('Destination: <input type="text" id="location">');
+    
+    let airport_list=[];
+    //$('#location').autocomplete({source: airport_list})
+    //let location = $('#loction').val();
+    //location=location.toLowerCase();
+    //console.log(location);
+    
+    $.ajax(root_url + 'airports', {
+        type: 'GET',
+        xhrFields: {withCredentials:true},
+        success: (response) => {
+            let data = response;
+            for (let i=0; i<data.length;i++) {
+                airport_list.push(data[i].city);
+            }
+            console.log(airport_list);
+        }
+    });
+}
