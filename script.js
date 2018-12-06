@@ -66,13 +66,20 @@ let createMainPage = () => {
     body.append('<div class="search"><div>');
     $('.search').append('<h2>Destination_Bar_Search</h2>');
     $('.search').append('Destination: <input type="text" id="location">');
+    $('.search').append('<button id="search_location">Search</button>');
+    
+     $('#search_location').on('click', () => {
+         let location = $('#location').val();
+         console.log(location);        
+     });
     
     let airport_list=[];
-    //$('#location').autocomplete({source: airport_list})
     //let location = $('#loction').val();
     //location=location.toLowerCase();
     //console.log(location);
     
+    
+    //gets list of airports
     $.ajax(root_url + 'airports', {
         type: 'GET',
         xhrFields: {withCredentials:true},
@@ -81,7 +88,8 @@ let createMainPage = () => {
             for (let i=0; i<data.length;i++) {
                 airport_list.push(data[i].city);
             }
-            console.log(airport_list);
         }
     });
+    console.log(airport_list);
+    $('#location').autocomplete({source: airport_list});
 }
