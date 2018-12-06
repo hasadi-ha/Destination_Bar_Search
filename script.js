@@ -62,23 +62,24 @@ let createMainPage = () => {
     $('.navbar').append('<button class="home">Home</button');
     $('.navbar').append('<button class="user">Username</button');
     $('.navbar').append('<button class="logout">Logout</button');
-    
+    $('.navbar').append('<button id="mapper">Maps</button');
+
     body.append('<div class="search"><div>');
     $('.search').append('<h2>Destination_Bar_Search</h2>');
     $('.search').append('Destination: <input type="text" id="location">');
     $('.search').append('<button id="search_location">Search</button>');
-    
+
      $('#search_location').on('click', () => {
          let location = $('#location').val();
-         console.log(location);        
+         console.log(location);
      });
-    
+
     let airport_list=[];
     //let location = $('#loction').val();
     //location=location.toLowerCase();
     //console.log(location);
-    
-    
+
+
     //gets list of airports
     $.ajax(root_url + 'airports', {
         type: 'GET',
@@ -92,4 +93,18 @@ let createMainPage = () => {
     });
     console.log(airport_list);
     $('#location').autocomplete({source: airport_list});
+
+    // Google maps
+    body.append('<div id="googleMap" style="width:100%;height:400px;"></div>')
+
+    $('#mapper').on('click', () => {
+      var mapProp= {
+          center:new google.maps.LatLng(51.508742,-0.120850),
+          zoom:5,
+      };
+
+      var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+    });
+
+
 }
