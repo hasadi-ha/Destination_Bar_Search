@@ -72,6 +72,7 @@ let createMainPage = () => {
      });
     
     let airport_list=[];
+    let clean_airport_list=[];
     //let location = $('#loction').val();
     //location=location.toLowerCase();
     //console.log(location);
@@ -86,19 +87,19 @@ let createMainPage = () => {
             for (let i=0; i<data.length;i++) {
                 airport_list.push(data[i].city);
             }
+            clean_airport_list=airport_list.slice();
+            clean_airport_list=cleanArray(clean_airport_list);
+            $('#location').autocomplete({source: clean_airport_list});
         }
     });
-    let clean_airport_list= [];
-    console.log(airport_list);
-    //cleanArray(clean_airport_list);
-    //console.log(clean_airport_list.length);
-    $('#location').autocomplete({source: airport_list});
+    
+    
 }
 
 
 let cleanArray = (a) => {
     var seen= {};
     return a.filter(function(item) {
-        return seen.hasOwnProperty(item) ? false : (seem[item]=true);
+        return seen.hasOwnProperty(item) ? false : (seen[item]=true);
     });
 }
