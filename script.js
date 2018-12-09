@@ -64,22 +64,39 @@ let createMainPage = () => {
 
   body.append('<div class="search"><div>');
   $('.search').append('<h2>Destination_Bar_Search</h2>');
+  $('.search').append('<p>Departure date: <input type="text" id="datepicker"></p>')
   $('.search').append('Destination: <input type="text" id="location">');
   $('.search').append('<button id="search_location">Search</button>');
+  $('.search').append('<div class="search_result"></div>');
+  $("#datepicker").datepicker();
 
+//(functionality) search for airport with location and date
   $('#search_location').on('click', () => {
+    $('.search_result').empty();
     search_list = [];
     let location = $('#location').val();
-    location.toLowerCase();
+    let departure_date = $('#datepicker').val();
+    console.log(departure_date);
     console.log(location);
-    for (let i = 0; i < airport_list.length; i++) {
-      let air_loc = airport_list[i];
-      if (location == air_loc) {
-        search_list.push(airport_data_list[i]);
+    if (departure_date == '' || location == '') {
+      $('.search_result').append('<p style="color:red">Must choose a date and location.</p>')
+    }
+    else {
+      location.toLowerCase();
+      for (let i = 0; i < airport_list.length; i++) {
+        let air_loc = airport_list[i];
+        if (location == air_loc) {
+          search_list.push(airport_data_list[i]);
+        }
+      }
+      for (let i = 0; i < search_list.length; i++) {
+        let this_airport = search_list[i];
+        console.log(this_airport);
+        let this_div = $('<div style="border:1px solid black" id="search_div_' + this_airport.id + '"></div>');
+        $(this_div).append('<div style="font-size:18px">' + this_airport.code + ' - ' + this_airport.name + '</div>');
+        $('.search_result').append(this_div);
       }
     }
-    console.log(search_list);
-
   });
   let airport_data_list = [];
   let airport_list = [];
@@ -103,9 +120,14 @@ let createMainPage = () => {
       clean_airport_list = airport_list.slice();
       clean_airport_list = cleanArray(clean_airport_list);
       $('#location').autocomplete({ source: clean_airport_list });
+
+
     }
   });
+
+
 }
+
 
 let cleanArray = (a) => {
   var seen = {};
@@ -113,3 +135,4 @@ let cleanArray = (a) => {
     return seen.hasOwnProperty(item) ? false : (seen[item] = true);
   });
 }
+
