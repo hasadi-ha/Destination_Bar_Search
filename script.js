@@ -138,7 +138,7 @@ let createMainPage = () => {
         });
       }
     }
-    createYelpList(location, 10000, 'bars', 20);
+    //createYelpList(location, 10000, 'bars', 20);
   });
   let airport_data_list = [];
   let airport_list = [];
@@ -219,11 +219,11 @@ let flightListById = (id, did, aDate, loc, starLoc) => {
 //     if (list[i].arrival_id==aid && list[i].departure_id==did) {
 //       this_flight_list.push(list[i]);
 //     }
-//   });
+//    });
 // }
 
 let matchFlightInstance = (flights, aDate, loc, starLoc) => {
-  var instance_list = []
+  let instance_list = [];
   for (let i = 0; i < flights.length; i++) {
     let tid = flights[i].id;
     $.ajax(root_url + 'instances', {
@@ -234,21 +234,27 @@ let matchFlightInstance = (flights, aDate, loc, starLoc) => {
         'filter[date]': aDate,
       },
       success: (response) => {
-        instance_list.push(response);
-        // $('.search_result').empty();
-        $('.search_result').append('<div style="border:1px solid black" id="f_div"></div>');
-        if (response != null) {
-          $('#f_div').append('There are no flights from ' + starLoc + ' to ' + loc + ' on ' + aDate + '.');
-          $('#f_div').append('Here are the dates that have available flights:');
-          // matchFlightInstanceNoDate(clicked_flights, instance_list);
+        for (let i = 0; i < response.length; i++) {
+          instance_list.push(response[i]);
+          console.log(response[i]);
         }
-        else {
-          $('#f_div').append('Showing flights to ' + starLoc + ' from ' + loc + ' on ' + aDate + ':');
+        if (i == flights.length - 1) {
+          console.log(instance_list);
+          $('.search_result').empty();
+          $('.search_result').append('<div style="border:1px solid black" id="f_div"></div>');
+          if (instance_list==null) {
+            $('#f_div').append('There are no flights from ' + starLoc + ' to ' + loc + ' on ' + aDate + '.');
+            $('#f_div').append('Here are the dates that have available flights:');
+            // matchFlightInstanceNoDate(clicked_flights, instance_list);
+          }
+          else {
+            $('#f_div').append('Showing flights to ' + starLoc + ' from ' + loc + ' on ' + aDate + ':');
+          }
         }
       }
     });
   }
-  // console.log(instance_list);
+
 }
 
 
