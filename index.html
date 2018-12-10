@@ -2,45 +2,57 @@
 <html lang="en">
 
 <head>
+
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
   <title>Destination Bar Search</title>
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
   <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <link rel="stylesheet" type="text/css" href="style.css">
-  <link href="https://fonts.googleapis.com/css?family=Inconsolata" rel="stylesheet">
+
   <script src="http://www.cs.unc.edu/~kmp/comp426fall18/jquery-3.3.1.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="script.js"></script>
+
 </head>
 
 <body>
   <h1 style="text-align: center;">Bar Search Tool</h1>
   <h3 style="color: red; text-align: center;">Login Required</h3>
-  <form>
+  <div class="form">
 
     <div class="image_container">
       <img src="yelp.png" alt="Login Image" class="image">
     </div>
 
     <div class="login_div">
-      <label for="uname"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" id="login_user" name="uname" required>
 
-      <label for="psw"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" id="login_pass" name="psw" required>
+      <label for="login_user">
+        <b>Username</b>
+      </label>
+      <input type="text" placeholder="Enter Username" id="login_user" required>
+
+      <label for="login_pass">
+        <b>Password</b>
+      </label>
+      <input type="password" placeholder="Enter Password" id="login_pass" required>
 
       <button id="login_btn">Login</button>
+
       <div class="mesg_div">
-        
+
       </div>
+
     </div>
 
     <div class="signup_div" style="background-color: #f1f1f1">
       <button id="signup_btn">Sign Up</button>
     </div>
 
-  </form>
+  </div>
 
 </body>
 

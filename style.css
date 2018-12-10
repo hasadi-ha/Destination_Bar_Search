@@ -2,7 +2,7 @@
     font-family: 'Inconsolata', monospace !important;
 }
 
-form {
+.form {
     border: 3px solid #f1f1f1;
     width: 70%;
     margin-left: 15%;
@@ -10,7 +10,7 @@ form {
     max-height: 592px; */
 }
 
-input[name="uname"], input[name="psw"] {
+input[id="login_user"], input[id="login_pass"] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;

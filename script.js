@@ -32,11 +32,8 @@ $(document).ready(() => {
   });
 
   $('#login_btn').on('click', () => {
-
     let user = $('#login_user').val();
     let pass = $('#login_pass').val();
-    console.log(user);
-    console.log(pass);
 
     $.ajax(root_url + 'sessions', {
       type: 'POST',
@@ -118,7 +115,7 @@ let createMainPage = () => {
         $('.find_flights').on('click', () => {
           flightListById(this_airport.id, start_airport.id, d_date, location, start_location);
           //if (i==1) {
-            //console.log('test');
+          //console.log('test');
           //}
           // let clicked_flights = flightListById(this_airport.id, d_date);
           // console.log(clicked_flights);
