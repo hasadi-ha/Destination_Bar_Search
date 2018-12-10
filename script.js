@@ -470,6 +470,7 @@ let createBuyPage = (instance_id) => {
 let recreateLogin = () => {
   let body = $('body');
   body.empty();
+  $('*').css('text-align', '');
 
   body.append('  <h1 style="text-align: center; margin-bottom: 0px;">Bar Search Tool</h1>' +
     '<h5 style="color: red; text-align: center; margin-top: 0px; margin-bottom: 15px;">Login Required</h5>' +
