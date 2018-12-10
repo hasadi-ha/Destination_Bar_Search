@@ -98,10 +98,10 @@ let createMainPage = () => {
         $('.search_result').append(this_div);
         //functionality on button click to find flights based on specific airport
         $('.find_flights').on('click', () => {
-          let clicked_flights = flightListById(this_airport.id, flights_list);
-          console.log(clicked_flights);
-          let clicked_flights_instances = matchFlightInstance(clicked_flights, instance_list, d_date);
-          console.log(clicked_flights_instances);
+          flightListById(this_airport.id, d_date);
+          // let clicked_flights = flightListById(this_airport.id, d_date);
+          // console.log(clicked_flights);
+          // console.log(clicked_flights_instances);
           //list of flight instances for specific airport and day
         });
       }
@@ -113,8 +113,6 @@ let createMainPage = () => {
   let airport_list = [];
   let clean_airport_list = [];
   let search_list = [];
-  let flights_list = [];
-  let instance_list = [];
 
   //gets list of airports
   $.ajax(root_url + 'airports', {
@@ -132,22 +130,23 @@ let createMainPage = () => {
     }
   });
   //gets flight list
-  $.ajax(root_url + 'flights', {
-    type: 'GET',
-    xhrFields: { withCredentials: true },
-    success: (response) => {
-      flights_list = response;
-    }
-
-  });
-  //gets instance list
-  $.ajax(root_url + 'instances', {
-    type: 'GET',
-    xhrFields: { withCredentials: true },
-    success: (response) => {
-      instance_list = response;
-    }
-  });
+  // $.ajax(root_url + 'flights', {
+  //   type: 'GET',
+  //   xhrFields: { withCredentials: true },
+  //   data: { 'filter[arrival_id]': id },
+  //   success: (response) => {
+  //     flights_list = response;
+  //   }
+  // });
+  // //gets instance list
+  // $.ajax(root_url + 'instances', {
+  //   type: 'GET',
+  //   xhrFields: { withCredentials: true },
+  //   data: { 'filter[arrival_id]': id },
+  //   success: (response) => {
+  //     instance_list = response;
+  //   }
+  // });
 }
 
 let cleanArray = (a) => {
@@ -157,31 +156,65 @@ let cleanArray = (a) => {
   });
 }
 
-//inputs id and list of flights to get matching flights by id
-let flightListById = (id, list) => {
-  let this_flight_list = [];
-  for (let i = 0; i < list.length; i++) {
-    if (list[i].arrival_id == id) {
-      this_flight_list.push(list[i]);
+let flightListById = (id, aDate) => {
+  $.ajax(root_url + 'flights', {
+    type: 'GET',
+    xhrFields: { withCredentials: true },
+    data: {
+      'filter[arrival_id]': id
+    },
+    success: (response) => {
+      flights_list = response;
+      console.log(flights_list);
+      matchFlightInstance(flights_list, aDate);
     }
-  }
-  return this_flight_list;
+  });
 }
 
-//takes a list of flights and a date and returns a list of instances with matching values
-let matchFlightInstance = (flights, instances, aDate) => {
-  let this_instance_list = [];
+let matchFlightInstance = (flights, aDate) => {
+  var instance_list = []
   for (let i = 0; i < flights.length; i++) {
     let tid = flights[i].id;
-    for (let j = 0; j < instances.length; j++) {
-      let cresult = aDate.localeCompare(instances[j].date);
-      if (instances[j].flight_id == tid && cresult == 0) {
-        this_instance_list.push(instances[j]);
+    $.ajax(root_url + 'instances', {
+      type: 'GET',
+      xhrFields: { withCredentials: true },
+      data: {
+        'filter[flight_id]': tid,
+        'filter[date]': aDate,
+      },
+      success: (response) => {
+        instance_list.push(response);
       }
-    }
+    });
   }
-  return this_instance_list;
+  console.log(instance_list);
 }
+
+// //inputs id and list of flights to get matching flights by id
+// let flightListById = (id, list) => {
+//   let this_flight_list = [];
+//   for (let i = 0; i < list.length; i++) {
+//     if (list[i].arrival_id == id) {
+//       this_flight_list.push(list[i]);
+//     }
+//   }
+//   return this_flight_list;
+// }
+
+// //takes a list of flights and a date and returns a list of instances with matching values
+// let matchFlightInstance = (flights, instances, aDate) => {
+//   let this_instance_list = [];
+//   for (let i = 0; i < flights.length; i++) {
+//     let tid = flights[i].id;
+//     for (let j = 0; j < instances.length; j++) {
+//       let cresult = aDate.localeCompare(instances[j].date);
+//       if (instances[j].flight_id == tid && cresult == 0) {
+//         this_instance_list.push(instances[j]);
+//       }
+//     }
+//   }
+//   return this_instance_list;
+// }
 
 let createYelpList = (loc, rad, bus, lim) => {
   let body = $('body');
@@ -206,14 +239,14 @@ let createYelpList = (loc, rad, bus, lim) => {
       let data = response['businesses'];
       // console.log(data);
       data.forEach(element => {
-        if(element['display_phone'] === ''){
+        if (element['display_phone'] === '') {
           element['display_phone'] = 'None'
         }
-        
+
         $('.yelp_list').append('<div class="yelp_item"></div>');
-        $('.yelp_list').last().append('<p>Name: '+element['name']+'</p>');
-        $('.yelp_list').last().append('<p>Rating: '+element['rating']+'</p>');
-        $('.yelp_list').last().append('<p>Phone #: '+element['display_phone']+'</p>');
+        $('.yelp_list').last().append('<p>Name: ' + element['name'] + '</p>');
+        $('.yelp_list').last().append('<p>Rating: ' + element['rating'] + '</p>');
+        $('.yelp_list').last().append('<p>Phone #: ' + element['display_phone'] + '</p>');
       });
     },
     error: (xhr) => {
