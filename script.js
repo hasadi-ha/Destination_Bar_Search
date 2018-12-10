@@ -325,6 +325,19 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc) => {
   $('.search_result').empty();
   $('.search_result').append('<div style="border:1px solid black" class="f_div"></div>');
   $('.f_div').append('Showing flights to ' + loc + ' from ' + starLoc);
+  console.log(instance_list);
+  console.log(flights);
+  flights.sort(compareTimes);
+  for (let i=0;i<flights.length;i++) {
+    let flight_item = flights[i];
+    let flight_item_div = $('<div class="flight_div"></div>');
+    flight_item_div.append('<p>Flight: ' + flight_item.number + '</p>');
+    let dtime = flight_item.departs_at[11]+flight_item.departs_at[12]+flight_item.departs_at[13]+flight_item.departs_at[14]+flight_item.departs_at[15];
+    flight_item_div.append('<p>Departure time: ' + dtime + '</p>');
+    $('.f_div').append(flight_item_div);
+
+  }
+  /*
   for (let i = 0; i < instance_list.length; i++) {
     let this_instance = instance_list[i];
     let a = flightid_list.indexOf(this_instance.flight_id);
@@ -334,6 +347,7 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc) => {
     instance_div.append('<p>Flight: ' + this_flight.number + '<p>');
     $('.f_div').append(instance_div);
   }
+  */
 }
 
 
@@ -388,6 +402,12 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc) => {
 //   }
 //   return this_instance_list;
 // }
+let compareTimes= (a, b) => {
+  if (a.departs_at<b.departs_at) {return -1}
+  if (b.departs_at<a.departs_at) {return 1}
+  else {return 0}
+}
+
 
 let createYelpList = (loc, rad, bus, lim) => {
   let body = $('body');
