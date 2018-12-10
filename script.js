@@ -158,17 +158,19 @@ let createMainPage = () => {
           search_list2.push(airport_data_list[i]);
         }
       }
+      let this_div = $('<div style="border:1px solid black"></div>');
       for (let i = 0; i < search_list.length; i++) {
-        let this_airport = search_list[i];
-        let start_airport = search_list2[0];
-        let this_div = $('<div style="border:1px solid black" id="search_div_' + this_airport.id + '"></div>');
-        $(this_div).append('<div style="font-size:18px">From: ' + this_airport.code + ' - ' + this_airport.name + '</div>');
-        $(this_div).append('<div style="font-size:18px">To: ' + start_airport.code + ' - ' + start_airport.name + '</div>');
-
-        $('.search_result').append(this_div);
-        if (i == search_list.length - 1) {
-          $('.search_result').append('<button class="find_flights">Find flights</button>');
+        for (let j=0; j< search_list2.length;j++) {
+          let this_airport = search_list[i];
+          let start_airport = search_list2[j];
+          $(this_div).append('<div class="airbox" style="font-size:18px">From: ' + this_airport.code + ' - ' + this_airport.name + '</div>');
+          $(this_div).append('<div class="airbox" style="font-size:18px">To: ' + start_airport.code + ' - ' + start_airport.name + '</div>');
+          if (i == search_list.length - 1 && j==search_list2.length-1) {
+            $('.search_result').append(this_div);
+            $('.search_result').append('<button class="find_flights">Find flights</button>');
+          }
         }
+       
         //functionality on button click to find flights based on specific airport
         $('.find_flights').on('click', () => {
           if (search_list.length > 1 || search_list2.length > 1) {
