@@ -7,8 +7,8 @@ $(document).ready(() => {
     body.empty();
 
     body.append('<div id="mesg_div"></div>');
-    body.append('<div id="login_div"><div>');
-    $('#login_div').append('New Username: <input type="text" id="newlogin_user"><br> New Password: <input type="text" id="newlogin_pass"><br> <button id="newsignup_btn">Sign Up</button>');
+    body.append('<div class="login_div"><div>');
+    $('.login_div').append('New Username: <input type="text" id="newlogin_user"><br> New Password: <input type="text" id="newlogin_pass"><br> <button id="newsignup_btn">Sign Up</button>');
 
     let user = $('#newlogin_user').val();
     let pass = $('#newlogin_pass').val();
@@ -35,6 +35,8 @@ $(document).ready(() => {
 
     let user = $('#login_user').val();
     let pass = $('#login_pass').val();
+    console.log(user);
+    console.log(pass);
 
     $.ajax(root_url + 'sessions', {
       type: 'POST',
@@ -46,10 +48,12 @@ $(document).ready(() => {
         }
       },
       success: (response) => {
+        console.log('this worked');
         createMainPage();
+        console.log("this also did work");
       },
       error: () => {
-        alert('error login');
+        $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>')
       }
     });
   });

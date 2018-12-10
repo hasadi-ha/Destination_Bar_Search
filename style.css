@@ -1,15 +1,57 @@
 * {
     font-family: 'Inconsolata', monospace !important;
-    text-align: center !important;
 }
 
-#main_div {
+form {
+    border: 3px solid #f1f1f1;
+    width: 70%;
+    margin-left: 15%;
+    /* max-width: 647.500px;
+    max-height: 592px; */
+}
+
+input[name="uname"], input[name="psw"] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
     display: inline-block;
-    margin: auto;
-    margin-top: 40%;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
 }
 
-.unanswered_section {
+.image_container {
+    text-align: center;
+    margin: 24px 0 12px 0;
+}
+
+img.image {
+    width: 40%;
+    border-radius: 50%;
+    max-width: 230px;
+    max-height: 230px;
+}
+
+.login_div, .signup_div {
+    padding: 16px;
+}
+
+.signup_div {
+    padding-bottom: 65px;
+}
+
+#signup_btn  {
+    float: right;
+    padding: 8px;
+    height: 100%;
+}
+
+#login_btn {
+    width: 100%;
+}
+
+
+
+/* .unanswered_section {
 	max-height: 25em;
 	height: 25em;
 	overflow: scroll;
@@ -27,21 +69,17 @@
 	width: 50%;
 	max-height: 25em;
 	height: 25em;
-}
+} */
 
 button {
-    font-family: 'Inconsolata', monospace;
-    text-align: center;
-    color: black;
-    background-color: #98B549;
+    color: white;
+    background-color: #4CAF50;
     transition: all .2s;
     border: solid;
-    border-color: #98B549;
-    height: 25px;
-    padding-top: 2px;
-    margin-left: 4px;
+    border-color: #4CAF50;
+    padding: 14px 20px;
+    margin: 8px 0;
     cursor: pointer;
-    position: relative;
     box-shadow: .3px .3px .3px .3px gray;
 }
 
@@ -60,18 +98,6 @@ button:focus {
     outline: none;
 }
 
-.block1 {
-    display: inline-flex;
-    margin-bottom: 10px;
-    margin-top: 10px;
-}
-
-.block2 {
-    border-bottom: 2px solid #CCCCCC;
-    display: inline-flex;
-    padding-bottom: 2px;
-}
-
 .navbar {
     padding-bottom: 4px;
     display: block;
@@ -83,13 +109,6 @@ button:focus {
 .header_section {
     padding-bottom: 3px;
     border-bottom: 2px solid #cccccc;
-}
-
-.center_row {
-    margin: 0 auto;
-    width: 35%;
-    border: 1px solid #cccccc;
-    padding: 4px;
 }
 
 table {
