@@ -236,9 +236,9 @@ let matchFlightInstance = (flights, loc, starLoc, manylocsTo, manylocsFrom) => {
   console.log(flights);
   if (flights.length == 0 && !manylocsTo) {
     $('.search_result').empty();
-    $('.search_result').append('<div style="border:1px solid black" id="f_div"></div>');
-    $('#f_div').append('There are no flights from ' + loc + ' to ' + starLoc);
-    $('#f_div').append('Here are the dates that have available flights:');
+    $('.search_result').append('<div style="border:1px solid black" class="f_div"></div>');
+    $('.f_div').append('There are no flights from ' + loc + ' to ' + starLoc);
+    $('.f_div').append('Here are the dates that have available flights:');
   } else {
     for (let i = 0; i < flights.length; i++) {
       let tid = flights[i].id;
@@ -265,8 +265,8 @@ let matchFlightInstance = (flights, loc, starLoc, manylocsTo, manylocsFrom) => {
 let showFlights = (instance_list, flightid_list, flights, starLoc, loc, manylocsTo, manylocsFrom) => {
   if (!manylocsTo && !manylocsFrom) {
     $('.search_result').empty();
-    $('.search_result').append('<div style="border:1px solid black" id="f_div"></div>');
-    $('#f_div').append('Showing flights to ' + loc + ' from ' + starLoc);
+    $('.search_result').append('<div style="border:1px solid black" class="f_div"></div>');
+    $('.f_div').append('Showing flights to ' + loc + ' from ' + starLoc);
     console.log(instance_list);
     for (let i = 0; i < instance_list.length; i++) {
       let this_instance = instance_list[i];
@@ -275,7 +275,7 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc, manylocs
       let div_id = 'flight-' + this_instance.flight_id;
       let instance_div = $('<div class="flight_div" id="' + div_id + '"></div>');
       instance_div.append('<p>Flight: ' + this_flight.number + '<p>');
-      $('#f_div').append(instance_div);
+      $('.f_div').append(instance_div);
     }
   }
   if (manylocsTo) {
@@ -287,7 +287,7 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc, manylocs
       let div_id = 'flight-' + this_instance.flight_id;
       let instance_div = $('<div class="flight_div" id="' + div_id + '"></div>');
       instance_div.append('<p>Flight: ' + this_flight.number + '<p>');
-      $('#f_div').append(instance_div);
+      $('.f_div').append(instance_div);
     }
   }
 }

@@ -137,3 +137,9 @@ table {
     border: 2px solid #98B549;
     margin:5px;
 }
+
+.f_div {
+    max-height: 372px;
+    max-width: 400px;
+    margin: auto;
+}
