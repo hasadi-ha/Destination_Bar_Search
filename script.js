@@ -278,17 +278,6 @@ let flightsListMultiple = (toList, fromList, loc, starLoc) => {
   }
 }
 
-// //inputs id and list of flights to get matching flights by id
-// let flightListById = (aid, did, list) => {
-//   let this_flight_list = [];
-//   console.log(aid);
-//   console.log(did);
-//   for (let i=0; i<list.length; i++) {
-//     if (list[i].arrival_id==aid && list[i].departure_id==did) {
-//       this_flight_list.push(list[i]);
-//     }
-//    });
-// }
 
 let matchFlightInstance = (flights, loc, starLoc) => {
   let instance_list = [];
@@ -337,71 +326,10 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc) => {
     $('.f_div').append(flight_item_div);
 
   }
-  /*
-  for (let i = 0; i < instance_list.length; i++) {
-    let this_instance = instance_list[i];
-    let a = flightid_list.indexOf(this_instance.flight_id);
-    let this_flight = flights[a];
-    let div_id = 'flight-' + this_instance.flight_id;
-    let instance_div = $('<div class="flight_div" id="' + div_id + '"></div>');
-    instance_div.append('<p>Flight: ' + this_flight.number + '<p>');
-    $('.f_div').append(instance_div);
-  }
-  */
 }
 
 
-//takes a list of flights and a date and returns a list of instances with matching values
-// let matchFlightInstance = (flights, instances, aDate) => {
-//   let this_instance_list = [];
-//   for (let i=0; i<flights.length; i++) {
-//     let tid = flights[i].id;
-//     for (let j=0 ;j<instances.length; j++) {
-//       let cresult = aDate.localeCompare(instances[j].date);
-//       if (instances[j].flight_id==tid && cresult==0) {
-//         this_instance_list.push(instances[j]);
-//       }
-//     }
-//   }
-//   return this_instance_list;
-// }
 
-// let matchFlightInstanceNoDate = (flights, instances) => {
-//   let this_instance_list = [];
-//   for (let i=0; i<flights.length; i++) {
-//     let tid = flights[i].id;
-//     for (let j=0 ;j<instances.length; j++) {
-//       if (instances[j].flight_id==tid) {
-//         this_instance_list.push(instances[j]);
-//       }
-//   }
-// }
-
-// //inputs id and list of flights to get matching flights by id
-// let flightListById = (id, list) => {
-//   let this_flight_list = [];
-//   for (let i = 0; i < list.length; i++) {
-//     if (list[i].arrival_id == id) {
-//       this_flight_list.push(list[i]);
-//     }
-//   }
-//   return this_flight_list;
-// }
-
-// //takes a list of flights and a date and returns a list of instances with matching values
-// let matchFlightInstance = (flights, instances, aDate) => {
-//   let this_instance_list = [];
-//   for (let i = 0; i < flights.length; i++) {
-//     let tid = flights[i].id;
-//     for (let j = 0; j < instances.length; j++) {
-//       let cresult = aDate.localeCompare(instances[j].date);
-//       if (instances[j].flight_id == tid && cresult == 0) {
-//         this_instance_list.push(instances[j]);
-//       }
-//     }
-//   }
-//   return this_instance_list;
-// }
 let compareTimes= (a, b) => {
   if (a.departs_at<b.departs_at) {return -1}
   if (b.departs_at<a.departs_at) {return 1}
