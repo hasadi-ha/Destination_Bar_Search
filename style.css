@@ -99,3 +99,9 @@ table {
 .ui-draggable, .ui-droppable {
 	background-position: top;
 }
+
+.flight_div {
+    background-color:beige;
+    border: 2px solid #98B549;
+    margin:5px;
+}
