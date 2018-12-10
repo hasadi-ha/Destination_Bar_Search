@@ -113,10 +113,11 @@ let createMainPage = () => {
         }
         //functionality on button click to find flights based on specific airport
         $('.find_flights').on('click', () => {
-          flightListById(this_airport.id, start_airport.id, d_date, location, start_location);
-          //if (i==1) {
-          //console.log('test');
-          //}
+          flightListById(this_airport.id, start_airport.id, d_date, location, start_location, false, false);
+          if (i == 1) {
+            this_airport = search_list[0];
+            flightListById(this_airport.id, start_airport.id, d_date, location, start_location, true, false);
+          }
           // let clicked_flights = flightListById(this_airport.id, d_date);
           // console.log(clicked_flights);
           // console.log(clicked_flights_instances);
@@ -202,7 +203,7 @@ let cleanArray = (a) => {
   });
 }
 
-let flightListById = (id, did, aDate, loc, starLoc) => {
+let flightListById = (id, did, aDate, loc, starLoc, manylocsTo, manylocsFrom) => {
   $.ajax(root_url + 'flights', {
     type: 'GET',
     xhrFields: { withCredentials: true },
@@ -212,7 +213,8 @@ let flightListById = (id, did, aDate, loc, starLoc) => {
     },
     success: (response) => {
       flights_list = response;
-      matchFlightInstance(flights_list, aDate, loc, starLoc);
+      console.log('flightslistbyid');
+      matchFlightInstance(flights_list, aDate, loc, starLoc, manylocsTo, manylocsFrom);
     }
   });
 }
@@ -229,41 +231,58 @@ let flightListById = (id, did, aDate, loc, starLoc) => {
 //    });
 // }
 
-let matchFlightInstance = (flights, aDate, loc, starLoc) => {
+let matchFlightInstance = (flights, aDate, loc, starLoc, manylocsTo, manylocsFrom) => {
   let instance_list = [];
   let flightid_list = [];
-  for (let i = 0; i < flights.length; i++) {
-    let tid = flights[i].id;
-    flightid_list.push(tid);
-    $.ajax(root_url + 'instances', {
-      type: 'GET',
-      xhrFields: { withCredentials: true },
-      data: {
-        'filter[flight_id]': tid,
-        'filter[date]': aDate,
-      },
-      success: (response) => {
-        for (let i = 0; i < response.length; i++) {
-          instance_list.push(response[i]);
+  console.log('matchflightinstance');
+  console.log(flights);
+  if (flights.length == 0 && !manylocsTo) {
+    $('.search_result').empty();
+    $('.search_result').append('<div style="border:1px solid black" id="f_div"></div>');
+    $('#f_div').append('There are no flights from ' + starLoc + ' to ' + loc + ' on ' + aDate + '.');
+    $('#f_div').append('Here are the dates that have available flights:');
+  } else {
+    for (let i = 0; i < flights.length; i++) {
+      let tid = flights[i].id;
+      flightid_list.push(tid);
+      $.ajax(root_url + 'instances', {
+        type: 'GET',
+        xhrFields: { withCredentials: true },
+        data: {
+          'filter[flight_id]': tid,
+          'filter[date]': aDate,
+        },
+        success: (response) => {
+          for (let i = 0; i < response.length; i++) {
+            instance_list.push(response[i]);
+          }
+          if (i == flights.length - 1) {
+            showFlights(instance_list, flightid_list, flights, starLoc, loc, aDate, manylocsTo, manylocsFrom);
+          }
         }
-        if (i == flights.length - 1) {
-          showFlights(instance_list, flightid_list, flights, starLoc, loc, aDate);
-        }
-      }
-    });
+      });
+    }
   }
 
 }
-let showFlights = (instance_list, flightid_list, flights, starLoc, loc, aDate) => {
-  $('.search_result').empty();
-  $('.search_result').append('<div style="border:1px solid black" id="f_div"></div>');
-  if (instance_list == null) {
-    $('#f_div').append('There are no flights from ' + starLoc + ' to ' + loc + ' on ' + aDate + '.');
-    $('#f_div').append('Here are the dates that have available flights:');
-    // matchFlightInstanceNoDate(clicked_flights, instance_list);
-  }
-  else {
+let showFlights = (instance_list, flightid_list, flights, starLoc, loc, aDate, manylocsTo, manylocsFrom) => {
+  if (!manylocsTo && !manylocsFrom) {
+    $('.search_result').empty();
+    $('.search_result').append('<div style="border:1px solid black" id="f_div"></div>');
     $('#f_div').append('Showing flights to ' + starLoc + ' from ' + loc + ' on ' + aDate + ':');
+    console.log(instance_list);
+    for (let i = 0; i < instance_list.length; i++) {
+      let this_instance = instance_list[i];
+      let a = flightid_list.indexOf(this_instance.flight_id);
+      let this_flight = flights[a];
+      let div_id = 'flight-' + this_instance.flight_id;
+      let instance_div = $('<div class="flight_div" id="' + div_id + '"></div>');
+      instance_div.append('<p>Flight: ' + this_flight.number + '<p>');
+      $('#f_div').append(instance_div);
+    }
+  }
+  if (manylocsTo) {
+    console.log('test');
     for (let i = 0; i < instance_list.length; i++) {
       let this_instance = instance_list[i];
       let a = flightid_list.indexOf(this_instance.flight_id);
