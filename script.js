@@ -154,6 +154,8 @@ let createMainPage = () => {
         }
       }
       let this_div = $('<div style="border:1px solid black"></div>');
+      console.log(search_list);
+      console.log(search_list2);
       for (let i = 0; i < search_list.length; i++) {
         for (let j=0; j< search_list2.length;j++) {
           let this_airport = search_list[i];
@@ -163,18 +165,19 @@ let createMainPage = () => {
           if (i == search_list.length - 1 && j==search_list2.length-1) {
             $('.search_result').append(this_div);
             $('.search_result').append('<button class="find_flights">Find flights</button>');
+            $('.find_flights').on('click', () => {
+              if (search_list.length > 1 || search_list2.length > 1) {
+                flightsListMultiple(search_list, search_list2, location, start_location);
+              }
+              else {
+                flightListById(this_airport.id, start_airport.id, location, start_location);
+              }
+            }); 
           }
         }
        
         //functionality on button click to find flights based on specific airport
-        $('.find_flights').on('click', () => {
-          if (search_list.length > 1 || search_list2.length > 1) {
-            flightsListMultiple(search_list, search_list2, location, start_location);
-          }
-          else {
-            flightListById(this_airport.id, start_airport.id, location, start_location);
-          }
-        }); 
+
       }
     }
     //createYelpList(location, 10000, 'bars', 20);
