@@ -83,7 +83,7 @@ img.image {
 	height: 25em;
 } */
 
-button:not(#signup_btn, #login_btn) {
+button:not(#login_btn) {
     color: white;
     background-color: #4CAF50;
     transition: all .2s;

@@ -58,6 +58,7 @@ $(document).ready(() => {
 
 let createMainPage = () => {
   let body = $('body');
+  $('*').css('text-align', 'center');
   body.empty();
   body.append('<nav class="navbar"><nav>');
   $('.navbar').append('<button class="home">Home</button');
