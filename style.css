@@ -41,12 +41,24 @@ img.image {
 
 #signup_btn  {
     float: right;
-    padding: 8px;
-    height: 100%;
+    padding: 8px !important;
+    height: 100% !important;
 }
 
 #login_btn {
-    width: 100%;
+    width: 100% !important;
+}
+
+#signup_btn, #login_btn {
+    color: white;
+    background-color: #4CAF50;
+    transition: all .2s;
+    border: solid;
+    border-color: #4CAF50;
+    padding: 14px 20px !important;
+    margin: 8px 0 !important;
+    cursor: pointer;
+    box-shadow: .3px .3px .3px .3px gray;
 }
 
 
@@ -71,14 +83,15 @@ img.image {
 	height: 25em;
 } */
 
-button {
+button:not(#signup_btn, #login_btn) {
     color: white;
     background-color: #4CAF50;
     transition: all .2s;
     border: solid;
     border-color: #4CAF50;
-    padding: 14px 20px;
-    margin: 8px 0;
+    height: 25px;
+    padding-top: 2px;
+    margin-left: 4px;
     cursor: pointer;
     box-shadow: .3px .3px .3px .3px gray;
 }
