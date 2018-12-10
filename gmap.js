@@ -6,7 +6,7 @@
 // Initialize Map to airport destination
 function initMap() {
   // TODO: Need to get the coordinates of airport destination
-  var f_dest = {lat: (Insert destination Info).lat, lng: (Insert destination Info).lng;
+  //var f_dest = {lat: (Insert destination Info).lat, lng: (Insert destination Info).lng;
   var map = new google.maps.Map(document.getElementById('map_div'), {
     zoom: 12,
     center: f_dest
@@ -22,7 +22,7 @@ function initMap() {
     let marker = new google.maps.Marker({
       position: p_coord,
       map: map,
-      title: place_i.title;
+      title: place_i.title
     });
 
     // Or should it be

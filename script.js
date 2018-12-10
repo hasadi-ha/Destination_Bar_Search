@@ -6,14 +6,32 @@ $(document).ready(() => {
   $('#signup_btn').on('click', () => {
     body.empty();
 
-    body.append('<div id="mesg_div"></div>');
-    body.append('<div class="login_div"><div>');
-    $('.login_div').append('New Username: <input type="text" id="newlogin_user"><br> New Password: <input type="text" id="newlogin_pass"><br> <button id="newsignup_btn">Sign Up</button>');
+    body.append('<h1 style="text-align: center; margin-bottom: 15px;">Tool Sign Up Form</h1>')
 
-    let user = $('#newlogin_user').val();
-    let pass = $('#newlogin_pass').val();
+    body.append('<div class="form"></div>');
+    $('.form').append('<div class="image_container"> <img src="yelp.png" alt="Login Image" class="image"> </div>');
 
-    $('#newsignup_btn').on('click', () => {
+    $('.form').append('<div class="login_div"><div>');
+    $('.login_div').append('<label for="login_user"><b>New Username</b></label>');
+    $('.login_div').append('<input type="text" placeholder="Enter New Username" id="login_user" required>');
+
+    $('.login_div').append('<label for="login_pass"><b>New Password</b></label>');
+    $('.login_div').append('<input type="password" placeholder="Enter New Password" id="login_pass" required>');
+
+    $('.login_div').append('<button id="login_btn">Sign Up</button>');
+    $('.login_div').append('<div class="mesg_div"></div>');
+
+    $('.form').append('<div class="signup_div" style="background-color: #f1f1f1"></div>');
+    $('.signup_div').append('<button id="signup_btn" style="background-color: red; border-color: red;">Cancel</button>');
+
+    $('#signup_btn').on('click', () => {
+      location.reload();
+    });
+
+    let user = $('#login_user').val();
+    let pass = $('#login_pass').val();
+
+    $('#login_btn').on('click', () => {
       $.ajax(root_url + 'users', {
         type: 'POST',
         xhrFields: { withCredentials: true },
@@ -22,10 +40,28 @@ $(document).ready(() => {
           "password": pass
         },
         success: (response) => {
-          $('#mesg_div').append('<p>Success</p>')
+          $.ajax(root_url + 'sessions', {
+            type: 'POST',
+            xhrFields: { withCredentials: true },
+            data: {
+              "user": {
+                "username": user,
+                "password": pass
+              }
+            },
+            success: (response) => {
+              createMainPage();
+            },
+            error: () => {
+              $('.mesg_div').empty();
+              $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>');
+            }
+          });
         },
         error: () => {
-          $('#mesg_div').append('<p>Failure</p>')
+          $('.mesg_div').empty();
+          $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Sign Up Failed! Try Again!</h5>');
+
         }
       });
     });
@@ -48,7 +84,8 @@ $(document).ready(() => {
         createMainPage();
       },
       error: () => {
-        $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>')
+        $('.mesg_div').empty();
+        $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>');
       }
     });
   });
@@ -62,6 +99,31 @@ let createMainPage = () => {
   $('.navbar').append('<button class="home">Home</button');
   $('.navbar').append('<button class="user">Username</button');
   $('.navbar').append('<button class="logout">Logout</button');
+
+  $('.home').on('click', () => {
+    body.empty();
+    createMainPage();
+  });
+
+  $('.user').on('click', () => {
+    body.empty();
+  });
+
+  $('.logout').on('click', () => {
+    $.ajax(root_url + 'sessions', {
+      type: 'DELETE',
+      success: (response) => {
+        body.empty();
+        body.append('<h1>YOU ARE NOW LOGGED OUT! HAVE A NICE DAY!</h1>');
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      },
+      error: (xhr) => {
+        console.log("logout fail");
+      }
+    });
+  });
 
   body.append('<div class="search"><div>');
   $('.search').append('<h2>Destination_Bar_Search</h2>');
@@ -335,4 +397,40 @@ let createYelpList = (loc, rad, bus, lim) => {
       console.log(xhr);
     }
   });
+};
+
+let createBuyPage = (instance_id) => {
+  let body = $('body');
+  body.empty();
+
+  body.append('<nav class="navbar"><nav>');
+  $('.navbar').append('<button class="home">Home</button');
+  $('.navbar').append('<button class="user">Username</button');
+  $('.navbar').append('<button class="logout">Logout</button');
+
+  $('.home').on('click', () => {
+    body.empty();
+    createMainPage();
+  });
+
+  $('.user').on('click', () => {
+    body.empty();
+  });
+
+  $('.logout').on('click', () => {
+    $.ajax(root_url + 'sessions', {
+      type: 'DELETE',
+      success: (response) => {
+        body.empty();
+        body.append('<h1>YOU ARE NOW LOGGED OUT! HAVE A NICE DAY!</h1>');
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      },
+      error: (xhr) => {
+        console.log("logout fail");
+      }
+    });
+  });
+
 };
