@@ -65,8 +65,9 @@ let createMainPage = () => {
 
   body.append('<div class="search"><div>');
   $('.search').append('<h2>Destination_Bar_Search</h2>');
-  $('.search').append('<p>Departure date: <input type="text" id="datepicker"></p>')
+  $('.search').append('<p>Date: <input type="text" id="datepicker"></p>')
   $('.search').append('Destination: <input type="text" id="location">');
+  $('.search').append('from <input type="text" id="start_location">');
   $('.search').append('<button id="search_location">Search</button>');
   $('.search').append('<div class="search_result"></div>');
   $("#datepicker").datepicker();
@@ -75,12 +76,14 @@ let createMainPage = () => {
   $('#search_location').on('click', () => {
     $('.search_result').empty();
     search_list = [];
+    search_list2 = [];
     let location = $('#location').val();
+    let start_location = $('#start_location').val();
     let departure_date = $('#datepicker').val();
     departure_date = departure_date.split("/");
     d_date = departure_date[2] + '-' + departure_date[0] + '-' + departure_date[1];
-    if (departure_date == '' || location == '') {
-      $('.search_result').append('<p style="color:red">Must choose a date and location.</p>')
+    if (departure_date == '' || location == '' || start_location == '') {
+      $('.search_result').append('<p style="color:red">Must choose a date and an arrival/departure location.</p>')
     }
     else {
       location.toLowerCase();
@@ -89,30 +92,61 @@ let createMainPage = () => {
         if (location == air_loc) {
           search_list.push(airport_data_list[i]);
         }
+        if (start_location == air_loc) {
+          search_list2.push(airport_data_list[i]);
+        }
       }
       for (let i = 0; i < search_list.length; i++) {
         let this_airport = search_list[i];
+        let start_airport = search_list2[0];
         let this_div = $('<div style="border:1px solid black" id="search_div_' + this_airport.id + '"></div>');
-        $(this_div).append('<div style="font-size:18px">' + this_airport.code + ' - ' + this_airport.name + '</div>');
-        $(this_div).append('<button class="find_flights">Find flights</button>');
+        $(this_div).append('<div style="font-size:18px">From: ' + this_airport.code + ' - ' + this_airport.name + '</div>');
+        $(this_div).append('<div style="font-size:18px">To: ' + start_airport.code + ' - ' + start_airport.name + '</div>');
+
         $('.search_result').append(this_div);
+        if (i == search_list.length - 1) {
+          $('.search_result').append('<button class="find_flights">Find flights</button>');
+        }
         //functionality on button click to find flights based on specific airport
         $('.find_flights').on('click', () => {
-          flightListById(this_airport.id, d_date);
+          flightListById(this_airport.id, start_airport.id, d_date, location, start_location);
           // let clicked_flights = flightListById(this_airport.id, d_date);
           // console.log(clicked_flights);
           // console.log(clicked_flights_instances);
+
           //list of flight instances for specific airport and day
+          // var flist = [];
+          // console.log(flist);
+          // for (let i = 0; i < clicked_flights_instances.length; i++) {
+          //   for (let j = 0; j < clicked_flights.length; j++) {
+          //     if (clicked_flights_instances[i].flight_id == clicked_flights[j].id) {
+          //       flist.push(clicked_flights[j]);
+          //     }
+          //   }
+          // }
+          // $('.search_result').empty();
+          // $('.search_result').append('<div style="border:1px solid black" id="f_div"></div>');
+          // if (flist.length == 0) {
+          //   $('#f_div').append('There are no flights from ' + location + ' to ' + start_location + ' on ' + d_date + '.');
+          //   $('#f_div').append('Here are the dates that have available flights:');
+          //   let test_dates = matchFlightInstanceNoDate(clicked_flights,instance_list);
+          //   console.log(test_dates);
+          // }
+          // else {
+          //   $('#f_div').append('Showing flights to ' + location + ' from ' + start_location + ' on ' + d_date + ':');
+          // }
         });
       }
     }
     createYelpList(location, 10000, 'bars', 20);
   });
-
   let airport_data_list = [];
   let airport_list = [];
   let clean_airport_list = [];
   let search_list = [];
+  // let flights_list = [];
+  // let instance_list =[];
+
 
   //gets list of airports
   $.ajax(root_url + 'airports', {
@@ -127,6 +161,10 @@ let createMainPage = () => {
       clean_airport_list = airport_list.slice();
       clean_airport_list = cleanArray(clean_airport_list);
       $('#location').autocomplete({ source: clean_airport_list });
+      $('#start_location').autocomplete({ source: clean_airport_list });
+
+
+
     }
   });
   //gets flight list
@@ -149,6 +187,7 @@ let createMainPage = () => {
   // });
 }
 
+
 let cleanArray = (a) => {
   var seen = {};
   return a.filter(function (item) {
@@ -156,22 +195,34 @@ let cleanArray = (a) => {
   });
 }
 
-let flightListById = (id, aDate) => {
+let flightListById = (id, did, aDate, loc, starLoc) => {
   $.ajax(root_url + 'flights', {
     type: 'GET',
     xhrFields: { withCredentials: true },
     data: {
-      'filter[arrival_id]': id
+      'filter[arrival_id]': id,
+      'filter[departure_id]': did
     },
     success: (response) => {
       flights_list = response;
-      console.log(flights_list);
-      matchFlightInstance(flights_list, aDate);
+      matchFlightInstance(flights_list, aDate, loc, starLoc);
     }
   });
 }
 
-let matchFlightInstance = (flights, aDate) => {
+// //inputs id and list of flights to get matching flights by id
+// let flightListById = (aid, did, list) => {
+//   let this_flight_list = [];
+//   console.log(aid);
+//   console.log(did);
+//   for (let i=0; i<list.length; i++) {
+//     if (list[i].arrival_id==aid && list[i].departure_id==did) {
+//       this_flight_list.push(list[i]);
+//     }
+//   });
+// }
+
+let matchFlightInstance = (flights, aDate, loc, starLoc) => {
   var instance_list = []
   for (let i = 0; i < flights.length; i++) {
     let tid = flights[i].id;
@@ -184,11 +235,48 @@ let matchFlightInstance = (flights, aDate) => {
       },
       success: (response) => {
         instance_list.push(response);
+        // $('.search_result').empty();
+        $('.search_result').append('<div style="border:1px solid black" id="f_div"></div>');
+        if (response != null) {
+          $('#f_div').append('There are no flights from ' + starLoc + ' to ' + loc + ' on ' + aDate + '.');
+          $('#f_div').append('Here are the dates that have available flights:');
+          // matchFlightInstanceNoDate(clicked_flights, instance_list);
+        }
+        else {
+          $('#f_div').append('Showing flights to ' + starLoc + ' from ' + loc + ' on ' + aDate + ':');
+        }
       }
     });
   }
-  console.log(instance_list);
+  // console.log(instance_list);
 }
+
+
+//takes a list of flights and a date and returns a list of instances with matching values
+// let matchFlightInstance = (flights, instances, aDate) => {
+//   let this_instance_list = [];
+//   for (let i=0; i<flights.length; i++) {
+//     let tid = flights[i].id;
+//     for (let j=0 ;j<instances.length; j++) {
+//       let cresult = aDate.localeCompare(instances[j].date);
+//       if (instances[j].flight_id==tid && cresult==0) {
+//         this_instance_list.push(instances[j]);
+//       }
+//     }
+//   }
+//   return this_instance_list;
+// }
+
+// let matchFlightInstanceNoDate = (flights, instances) => {
+//   let this_instance_list = [];
+//   for (let i=0; i<flights.length; i++) {
+//     let tid = flights[i].id;
+//     for (let j=0 ;j<instances.length; j++) {
+//       if (instances[j].flight_id==tid) {
+//         this_instance_list.push(instances[j]);
+//       }
+//   }
+// }
 
 // //inputs id and list of flights to get matching flights by id
 // let flightListById = (id, list) => {
