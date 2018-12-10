@@ -76,8 +76,8 @@ let createMainPage = () => {
     search_list = [];
     let location = $('#location').val();
     let departure_date = $('#datepicker').val();
-    console.log(departure_date);
-    console.log(location);
+    departure_date=departure_date.split("/");
+    d_date = departure_date[2]+'-'+departure_date[0]+'-'+departure_date[1];
     if (departure_date == '' || location == '') {
       $('.search_result').append('<p style="color:red">Must choose a date and location.</p>')
     }
@@ -91,10 +91,18 @@ let createMainPage = () => {
       }
       for (let i = 0; i < search_list.length; i++) {
         let this_airport = search_list[i];
-        console.log(this_airport);
         let this_div = $('<div style="border:1px solid black" id="search_div_' + this_airport.id + '"></div>');
         $(this_div).append('<div style="font-size:18px">' + this_airport.code + ' - ' + this_airport.name + '</div>');
+        $(this_div).append('<button class="find_flights">Find flights</button>');
         $('.search_result').append(this_div);
+        //functionality on button click to find flights based on specific airport
+        $('.find_flights').on('click', () => {
+          let clicked_flights = flightListById(this_airport.id, flights_list);
+          console.log(clicked_flights);
+          let clicked_flights_instances = matchFlightInstance(clicked_flights, instance_list, d_date);
+          console.log(clicked_flights_instances);
+          //list of flight instances for specific airport and day
+        });
       }
     }
   });
@@ -102,9 +110,8 @@ let createMainPage = () => {
   let airport_list = [];
   let clean_airport_list = [];
   let search_list = [];
-  //let location = $('#loction').val();
-  //location=location.toLowerCase();
-  //console.log(location);
+  let flights_list = [];
+  let instance_list =[];
 
 
   //gets list of airports
@@ -124,6 +131,24 @@ let createMainPage = () => {
 
     }
   });
+  //gets flight list
+  $.ajax(root_url+ 'flights', {
+    type: 'GET',
+    xhrFields:{withCredentials:true},
+    success: (response) => {
+      flights_list=response;
+    }
+
+  });
+  //gets instance list
+  $.ajax(root_url+ 'instances', {
+    type: 'GET',
+    xhrFields:{withCredentials:true},
+    success: (response) => {
+      instance_list=response;
+    }
+  });
+
 
 
 }
@@ -134,5 +159,31 @@ let cleanArray = (a) => {
   return a.filter(function (item) {
     return seen.hasOwnProperty(item) ? false : (seen[item] = true);
   });
+}
+
+//inputs id and list of flights to get matching flights by id
+let flightListById = (id, list) => {
+  let this_flight_list = [];
+  for (let i=0; i<list.length; i++) {
+    if (list[i].arrival_id==id) {
+      this_flight_list.push(list[i]);
+    }
+  }
+  return this_flight_list;
+}
+
+//takes a list of flights and a date and returns a list of instances with matching values
+let matchFlightInstance = (flights, instances, aDate) => {
+  let this_instance_list = [];
+  for (let i=0; i<flights.length; i++) {
+    let tid = flights[i].id;
+    for (let j=0 ;j<instances.length; j++) {
+      let cresult = aDate.localeCompare(instances[j].date);
+      if (instances[j].flight_id==tid && cresult==0) {
+        this_instance_list.push(instances[j]);
+      }
+    }
+  }
+  return this_instance_list;
 }
 
