@@ -75,8 +75,8 @@ let createMainPage = () => {
   //(functionality) search for airport with location and date
   $('#search_location').on('click', () => {
     $('.search_result').empty();
-    search_list = [];
-    search_list2 = [];
+    let search_list = [];
+    let search_list2 = [];
     let location = $('#location').val();
     let start_location = $('#start_location').val();
     let departure_date = $('#datepicker').val();
@@ -109,7 +109,11 @@ let createMainPage = () => {
         }
         //functionality on button click to find flights based on specific airport
         $('.find_flights').on('click', () => {
-          flightListById(this_airport.id, start_airport.id, location, start_location);
+          if (search_list.length>1 || search_list2.length>1) {
+            flightsListMultiple(search_list, search_list2, location, start_location);          }
+          else {
+            flightListById(this_airport.id, start_airport.id, location, start_location);
+          }
         });
       }
     }
@@ -185,6 +189,32 @@ let flightListById = (id, did, loc, starLoc) => {
   });
 }
 
+let flightsListMultiple = (toList, fromList, loc, starLoc) => {
+  flights_list=[];
+  for (let i=0; i<toList.length; i++) {
+    for (let j=0; j<fromList.length; j++) {
+      let aid=toList[i].id;
+      let did=fromList[j].id;
+      $.ajax(root_url + 'flights', {
+        type: 'GET',
+        xhrFields: { withCredentials: true },
+        data: {
+          'filter[arrival_id]': aid,
+          'filter[departure_id]': did,
+        },
+        success: (response) => {
+          flights_list.push(...response);
+          console.log(flights_list);
+          if (i==toList.length-1 && j==fromList.length-1) {
+            matchFlightInstance(flights_list, loc, starLoc);
+          }
+        }
+
+      });
+    }
+  }
+}
+
 // //inputs id and list of flights to get matching flights by id
 // let flightListById = (aid, did, list) => {
 //   let this_flight_list = [];
@@ -232,7 +262,6 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc) => {
   $('.search_result').empty();
   $('.search_result').append('<div style="border:1px solid black" class="f_div"></div>');
   $('.f_div').append('Showing flights to ' + loc + ' from ' + starLoc);
-  console.log(instance_list);
   for (let i = 0; i < instance_list.length; i++) {
     let this_instance = instance_list[i];
     let a = flightid_list.indexOf(this_instance.flight_id);
