@@ -25,7 +25,7 @@ $(document).ready(() => {
     $('.signup_div').append('<button id="signup_btn" style="background-color: red; border-color: red;">Cancel</button>');
 
     $('#signup_btn').on('click', () => {
-      location.reload();
+      recreateLogin();
     });
 
     let user = $('#login_user').val();
@@ -116,7 +116,7 @@ let createMainPage = () => {
         body.empty();
         body.append('<h1>YOU ARE NOW LOGGED OUT! HAVE A NICE DAY!</h1>');
         setTimeout(() => {
-          location.reload();
+          recreateLogin();
         }, 1000);
       },
       error: (xhr) => {
@@ -168,8 +168,9 @@ let createMainPage = () => {
        
         //functionality on button click to find flights based on specific airport
         $('.find_flights').on('click', () => {
-          if (search_list.length>1 || search_list2.length>1) {
-            flightsListMultiple(search_list, search_list2, location, start_location);          }
+          if (search_list.length > 1 || search_list2.length > 1) {
+            flightsListMultiple(search_list, search_list2, location, start_location);
+          }
           else {
             flightListById(this_airport.id, start_airport.id, location, start_location);
           }
@@ -249,11 +250,11 @@ let flightListById = (id, did, loc, starLoc) => {
 }
 
 let flightsListMultiple = (toList, fromList, loc, starLoc) => {
-  flights_list=[];
-  for (let i=0; i<toList.length; i++) {
-    for (let j=0; j<fromList.length; j++) {
-      let aid=toList[i].id;
-      let did=fromList[j].id;
+  flights_list = [];
+  for (let i = 0; i < toList.length; i++) {
+    for (let j = 0; j < fromList.length; j++) {
+      let aid = toList[i].id;
+      let did = fromList[j].id;
       $.ajax(root_url + 'flights', {
         type: 'GET',
         xhrFields: { withCredentials: true },
@@ -264,7 +265,7 @@ let flightsListMultiple = (toList, fromList, loc, starLoc) => {
         success: (response) => {
           flights_list.push(...response);
           console.log(flights_list);
-          if (i==toList.length-1 && j==fromList.length-1) {
+          if (i == toList.length - 1 && j == fromList.length - 1) {
             matchFlightInstance(flights_list, loc, starLoc);
           }
         }
@@ -450,7 +451,7 @@ let createBuyPage = (instance_id) => {
         body.empty();
         body.append('<h1>YOU ARE NOW LOGGED OUT! HAVE A NICE DAY!</h1>');
         setTimeout(() => {
-          location.reload();
+          recreateLogin();
         }, 1000);
       },
       error: (xhr) => {
@@ -459,4 +460,123 @@ let createBuyPage = (instance_id) => {
     });
   });
 
+};
+
+let recreateLogin = () => {
+  let body = $('body');
+  body.empty();
+
+  body.append('  <h1 style="text-align: center; margin-bottom: 0px;">Bar Search Tool</h1>' +
+    '<h5 style="color: red; text-align: center; margin-top: 0px; margin-bottom: 15px;">Login Required</h5>' +
+    '<div class="form">' +
+
+    '<div class="image_container"><img src="yelp.png" alt="Login Image" class="image"></div>' +
+
+    '<div class="login_div">' +
+
+    '<label for="login_user"><b>Username</b></label>' +
+    '<input type="text" placeholder="Enter Username" id="login_user" required>' +
+
+    '<label for="login_pass"><b>Password</b></label>' +
+    '<input type="password" placeholder="Enter Password" id="login_pass" required>' +
+
+    '<button id="login_btn">Login</button>' +
+
+    '<div class="mesg_div">' +
+
+    '</div>' +
+
+    '</div>' +
+
+    '<div class="signup_div" style="background-color: #f1f1f1"><button id="signup_btn">Sign Up</button></div>' +
+
+    '</div>'
+  );
+
+  $('#signup_btn').on('click', () => {
+    body.empty();
+
+    body.append('<h1 style="text-align: center; margin-bottom: 15px;">Tool Sign Up Form</h1>')
+
+    body.append('<div class="form"></div>');
+    $('.form').append('<div class="image_container"> <img src="yelp.png" alt="Login Image" class="image"> </div>');
+
+    $('.form').append('<div class="login_div"><div>');
+    $('.login_div').append('<label for="login_user"><b>New Username</b></label>');
+    $('.login_div').append('<input type="text" placeholder="Enter New Username" id="login_user" required>');
+
+    $('.login_div').append('<label for="login_pass"><b>New Password</b></label>');
+    $('.login_div').append('<input type="password" placeholder="Enter New Password" id="login_pass" required>');
+
+    $('.login_div').append('<button id="login_btn">Sign Up</button>');
+    $('.login_div').append('<div class="mesg_div"></div>');
+
+    $('.form').append('<div class="signup_div" style="background-color: #f1f1f1"></div>');
+    $('.signup_div').append('<button id="signup_btn" style="background-color: red; border-color: red;">Cancel</button>');
+
+    $('#signup_btn').on('click', () => {
+      recreateLogin();
+    });
+
+    let user = $('#login_user').val();
+    let pass = $('#login_pass').val();
+
+    $('#login_btn').on('click', () => {
+      $.ajax(root_url + 'users', {
+        type: 'POST',
+        xhrFields: { withCredentials: true },
+        data: {
+          "username": user,
+          "password": pass
+        },
+        success: (response) => {
+          $.ajax(root_url + 'sessions', {
+            type: 'POST',
+            xhrFields: { withCredentials: true },
+            data: {
+              "user": {
+                "username": user,
+                "password": pass
+              }
+            },
+            success: (response) => {
+              createMainPage();
+            },
+            error: () => {
+              $('.mesg_div').empty();
+              $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>');
+            }
+          });
+        },
+        error: () => {
+          $('.mesg_div').empty();
+          $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Sign Up Failed! Try Again!</h5>');
+
+        }
+      });
+    });
+  });
+
+  $('#login_btn').on('click', () => {
+    let user = $('#login_user').val();
+    let pass = $('#login_pass').val();
+
+    $.ajax(root_url + 'sessions', {
+      type: 'POST',
+      xhrFields: { withCredentials: true },
+      data: {
+        "user": {
+          "username": user,
+          "password": pass
+        }
+      },
+      success: (response) => {
+        createMainPage();
+      },
+      error: () => {
+        $('.mesg_div').empty();
+        $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>');
+      }
+    });
+  });
 };
