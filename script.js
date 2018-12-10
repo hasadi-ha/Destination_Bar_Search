@@ -154,8 +154,6 @@ let createMainPage = () => {
         }
       }
       let this_div = $('<div style="border:1px solid black"></div>');
-      console.log(search_list);
-      console.log(search_list2);
       for (let i = 0; i < search_list.length; i++) {
         for (let j=0; j< search_list2.length;j++) {
           let this_airport = search_list[i];
@@ -286,7 +284,6 @@ let matchFlightInstance = (flights, loc, starLoc) => {
     $('.search_result').empty();
     $('.search_result').append('<div style="border:1px solid black" class="f_div"></div>');
     $('.f_div').append('There are no flights from ' + loc + ' to ' + starLoc);
-    $('.f_div').append('Here are the dates that have available flights:');
   } else {
     for (let i = 0; i < flights.length; i++) {
       let tid = flights[i].id;
@@ -314,8 +311,6 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc) => {
   $('.search_result').empty();
   $('.search_result').append('<div style="border:1px solid black" class="f_div"></div>');
   $('.f_div').append('Showing flights to ' + loc + ' from ' + starLoc);
-  console.log(instance_list);
-  console.log(flights);
   flights.sort(compareTimes);
   for (let i=0;i<flights.length;i++) {
     let flight_item = flights[i];
@@ -323,11 +318,27 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc) => {
     flight_item_div.append('<p>Flight: ' + flight_item.number + '</p>');
     let dtime = flight_item.departs_at[11]+flight_item.departs_at[12]+flight_item.departs_at[13]+flight_item.departs_at[14]+flight_item.departs_at[15];
     flight_item_div.append('<p>Departure time: ' + dtime + '</p>');
+    flight_item_div.append('<button class="flight_item_btn" onClick="getDates('+flight_item.id+')">View available tickets</button>');
     $('.f_div').append(flight_item_div);
-
   }
+
 }
 
+let getDates = (flight_id) => {
+  $('.f_div').empty();
+  $.ajax(root_url + 'instances', {
+    type: 'GET',
+    xhrFields: { withCredentials: true },
+    data: {
+      'filter[flight_id]': flight_id,
+    },
+    success: (response) => {
+      console.log(response);
+      //adding div with dates and a button that redirects to buying a ticket for that specific flight and instance
+    }
+  });
+
+}
 
 
 let compareTimes= (a, b) => {
