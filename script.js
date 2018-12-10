@@ -106,7 +106,7 @@ let createMainPage = () => {
         });
       }
     }
-    createYelpList('Boston', 10000, 'Bars', 20);
+    createYelpList(location, 10000, 'bars', 20);
   });
 
   let airport_data_list = [];
@@ -198,12 +198,23 @@ let createYelpList = (loc, rad, bus, lim) => {
       sort_by: 'distance'
     },
     dataType: 'json',
-    async: false,
     headers: {
       Authorization: 'Bearer eaTwgscQLIKIx8ZovotD79mww3utAeWyJDoX2Y0J2mJsqqaP_mfbRV9rUZXus6z_Oo6WqsR9REowDEC1UDEbb1pSsPmSZ5V4T1mmlhpMFle3hLYkCLuUZP-DQKgNXHYx',
     },
     success: (response) => {
-      alert("we are good");
+      // console.log(response);
+      let data = response['businesses'];
+      // console.log(data);
+      data.forEach(element => {
+        if(element['display_phone'] === ''){
+          element['display_phone'] = 'None'
+        }
+        
+        $('.yelp_list').append('<div class="yelp_item"></div>');
+        $('.yelp_list').last().append('<p>Name: '+element['name']+'</p>');
+        $('.yelp_list').last().append('<p>Rating: '+element['rating']+'</p>');
+        $('.yelp_list').last().append('<p>Phone #: '+element['display_phone']+'</p>');
+      });
     },
     error: (xhr) => {
       alert('fail');
