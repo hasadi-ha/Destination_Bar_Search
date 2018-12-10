@@ -116,7 +116,7 @@ let createMainPage = () => {
         body.empty();
         body.append('<h1>YOU ARE NOW LOGGED OUT! HAVE A NICE DAY!</h1>');
         setTimeout(() => {
-          location.reload();
+          recreateLogin();
         }, 1000);
       },
       error: (xhr) => {
@@ -454,7 +454,7 @@ let createBuyPage = (instance_id) => {
         body.empty();
         body.append('<h1>YOU ARE NOW LOGGED OUT! HAVE A NICE DAY!</h1>');
         setTimeout(() => {
-          location.reload();
+          recreateLogin();
         }, 1000);
       },
       error: (xhr) => {
