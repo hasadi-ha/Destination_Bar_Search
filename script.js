@@ -45,9 +45,7 @@ $(document).ready(() => {
         }
       },
       success: (response) => {
-        console.log('this worked');
         createMainPage();
-        console.log("this also did work");
       },
       error: () => {
         $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>')
@@ -69,7 +67,7 @@ let createMainPage = () => {
   $('.search').append('<h2>Destination_Bar_Search</h2>');
   $('.search').append('<p>Date: <input type="text" id="datepicker"></p>')
   $('.search').append('Destination: <input type="text" id="location">');
-  $('.search').append('from <input type="text" id="start_location">');
+  $('.search').append(' from <input type="text" id="start_location">');
   $('.search').append('<button id="search_location">Search</button>');
   $('.search').append('<div class="search_result"></div>');
   $("#datepicker").datepicker();
@@ -114,10 +112,10 @@ let createMainPage = () => {
         }
         //functionality on button click to find flights based on specific airport
         $('.find_flights').on('click', () => {
-          flightListById(this_airport.id, start_airport.id, d_date, location, start_location, false, false);
+          flightListById(this_airport.id, start_airport.id, location, start_location, false, false);
           if (i == 1) {
             this_airport = search_list[0];
-            flightListById(this_airport.id, start_airport.id, d_date, location, start_location, true, false);
+            flightListById(this_airport.id, start_airport.id, location, start_location, true, false);
           }
           // let clicked_flights = flightListById(this_airport.id, d_date);
           // console.log(clicked_flights);
@@ -204,7 +202,7 @@ let cleanArray = (a) => {
   });
 }
 
-let flightListById = (id, did, aDate, loc, starLoc, manylocsTo, manylocsFrom) => {
+let flightListById = (id, did, loc, starLoc, manylocsTo, manylocsFrom) => {
   $.ajax(root_url + 'flights', {
     type: 'GET',
     xhrFields: { withCredentials: true },
@@ -214,8 +212,7 @@ let flightListById = (id, did, aDate, loc, starLoc, manylocsTo, manylocsFrom) =>
     },
     success: (response) => {
       flights_list = response;
-      console.log('flightslistbyid');
-      matchFlightInstance(flights_list, aDate, loc, starLoc, manylocsTo, manylocsFrom);
+      matchFlightInstance(flights_list, loc, starLoc, manylocsTo, manylocsFrom);
     }
   });
 }
@@ -232,7 +229,7 @@ let flightListById = (id, did, aDate, loc, starLoc, manylocsTo, manylocsFrom) =>
 //    });
 // }
 
-let matchFlightInstance = (flights, aDate, loc, starLoc, manylocsTo, manylocsFrom) => {
+let matchFlightInstance = (flights, loc, starLoc, manylocsTo, manylocsFrom) => {
   let instance_list = [];
   let flightid_list = [];
   console.log('matchflightinstance');
@@ -240,7 +237,7 @@ let matchFlightInstance = (flights, aDate, loc, starLoc, manylocsTo, manylocsFro
   if (flights.length == 0 && !manylocsTo) {
     $('.search_result').empty();
     $('.search_result').append('<div style="border:1px solid black" id="f_div"></div>');
-    $('#f_div').append('There are no flights from ' + starLoc + ' to ' + loc + ' on ' + aDate + '.');
+    $('#f_div').append('There are no flights from ' + loc + ' to ' + starLoc);
     $('#f_div').append('Here are the dates that have available flights:');
   } else {
     for (let i = 0; i < flights.length; i++) {
@@ -251,14 +248,13 @@ let matchFlightInstance = (flights, aDate, loc, starLoc, manylocsTo, manylocsFro
         xhrFields: { withCredentials: true },
         data: {
           'filter[flight_id]': tid,
-          'filter[date]': aDate,
         },
         success: (response) => {
           for (let i = 0; i < response.length; i++) {
             instance_list.push(response[i]);
           }
           if (i == flights.length - 1) {
-            showFlights(instance_list, flightid_list, flights, starLoc, loc, aDate, manylocsTo, manylocsFrom);
+            showFlights(instance_list, flightid_list, flights, starLoc, loc, manylocsTo, manylocsFrom);
           }
         }
       });
@@ -266,11 +262,11 @@ let matchFlightInstance = (flights, aDate, loc, starLoc, manylocsTo, manylocsFro
   }
 
 }
-let showFlights = (instance_list, flightid_list, flights, starLoc, loc, aDate, manylocsTo, manylocsFrom) => {
+let showFlights = (instance_list, flightid_list, flights, starLoc, loc, manylocsTo, manylocsFrom) => {
   if (!manylocsTo && !manylocsFrom) {
     $('.search_result').empty();
     $('.search_result').append('<div style="border:1px solid black" id="f_div"></div>');
-    $('#f_div').append('Showing flights to ' + starLoc + ' from ' + loc + ' on ' + aDate + ':');
+    $('#f_div').append('Showing flights to ' + loc + ' from ' + starLoc);
     console.log(instance_list);
     for (let i = 0; i < instance_list.length; i++) {
       let this_instance = instance_list[i];
