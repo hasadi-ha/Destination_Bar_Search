@@ -127,12 +127,10 @@ let createMainPage = () => {
 
   body.append('<div class="search"><div>');
   $('.search').append('<h2>Destination_Bar_Search</h2>');
-  $('.search').append('<p>Date: <input type="text" id="datepicker"></p>')
   $('.search').append('Destination: <input type="text" id="location">');
   $('.search').append(' from <input type="text" id="start_location">');
   $('.search').append('<button id="search_location">Search</button>');
   $('.search').append('<div class="search_result"></div>');
-  $("#datepicker").datepicker();
 
   //(functionality) search for airport with location and date
   $('#search_location').on('click', () => {
@@ -141,10 +139,7 @@ let createMainPage = () => {
     let search_list2 = [];
     let location = $('#location').val();
     let start_location = $('#start_location').val();
-    let departure_date = $('#datepicker').val();
-    departure_date = departure_date.split("/");
-    d_date = departure_date[2] + '-' + departure_date[0] + '-' + departure_date[1];
-    if (departure_date == '' || location == '' || start_location == '') {
+    if (location == '' || start_location == '') {
       $('.search_result').append('<p style="color:red">Must choose a date and an arrival/departure location.</p>')
     }
     else {
@@ -159,6 +154,8 @@ let createMainPage = () => {
         }
       }
       let this_div = $('<div style="border:1px solid black"></div>');
+      console.log(search_list);
+      console.log(search_list2);
       for (let i = 0; i < search_list.length; i++) {
         for (let j=0; j< search_list2.length;j++) {
           let this_airport = search_list[i];
@@ -168,18 +165,19 @@ let createMainPage = () => {
           if (i == search_list.length - 1 && j==search_list2.length-1) {
             $('.search_result').append(this_div);
             $('.search_result').append('<button class="find_flights">Find flights</button>');
+            $('.find_flights').on('click', () => {
+              if (search_list.length > 1 || search_list2.length > 1) {
+                flightsListMultiple(search_list, search_list2, location, start_location);
+              }
+              else {
+                flightListById(this_airport.id, start_airport.id, location, start_location);
+              }
+            }); 
           }
         }
        
         //functionality on button click to find flights based on specific airport
-        $('.find_flights').on('click', () => {
-          if (search_list.length > 1 || search_list2.length > 1) {
-            flightsListMultiple(search_list, search_list2, location, start_location);
-          }
-          else {
-            flightListById(this_airport.id, start_airport.id, location, start_location);
-          }
-        });
+
       }
     }
     //createYelpList(location, 10000, 'bars', 20);
