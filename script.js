@@ -1,4 +1,5 @@
 var root_url = "http://comp426.cs.unc.edu:3001/"
+var yelp_url = "https://cors-anywhere.herokuapp.com/https://api.yelp.com/v3/businesses/search"
 
 $(document).ready(() => {
   let body = $('body');
@@ -70,14 +71,14 @@ let createMainPage = () => {
   $('.search').append('<div class="search_result"></div>');
   $("#datepicker").datepicker();
 
-//(functionality) search for airport with location and date
+  //(functionality) search for airport with location and date
   $('#search_location').on('click', () => {
     $('.search_result').empty();
     search_list = [];
     let location = $('#location').val();
     let departure_date = $('#datepicker').val();
-    departure_date=departure_date.split("/");
-    d_date = departure_date[2]+'-'+departure_date[0]+'-'+departure_date[1];
+    departure_date = departure_date.split("/");
+    d_date = departure_date[2] + '-' + departure_date[0] + '-' + departure_date[1];
     if (departure_date == '' || location == '') {
       $('.search_result').append('<p style="color:red">Must choose a date and location.</p>')
     }
@@ -105,14 +106,15 @@ let createMainPage = () => {
         });
       }
     }
+    createYelpList('Boston', 10000, 'Bars', 20);
   });
+
   let airport_data_list = [];
   let airport_list = [];
   let clean_airport_list = [];
   let search_list = [];
   let flights_list = [];
-  let instance_list =[];
-
+  let instance_list = [];
 
   //gets list of airports
   $.ajax(root_url + 'airports', {
@@ -127,32 +129,26 @@ let createMainPage = () => {
       clean_airport_list = airport_list.slice();
       clean_airport_list = cleanArray(clean_airport_list);
       $('#location').autocomplete({ source: clean_airport_list });
-
-
     }
   });
   //gets flight list
-  $.ajax(root_url+ 'flights', {
+  $.ajax(root_url + 'flights', {
     type: 'GET',
-    xhrFields:{withCredentials:true},
+    xhrFields: { withCredentials: true },
     success: (response) => {
-      flights_list=response;
+      flights_list = response;
     }
 
   });
   //gets instance list
-  $.ajax(root_url+ 'instances', {
+  $.ajax(root_url + 'instances', {
     type: 'GET',
-    xhrFields:{withCredentials:true},
+    xhrFields: { withCredentials: true },
     success: (response) => {
-      instance_list=response;
+      instance_list = response;
     }
   });
-
-
-
 }
-
 
 let cleanArray = (a) => {
   var seen = {};
@@ -164,8 +160,8 @@ let cleanArray = (a) => {
 //inputs id and list of flights to get matching flights by id
 let flightListById = (id, list) => {
   let this_flight_list = [];
-  for (let i=0; i<list.length; i++) {
-    if (list[i].arrival_id==id) {
+  for (let i = 0; i < list.length; i++) {
+    if (list[i].arrival_id == id) {
       this_flight_list.push(list[i]);
     }
   }
@@ -175,11 +171,11 @@ let flightListById = (id, list) => {
 //takes a list of flights and a date and returns a list of instances with matching values
 let matchFlightInstance = (flights, instances, aDate) => {
   let this_instance_list = [];
-  for (let i=0; i<flights.length; i++) {
+  for (let i = 0; i < flights.length; i++) {
     let tid = flights[i].id;
-    for (let j=0 ;j<instances.length; j++) {
+    for (let j = 0; j < instances.length; j++) {
       let cresult = aDate.localeCompare(instances[j].date);
-      if (instances[j].flight_id==tid && cresult==0) {
+      if (instances[j].flight_id == tid && cresult == 0) {
         this_instance_list.push(instances[j]);
       }
     }
@@ -187,3 +183,31 @@ let matchFlightInstance = (flights, instances, aDate) => {
   return this_instance_list;
 }
 
+let createYelpList = (loc, rad, bus, lim) => {
+  let body = $('body');
+
+  body.append('<div class="yelp_list"></div>');
+
+  $.ajax(yelp_url, {
+    type: 'GET',
+    data: {
+      location: loc,
+      radius: rad,
+      categories: bus,
+      limit: lim,
+      sort_by: 'distance'
+    },
+    dataType: 'json',
+    async: false,
+    headers: {
+      Authorization: 'Bearer eaTwgscQLIKIx8ZovotD79mww3utAeWyJDoX2Y0J2mJsqqaP_mfbRV9rUZXus6z_Oo6WqsR9REowDEC1UDEbb1pSsPmSZ5V4T1mmlhpMFle3hLYkCLuUZP-DQKgNXHYx',
+    },
+    success: (response) => {
+      alert("we are good");
+    },
+    error: (xhr) => {
+      alert('fail');
+      console.log(xhr);
+    }
+  });
+};
