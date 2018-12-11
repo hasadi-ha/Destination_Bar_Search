@@ -4,10 +4,10 @@
 
 .form {
     border: 3px solid #f1f1f1;
-    width: 70%;
-    margin-left: 15%;
-    /* max-width: 647.500px;
-    max-height: 592px; */
+    width: auto;
+    max-width: 647.500px;
+    max-height: 592px;
+    margin: auto;
 }
 
 input[id="login_user"], input[id="login_pass"] {
@@ -67,27 +67,6 @@ img.image {
     margin: 3px;
     border: 1px solid black;
 }
-
-
-/* .unanswered_section {
-	max-height: 25em;
-	height: 25em;
-	overflow: scroll;
-	margin-top: 20px;
-	float: left;
-	width: 50%;
-	background-color: red;
-}
-
-.answered_section {
-	margin-top: 20px;
-	background-color: lightseagreen;
-	float: right;
-	overflow: scroll;
-	width: 50%;
-	max-height: 25em;
-	height: 25em;
-} */
 
 button:not(#login_btn) {
     color: white;
