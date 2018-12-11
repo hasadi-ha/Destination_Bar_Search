@@ -15,9 +15,9 @@ function initMap() {
   let p_markers = [];
   let p_infow = [];
 
-  for(let i = 0; i < yelpslist.length; i++) {
+  for (let i = 0; i < yelpslist.length; i++) {
     let place_i = yelpslist[i];
-    let p_coord = {lat: place_i.lat, lng: place_i.lng};
+    let p_coord = { lat: place_i.lat, lng: place_i.lng };
 
     let marker = new google.maps.Marker({
       position: p_coord,
@@ -45,17 +45,15 @@ function initMap() {
 
     p_markers.push(marker);
     p_infow.push(infoWindow);
-
   }
 
-for(let i = 0; i < p_markers.length; i++) {
-  p_markers[i].addListener('mouseover', function() {
-    p_infow[i].open(map, p_markers[i]);
-  })
+  for (let i = 0; i < p_markers.length; i++) {
+    p_markers[i].addListener('mouseover', function () {
+      p_infow[i].open(map, p_markers[i]);
+    })
 
-  p_markers[i].addListener('mouseover', function() {
-    p_infow[i].close(map, p_markers[i]);
-  })
-}
-
+    p_markers[i].addListener('mouseover', function () {
+      p_infow[i].close(map, p_markers[i]);
+    })
+  }
 }
