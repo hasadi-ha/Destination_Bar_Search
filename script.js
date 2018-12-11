@@ -933,9 +933,9 @@ let buy_flight_page = (destination, start) => {
 
   $('.flightbuy_div').append('<label for="gender"><b>Gender</b></label>');
   $('.flightbuy_div').append('<form class="gender_radio"></form>');
-  $('.gender_radio').append('<input type="radio" name="gender" value="male">');
-  $('.gender_radio').append('<input type="radio" name="gender" value="female">');
-  $('.gender_radio').append('<input type="radio" name="gender" value="other">');
+  $('.gender_radio').append('M:<input type="radio" name="gender" value="male">');
+  $('.gender_radio').append('F:<input type="radio" name="gender" value="female">');
+  $('.gender_radio').append('O:<input type="radio" name="gender" value="other">');
 
   $('.flightbuy_div').append('<button id="buyflight_btn">Buy Flight</button>');
   $('.flightbuy_div').append('<div class="mesg_div"></div>');

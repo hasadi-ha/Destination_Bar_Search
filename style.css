@@ -139,6 +139,11 @@ button:focus {
   height: auto;
 }
 
+.flightbuy_div {
+    display: flex;
+    flex-direction: column;
+}
+
 .active {
   background-color: #09f;
 }
