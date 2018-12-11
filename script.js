@@ -265,7 +265,6 @@ let flightsListMultiple = (toList, fromList, loc, starLoc) => {
         },
         success: (response) => {
           flights_list.push(...response);
-          console.log(flights_list);
           if (i == toList.length - 1 && j == fromList.length - 1) {
             matchFlightInstance(flights_list, loc, starLoc);
           }
@@ -325,6 +324,14 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc) => {
 }
 
 let getDates = (flight_id) => {
+  var flight;
+  $.ajax(root_url + 'flights/' + flight_id, {
+    type: 'GET',
+    xhrFields: { withCredentials: true },
+    success: (response) => {
+      flight=response;
+    }
+  });
   $('.f_div').empty();
   $.ajax(root_url + 'instances', {
     type: 'GET',
@@ -334,7 +341,6 @@ let getDates = (flight_id) => {
     },
     success: (response) => {
       r_rev = response.reverse();
-      //adding div with dates and a button that redirects to buying a ticket for that specific flight and instance
       $('.f_div').append('<p>Select a date:</p>');
       for (let i=0; i<r_rev.length;i++) {
         let fixed_date = r_rev[i].date.split("-");
@@ -343,6 +349,15 @@ let getDates = (flight_id) => {
       }
       $('.time_div').on('click', () => {
         clicked_div = event.target;
+        $.ajax(root_url + 'planes/' + flight.plane_id, {
+          type: 'GET',
+          xhrFields: { withCredentials: true },
+          success: (response) => {
+            console.log(response);
+            console.log(flight);
+            // use flight and plane info to generate tickets
+          }
+        });
       });
 
     }
