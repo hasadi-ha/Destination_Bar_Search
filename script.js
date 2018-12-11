@@ -608,7 +608,7 @@ let buy_flight_page = (destination, start) => {
     let m_name = $('#middle_init').val();
     let l_name = $('#last_name').val();
     let age = $('#age').val();
-    let gender = $("input[name="gender"]:checked").val();
+    let gender = $('input[name="gender"]:checked').val();
 
     $.ajax(root_url + 'tickets', {
       type: 'POST',
