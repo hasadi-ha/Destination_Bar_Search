@@ -123,6 +123,7 @@ let createMainPage = () => {
 
   $('.user').on('click', () => {
     body.empty();
+    createUserPage();
   });
 
   $('.logout').on('click', () => {
@@ -199,9 +200,6 @@ let createMainPage = () => {
   let airport_data_list = [];
   let airport_list = [];
   let clean_airport_list = [];
-  // let search_list = [];
-  // let flights_list = [];
-  // let instance_list =[];
 
 
   //gets list of airports
@@ -433,6 +431,7 @@ let createPlanePage = () => {
 
   $('.user').on('click', () => {
     body.empty();
+    createUserPage();
   });
 
   $('.logout').on('click', () => {
@@ -546,12 +545,6 @@ let createPlanePage = () => {
   });
 
 
-  // TODO: Create leavetime field
-
-
-  // TODO: Get destination and from IDs
-
-
   //Private Plane ID: 16505
   //Bar Airlines ID: 76332
 
@@ -602,26 +595,56 @@ let createPlanePage = () => {
 
 };
 
-// let airportAJAX = () => {
-//   $.ajax(root_url + 'airports', {
-//     type: 'GET',
-//     xhrFields: { withCredentials: true },
-//     success: (response) => {
-//       let data = response;
-//       let airport_data_list = [];
-//       let airport_list = [];
-//       for (let i = 0; i < data.length; i++) {
-//         airport_list.push(data[i].city);
-//         airport_data_list.push(data[i]);
-//       }
-//       clean_airport_list = airport_list.slice();
-//       clean_airport_list = cleanArray(clean_airport_list);
-//       $('#location').autocomplete({ source: clean_airport_list });
-//       $('#start_location').autocomplete({ source: clean_airport_list });
+let createUserPage = () => {
+  let body = $('body');
+  body.empty();
 
-//     }
-//   });
-// }
+  body.append('<h1 style="margin-bottom: 30px;">Bar Search Tool</h1>');
+  body.append('<ul class="navbar"></ul>');
+
+  $('.navbar').append('<li class="home"></li>');
+  $('.home').append('<a aria-current="false">Find Flight</a>');
+
+  $('.navbar').append('<li class="plane"></li>');
+  $('.plane').append('<a aria-current="false">Rent Plane</a>');
+
+  $('.navbar').append('<li class="user" class="active"></li>');
+  $('.user').append('<a aria-current="false">User</a>');
+
+  $('.navbar').append('<li class="logout"></li>');
+  $('.logout').append('<a aria-current="false">Logout</a>');
+
+  $('.home').on('click', () => {
+    body.empty();
+    createMainPage();
+  });
+
+  $('.plane').on('click', () => {
+    body.empty();
+    createPlanePage();
+  });
+
+  $('.user').on('click', () => {
+    body.empty();
+    createUserPage();
+  });
+
+  $('.logout').on('click', () => {
+    $.ajax(root_url + 'sessions', {
+      type: 'DELETE',
+      success: (response) => {
+        body.empty();
+        body.append('<h1>YOU ARE NOW LOGGED OUT! HAVE A NICE DAY!</h1>');
+        setTimeout(() => {
+          recreateLogin();
+        }, 1000);
+      },
+      error: (xhr) => {
+        console.log("logout fail");
+      }
+    });
+  });
+}
 
 let createYelpandMapPage = (loc, rad, bus, lim) => {
   let body = $('body');
@@ -654,6 +677,7 @@ let createYelpandMapPage = (loc, rad, bus, lim) => {
 
   $('.user').on('click', () => {
     body.empty();
+    createUserPage();
   });
 
   $('.logout').on('click', () => {
@@ -919,6 +943,7 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date)  =>
 
   $('.user').on('click', () => {
     body.empty();
+    createUserPage();
   });
 
   $('.logout').on('click', () => {
