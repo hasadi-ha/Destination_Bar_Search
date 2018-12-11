@@ -380,7 +380,11 @@ let getDates = (flight_id) => {
               xhrFields: { withCredentials: true },
               success: (response) => {
                 endloc = response;
-                buy_flight_page(endloc, startloc);
+                console.log(flight.number);
+                console.log(flight_date);
+                let search_div = $('.search').detach();
+                buy_flight_page(endloc, startloc, search_div, flight.number, flight_date);
+                
               }
             });
           }
@@ -884,7 +888,7 @@ let recreateLogin = () => {
   });
 };
 
-let buy_flight_page = (destination, start) => {
+let buy_flight_page = (destination, start, back, flight_number, flight_date)  => {
   let body = $('body');
   body.empty();
 
@@ -933,7 +937,7 @@ let buy_flight_page = (destination, start) => {
     });
   });
 
-  body.append('<h1 style="text-align: center; margin-bottom: 15px;">Flight from ' + start.code + ' to ' + destination.code + '</h1>')
+  body.append('<h1 class="form_header" style="text-align: center; margin-bottom: 15px;">Flight '+flight_number+' from ' + start.code + ' to ' + destination.code + ' on '+flight_date+'</h1>')
 
   body.append('<div class="form"></div>');
 
@@ -961,7 +965,14 @@ let buy_flight_page = (destination, start) => {
   $('.flightbuy_div').append('<div class="mesg_div"></div>');
 
   $('.form').append('<div class="signup_div" style="background-color: #f1f1f1"></div>');
-  $('.signup_div').append('<button id="signup_btn" style="background-color: red; border-color: red;">Cancel</button>');
+  $('.signup_div').append('<button id="cancel_btn" style="background-color: red; border-color: red;">Cancel</button>');
+
+  $('#cancel_btn').on('click', () => {
+    $('.form_header').remove();
+    $('.form').remove();
+    body.append(back);
+
+  });
 
   $('#buyflight_btn').on('click', () => {
     let f_name = $('#first_name').val();
