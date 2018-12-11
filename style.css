@@ -1,130 +1,130 @@
 * {
-    font-family: 'Inconsolata', monospace !important;
+  font-family: 'Inconsolata', monospace !important;
+}
+
+body {
+  background-color: #FFCC00;
 }
 
 .form {
-    border: 3px solid #f1f1f1;
-    width: auto;
-    max-width: 647.500px;
-    max-height: 592px;
-    margin: auto;
+  border: 3px solid #d4d4d4;
+  width: auto;
+  max-width: 647.500px;
+  max-height: 592px;
+  margin: auto;
+  background-color: whitesmoke;
 }
 
 input[id="login_user"], input[id="login_pass"] {
-    width: 100%;
-    padding: 12px 20px;
-    margin: 8px 0;
-    display: inline-block;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
 }
 
 .image_container {
-    text-align: center;
-    margin: 24px 0 12px 0;
+  text-align: center;
+  margin: 24px 0 12px 0;
 }
 
 img.image {
-    width: 40%;
-    border-radius: 50%;
-    max-width: 230px;
-    max-height: 230px;
+  width: 40%;
+  border-radius: 50%;
+  max-width: 230px;
+  max-height: 230px;
 }
 
 .login_div, .signup_div {
-    padding: 16px;
+  padding: 16px;
 }
 
 .signup_div {
-    padding-bottom: 65px;
+  padding-bottom: 65px;
 }
 
 #signup_btn  {
-    float: right;
-    padding: 8px !important;
-    height: 100% !important;
+  float: right;
+  padding: 8px !important;
+  height: 100% !important;
 }
 
 #login_btn {
-    width: 100% !important;
+  width: 100% !important;
 }
 
 #signup_btn, #login_btn {
-    color: white;
-    background-color: #4CAF50;
-    transition: all .2s;
-    border: solid;
-    border-color: #4CAF50;
-    padding: 14px 20px !important;
-    margin: 8px 0 !important;
-    cursor: pointer;
-    box-shadow: .3px .3px .3px .3px gray;
+  color: white;
+  background-color: #4CAF50;
+  transition: all .2s;
+  border: solid;
+  border-color: #4CAF50;
+  padding: 14px 20px !important;
+  margin: 8px 0 !important;
+  cursor: pointer;
+  box-shadow: .3px .3px .3px .3px gray;
 }
 
 .time_div {
-    display:inline-flex;
-    width: 20%;
-    margin: 3px;
-    border: 1px solid black;
+  display:inline-flex;
+  width: 20%;
+  margin: 3px;
+  border: 1px solid black;
 }
 
 button:not(#login_btn) {
-    color: white;
-    background-color: #4CAF50;
-    transition: all .2s;
-    border: solid;
-    border-color: #4CAF50;
-    height: 25px;
-    padding-top: 2px;
-    margin-left: 4px;
-    cursor: pointer;
-    box-shadow: .3px .3px .3px .3px gray;
+  color: white;
+  background-color: #4CAF50;
+  transition: all .2s;
+  border: solid;
+  border-color: #4CAF50;
+  height: 25px;
+  padding-top: 2px;
+  margin-left: 4px;
+  cursor: pointer;
+  box-shadow: .3px .3px .3px .3px gray;
 }
 
 button:hover {
-    background-color: #BEEF38;
-    border-color: #BEEF38;
-    box-shadow: 1px 1px 1px 1px gray;
+  background-color: #BEEF38;
+  border-color: #BEEF38;
+  box-shadow: 1px 1px 1px 1px gray;
 }
 
 button:active {
-    transform: translateY(1px);
-    transition: all .01s !important;
+  transform: translateY(1px);
+  transition: all .01s !important;
 }
 
 button:focus {
-    outline: none;
+  outline: none;
 }
 
 .navbar {
-    padding-bottom: 4px;
-    display: block;
-    margin: 0 auto;
-    width: 40%;
-    border-bottom: 1px solid #cccccc;
+  background-color: black;
+  height: auto;
+  display: inline-flex;
+  margin: auto;
+  width: 800px;
+  padding: 25px 0 25px 0;
 }
 
-.header_section {
-    padding-bottom: 3px;
-    border-bottom: 2px solid #cccccc;
-}
-
-table {
-	font-size: 1em;
-}
-
-.ui-draggable, .ui-droppable {
-	background-position: top;
+.home, .logout, .user {
+  color: white;
+  width: 15%;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 .flight_div {
-    background-color:beige;
-    border: 2px solid #98B549;
-    margin:5px;
+  background-color:beige;
+  border: 2px solid #98B549;
+  margin:5px;
 }
 
 .f_div {
-    max-height: 372px;
-    max-width: 400px;
-    margin: auto;
+  max-height: 372px;
+  max-width: 400px;
+  margin: auto;
 }

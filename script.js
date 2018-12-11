@@ -6,7 +6,7 @@ $(document).ready(() => {
   $('#signup_btn').on('click', () => {
     body.empty();
 
-    body.append('<h1 style="text-align: center; margin-bottom: 15px;">Tool Sign Up Form</h1>')
+    body.append('<h1 style="text-align: center; margin-bottom: 30px;">Tool Sign Up Form</h1>')
 
     body.append('<div class="form"></div>');
     $('.form').append('<div class="image_container"> <img src="yelp.png" alt="Login Image" class="image"> </div>');
@@ -21,7 +21,7 @@ $(document).ready(() => {
     $('.login_div').append('<button id="login_btn">Sign Up</button>');
     $('.login_div').append('<div class="mesg_div"></div>');
 
-    $('.form').append('<div class="signup_div" style="background-color: #f1f1f1"></div>');
+    $('.form').append('<div class="signup_div" style="background-color: #d4d4d4"></div>');
     $('.signup_div').append('<button id="signup_btn" style="background-color: red; border-color: red;">Cancel</button>');
 
     $('#signup_btn').on('click', () => {
@@ -95,10 +95,11 @@ let createMainPage = () => {
   let body = $('body');
   $('*').css('text-align', 'center');
   body.empty();
+  body.append('<h1 style="margin-bottom: 30px;">Bar Search Tool</h1>');
   body.append('<nav class="navbar"><nav>');
-  $('.navbar').append('<button class="home">Home</button');
-  $('.navbar').append('<button class="user">Username</button');
-  $('.navbar').append('<button class="logout">Logout</button');
+  $('.navbar').append('<div class="home">Home</div>');
+  $('.navbar').append('<div class="user">Username</div>');
+  $('.navbar').append('<div class="logout">Logout</div>');
 
   $('.home').on('click', () => {
     body.empty();
@@ -126,7 +127,7 @@ let createMainPage = () => {
   });
 
   body.append('<div class="search"><div>');
-  $('.search').append('<h2>Destination_Bar_Search</h2>');
+  $('.search').append('<h2>Destination Search</h2>');
   $('.search').append('Destination: <input type="text" id="location">');
   $('.search').append(' from <input type="text" id="start_location">');
   $('.search').append('<button id="search_location">Search</button>');
@@ -439,7 +440,7 @@ let recreateLogin = () => {
   body.empty();
   $('*').css('text-align', '');
 
-  body.append('  <h1 style="text-align: center; margin-bottom: 15px;">Bar Search Tool</h1>' +
+  body.append('  <h1 style="text-align: center; margin-bottom: 30px;">Bar Search Tool</h1>' +
     '<div class="form">' +
 
     '<div class="image_container"><img src="yelp.png" alt="Login Image" class="image"></div>' +
@@ -460,7 +461,7 @@ let recreateLogin = () => {
 
     '</div>' +
 
-    '<div class="signup_div" style="background-color: #f1f1f1"><button id="signup_btn">Sign Up</button></div>' +
+    '<div class="signup_div" style="background-color: #d4d4d4"><button id="signup_btn">Sign Up</button></div>' +
 
     '</div>'
   );
@@ -468,7 +469,7 @@ let recreateLogin = () => {
   $('#signup_btn').on('click', () => {
     body.empty();
 
-    body.append('<h1 style="text-align: center; margin-bottom: 15px;">Tool Sign Up Form</h1>')
+    body.append('<h1 style="text-align: center; margin-bottom: 30px;">Tool Sign Up Form</h1>')
 
     body.append('<div class="form"></div>');
     $('.form').append('<div class="image_container"> <img src="yelp.png" alt="Login Image" class="image"> </div>');
@@ -483,7 +484,7 @@ let recreateLogin = () => {
     $('.login_div').append('<button id="login_btn">Sign Up</button>');
     $('.login_div').append('<div class="mesg_div"></div>');
 
-    $('.form').append('<div class="signup_div" style="background-color: #f1f1f1"></div>');
+    $('.form').append('<div class="signup_div" style="background-color: #d4d4d4"></div>');
     $('.signup_div').append('<button id="signup_btn" style="background-color: red; border-color: red;">Cancel</button>');
 
     $('#signup_btn').on('click', () => {
