@@ -345,7 +345,7 @@ let getDates = (flight_id) => {
       $('.f_div').append('<p>Select a date:</p>');
       for (let i=0; i<r_rev.length;i++) {
         let fixed_date = r_rev[i].date.split("-");
-        fixed_date = fixed_date[1]+'/'+fixed_date[2]+'/'+fixed_date[0]; 
+        fixed_date = fixed_date[1]+'/'+fixed_date[2]+'/'+fixed_date[0];
         $('.f_div').append('<div class="time_div">'+fixed_date+'</div>');
       }
       $('.time_div').on('click', () => {
@@ -360,7 +360,7 @@ let getDates = (flight_id) => {
           }
         }
         createBuyPage(instance_id);
-        
+
       });
 
     }
@@ -623,10 +623,13 @@ let buy_flight_page = (destination, start) => {
         "gender": gender
       },
       success: (response) => {
-
+        body.empty();
+        body.append('<h1>PURCHASE Successful</h1>');
+        createMainPage();
       },
       error: () => {
-
+        body.empty();
+        body.append('<h1>Error, gotta fix something</h1>');
       }
     });
   });
