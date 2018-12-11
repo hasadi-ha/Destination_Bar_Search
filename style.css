@@ -73,6 +73,14 @@ img.image {
   border: 1px solid black;
 }
 
+.time_div:hover {
+    background-color:lightgrey;
+    cursor: pointer;
+}
+.time_div:active {
+    background-color: darkgrey;
+}
+
 button:not(#login_btn) {
   color: white;
   background-color: #4CAF50;
