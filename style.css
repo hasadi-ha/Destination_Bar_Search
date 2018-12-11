@@ -61,6 +61,12 @@ img.image {
     box-shadow: .3px .3px .3px .3px gray;
 }
 
+.time_div {
+    display:inline-flex;
+    width: 20%;
+    margin: 3px;
+    border: 1px solid black;
+}
 
 
 /* .unanswered_section {
