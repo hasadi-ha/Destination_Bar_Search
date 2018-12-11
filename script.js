@@ -353,15 +353,17 @@ let getDates = (flight_id) => {
       }
       $('.time_div').on('click', () => {
         clicked_div = event.target;
-        $.ajax(root_url + 'planes/' + flight.plane_id, {
-          type: 'GET',
-          xhrFields: { withCredentials: true },
-          success: (response) => {
-            console.log(response);
-            console.log(flight);
-            // use flight and plane info to generate tickets
+        let flight_date = clicked_div.innerHTML;
+        flight_date = flight_date.split("/");
+        flight_date = flight_date[2]+'-'+flight_date[0]+'-'+flight_date[1];
+        var instance_id;
+        for (let i=0;i<response.length;i++) {
+          if (response[i].date==flight_date) {
+            instance_id=response[i].id
           }
-        });
+        }
+        createBuyPage(instance_id);
+
       });
 
     }
@@ -627,10 +629,13 @@ let buy_flight_page = (destination, start) => {
         "gender": gender
       },
       success: (response) => {
-
+        body.empty();
+        body.append('<h1>PURCHASE Successful</h1>');
+        createMainPage();
       },
       error: () => {
-
+        body.empty();
+        body.append('<h1>Error, gotta fix something</h1>');
       }
     });
   });
