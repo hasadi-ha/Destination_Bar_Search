@@ -970,14 +970,17 @@ let buy_flight_page = (destination, start) => {
       type: 'POST',
       xhrFields: { withCredentials: true },
       data: {
-        "first_name": f_name,
-        "middle_name": m_name,
-        "last_name": l_name,
-        "age": age,
-        "gender": gender
+        "ticket": {
+          first_name: f_name,
+          midde_Name: m_name,
+          last_name: l_name,
+          age: age,
+          gender: gender
+        }
       },
       success: (response) => {
         body.empty();
+        alert('Purchase successful!');
         body.append('<h1>PURCHASE Successful</h1>');
         createMainPage();
       },
