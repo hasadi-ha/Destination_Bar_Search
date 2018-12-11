@@ -345,20 +345,22 @@ let getDates = (flight_id) => {
       $('.f_div').append('<p>Select a date:</p>');
       for (let i=0; i<r_rev.length;i++) {
         let fixed_date = r_rev[i].date.split("-");
-        fixed_date = fixed_date[1]+'/'+fixed_date[2]+'/'+fixed_date[0];
+        fixed_date = fixed_date[1]+'/'+fixed_date[2]+'/'+fixed_date[0]; 
         $('.f_div').append('<div class="time_div">'+fixed_date+'</div>');
       }
       $('.time_div').on('click', () => {
         clicked_div = event.target;
-        $.ajax(root_url + 'planes/' + flight.plane_id, {
-          type: 'GET',
-          xhrFields: { withCredentials: true },
-          success: (response) => {
-            console.log(response);
-            console.log(flight);
-            // use flight and plane info to generate tickets
+        let flight_date = clicked_div.innerHTML;
+        flight_date = flight_date.split("/");
+        flight_date = flight_date[2]+'-'+flight_date[0]+'-'+flight_date[1];
+        var instance_id;
+        for (let i=0;i<response.length;i++) {
+          if (response[i].date==flight_date) {
+            instance_id=response[i].id
           }
-        });
+        }
+        createBuyPage(instance_id);
+        
       });
 
     }
