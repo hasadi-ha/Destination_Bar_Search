@@ -353,7 +353,23 @@ let getDates = (flight_id) => {
             instance_id = response[i].id
           }
         }
-        createBuyPage(instance_id);
+        var startloc;
+        var endloc;
+        $.ajax(root_url + 'airports/' + flight.departure_id, {
+          type: 'GET',
+          xhrFields: { withCredentials: true },
+          success: (response) => {
+            startloc=response;
+            $.ajax(root_url + 'airports/' + flight.arrival_id, {
+              type: 'GET',
+              xhrFields: { withCredentials: true },
+              success: (response) => {
+                endloc=response;
+                buy_flight_page(endloc, startloc);
+              }
+            });
+          }
+        });
 
       });
 
@@ -470,6 +486,7 @@ let createPlanePage = () => {
         airport_list.push(data[i].city);
         airport_data_list.push(data[i]);
       }
+      console.log(airport_data_list);
       clean_airport_list = airport_list.slice();
       clean_airport_list = cleanArray(clean_airport_list);
       $('#location').autocomplete({ source: clean_airport_list });
@@ -864,7 +881,7 @@ let buy_flight_page = (destination, start) => {
     });
   });
 
-  body.append('<h1 style="text-align: center; margin-bottom: 15px;">Flight from' + start + 'to ' + destination + '</h1>')
+  body.append('<h1 style="text-align: center; margin-bottom: 15px;">Flight from ' + start.code + ' to ' + destination.code + '</h1>')
 
   body.append('<div class="form"></div>');
 
