@@ -547,19 +547,24 @@ let createPlanePage = () => {
       type: 'POST',
       xhrFields: { withCredentials: true },
       data: {
-        departs_at: leaveTime,
-        arrives_at: "17:10",
-        number: "BA 0001",
-        departure_id: dest_id,
-        arrival_id: from_id
+        "flight": {
+          departs_at: leaveTime,
+          arrives_at: "17:10",
+          number: "BA 0001",
+          departure_id: dest_id,
+          arrival_id: from_id
+        },
       },
       success: (response) => {
+        console.log(response['id']);
         $.ajax(root_url + 'instances', {
           type: 'POST',
           xhrFields: { withCredentials: true },
           data: {
-            flight_id: response['flight_id'],
-            date: aDate,
+            "instance": {
+              flight_id: response['id'],
+              date: aDate,
+            },
           },
           success: (response) => {
             $('#flag').remove();
