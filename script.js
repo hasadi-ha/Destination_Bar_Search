@@ -131,7 +131,7 @@ let createMainPage = () => {
 
   body.append('<div class="search"><div>');
   $('.search').append('<h2 style="margin-top: 0;">Destination Search</h2>');
-  $('.search').append('Destination: <input type="text" id="location">');
+  $('.search').append('Destination: <input type="text" id="location" style="margin-bottom: 10px">');
   $('.search').append(' from <input type="text" id="start_location">');
   $('.search').append('<button id="search_location">Search</button>');
   $('.search').append('<div class="search_result"></div>');
@@ -157,16 +157,16 @@ let createMainPage = () => {
           search_list2.push(airport_data_list[i]);
         }
       }
-      let this_div = $('<div style="border:1px solid black"></div>');
+      let this_div = $('<div style="border:1px solid black; width: auto; max-width: 550px; margin: auto;"></div>');
       for (let i = 0; i < search_list.length; i++) {
         for (let j=0; j< search_list2.length;j++) {
           let this_airport = search_list[i];
           let start_airport = search_list2[j];
-          $(this_div).append('<div class="airbox" style="font-size:18px">From: ' + this_airport.code + ' - ' + this_airport.name + '</div>');
-          $(this_div).append('<div class="airbox" style="font-size:18px">To: ' + start_airport.code + ' - ' + start_airport.name + '</div>');
+          $(this_div).append('<div class="airbox" style="font-size:18px;">From: ' + this_airport.code + ' - ' + this_airport.name + '</div>');
+          $(this_div).append('<div class="airbox" style="font-size:18px;">To: ' + start_airport.code + ' - ' + start_airport.name + '</div>');
           if (i == search_list.length - 1 && j==search_list2.length-1) {
             $('.search_result').append(this_div);
-            $('.search_result').append('<button class="find_flights">Find flights</button>');
+            $('.search_result').append('<button class="find_flights" style="margin-top: 5px;">Find flights</button>');
             $('.find_flights').on('click', () => {
               if (search_list.length > 1 || search_list2.length > 1) {
                 flightsListMultiple(search_list, search_list2, location, start_location);
@@ -187,7 +187,7 @@ let createMainPage = () => {
   let airport_data_list = [];
   let airport_list = [];
   let clean_airport_list = [];
-  let search_list = [];
+  // let search_list = [];
   // let flights_list = [];
   // let instance_list =[];
 
@@ -313,7 +313,7 @@ let matchFlightInstance = (flights, loc, starLoc) => {
 let showFlights = (instance_list, flightid_list, flights, starLoc, loc) => {
   $('.search_result').empty();
   $('.search_result').append('<div style="border:1px solid black" class="f_div"></div>');
-  $('.f_div').append('Showing flights to ' + loc + ' from ' + starLoc);
+  $('.f_div').append('<p style="margin: 10px 0 10px 0;">Showing flights to ' + loc + ' from ' + starLoc + '</p>');
   flights.sort(compareTimes);
   for (let i=0;i<flights.length;i++) {
     let flight_item = flights[i];
@@ -321,7 +321,7 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc) => {
     flight_item_div.append('<p>Flight: ' + flight_item.number + '</p>');
     let dtime = flight_item.departs_at[11]+flight_item.departs_at[12]+flight_item.departs_at[13]+flight_item.departs_at[14]+flight_item.departs_at[15];
     flight_item_div.append('<p>Departure time: ' + dtime + '</p>');
-    flight_item_div.append('<button class="flight_item_btn" onClick="getDates('+flight_item.id+')">View available tickets</button>');
+    flight_item_div.append('<button class="flight_item_btn" style="margin-bottom: 5px;" onClick="getDates('+flight_item.id+')">View available tickets</button>');
     $('.f_div').append(flight_item_div);
   }
 
@@ -580,6 +580,40 @@ let recreateLogin = () => {
 let buy_flight_page = (destination, start) => {
   let body = $('body');
   body.empty();
+
+  body.append('<h1 style="margin-bottom: 30px;">Bar Search Tool</h1>');
+  body.append('<ul class="navbar"></ul>');
+  $('.navbar').append('<li class="home"></li>');
+  $('.home').append('<a aria-current="false" class="active">Home</a>');
+  $('.navbar').append('<li class="user"></li>');
+  $('.user').append('<a aria-current="false">User</a>');
+  $('.navbar').append('<li class="logout"></li>');
+  $('.logout').append('<a aria-current="false">Logout</a>');
+
+  $('.home').on('click', () => {
+    body.empty();
+    createMainPage();
+  });
+
+  $('.user').on('click', () => {
+    body.empty();
+  });
+
+  $('.logout').on('click', () => {
+    $.ajax(root_url + 'sessions', {
+      type: 'DELETE',
+      success: (response) => {
+        body.empty();
+        body.append('<h1>YOU ARE NOW LOGGED OUT! HAVE A NICE DAY!</h1>');
+        setTimeout(() => {
+          recreateLogin();
+        }, 1000);
+      },
+      error: (xhr) => {
+        console.log("logout fail");
+      }
+    });
+  });
 
   body.append('<h1 style="text-align: center; margin-bottom: 15px;">Flight from' + start + 'to ' + destination + '</h1>')
 

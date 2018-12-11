@@ -134,9 +134,9 @@ button:focus {
 }
 
 .f_div {
-  max-height: 372px;
   max-width: 400px;
   margin: auto;
+  height: auto;
 }
 
 .active {
