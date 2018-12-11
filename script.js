@@ -327,7 +327,9 @@ let getDates = (flight_id) => {
       flight = response;
     }
   });
-  $('.f_div').empty();
+  let tdiv = $('.f_div').detach();
+  console.log(tdiv);
+  $('.search_result').append('<div style="border:1px solid black" class="f_div"></div>');
   $.ajax(root_url + 'instances', {
     type: 'GET',
     xhrFields: { withCredentials: true },
@@ -336,12 +338,21 @@ let getDates = (flight_id) => {
     },
     success: (response) => {
       r_rev = response.reverse();
-      $('.f_div').append('<p>Select a date:</p>');
-      for (let i = 0; i < r_rev.length; i++) {
-        let fixed_date = r_rev[i].date.split("-");
-        fixed_date = fixed_date[1] + '/' + fixed_date[2] + '/' + fixed_date[0];
-        $('.f_div').append('<div class="time_div">' + fixed_date + '</div>');
+      $('.f_div').append('<button class="back_btn">Back to results</button>');
+      if (response.length == 0) {
+        $('.f_div').append('<p>Sorry, there are no available dates for this flight</p>');
+      } else {
+        $('.f_div').append('<p>Select a date:</p>');
+        for (let i = 0; i < r_rev.length; i++) {
+          let fixed_date = r_rev[i].date.split("-");
+          fixed_date = fixed_date[1] + '/' + fixed_date[2] + '/' + fixed_date[0];
+          $('.f_div').append('<div class="time_div">' + fixed_date + '</div>');
+        }
       }
+      $('.back_btn').on('click', () => {
+        $('.f_div').remove();
+        $('.search_result').append(tdiv);
+      });
       $('.time_div').on('click', () => {
         clicked_div = event.target;
         let flight_date = clicked_div.innerHTML;
