@@ -171,10 +171,10 @@ let createMainPage = () => {
               else {
                 flightListById(this_airport.id, start_airport.id, location, start_location);
               }
-            }); 
+            });
           }
         }
-       
+
         //functionality on button click to find flights based on specific airport
 
       }
@@ -266,7 +266,6 @@ let flightsListMultiple = (toList, fromList, loc, starLoc) => {
         },
         success: (response) => {
           flights_list.push(...response);
-          console.log(flights_list);
           if (i == toList.length - 1 && j == fromList.length - 1) {
             matchFlightInstance(flights_list, loc, starLoc);
           }
@@ -326,6 +325,14 @@ let showFlights = (instance_list, flightid_list, flights, starLoc, loc) => {
 }
 
 let getDates = (flight_id) => {
+  var flight;
+  $.ajax(root_url + 'flights/' + flight_id, {
+    type: 'GET',
+    xhrFields: { withCredentials: true },
+    success: (response) => {
+      flight=response;
+    }
+  });
   $('.f_div').empty();
   $.ajax(root_url + 'instances', {
     type: 'GET',
@@ -335,7 +342,6 @@ let getDates = (flight_id) => {
     },
     success: (response) => {
       r_rev = response.reverse();
-      //adding div with dates and a button that redirects to buying a ticket for that specific flight and instance
       $('.f_div').append('<p>Select a date:</p>');
       for (let i=0; i<r_rev.length;i++) {
         let fixed_date = r_rev[i].date.split("-");
@@ -344,6 +350,15 @@ let getDates = (flight_id) => {
       }
       $('.time_div').on('click', () => {
         clicked_div = event.target;
+        $.ajax(root_url + 'planes/' + flight.plane_id, {
+          type: 'GET',
+          xhrFields: { withCredentials: true },
+          success: (response) => {
+            console.log(response);
+            console.log(flight);
+            // use flight and plane info to generate tickets
+          }
+        });
       });
 
     }
@@ -552,4 +567,66 @@ let recreateLogin = () => {
       }
     });
   });
+};
+
+let buy_flight_page = (destination, start) => {
+  let body = $('body');
+  body.empty();
+
+  body.append('<h1 style="text-align: center; margin-bottom: 15px;">Flight from' + start + 'to ' + destination + '</h1>')
+
+  body.append('<div class="form"></div>');
+
+  $('.form').append('<div class="flightbuy_div"><div>');
+
+  $('.flightbuy_div').append('<label for="first_name"><b>First Name</b></label>');
+  $('.flightbuy_div').append('<input type="text" placeholder="First Name" id="first_name" required>');
+
+  $('.flightbuy_div').append('<label for="middle_init"><b>Middle Initial</b></label>');
+  $('.flightbuy_div').append('<input type="text" placeholder="Middle Initial (Optional)" id="middle_init">');
+
+  $('.flightbuy_div').append('<label for="last_name"><b>Last Name</b></label>');
+  $('.flightbuy_div').append('<input type="text" placeholder="Last Name" id="last_name" required>');
+
+  $('.flightbuy_div').append('<label for="age"><b>Age</b></label>');
+  $('.flightbuy_div').append('<input type="number" placeholder="Age" id="age" required>');
+
+  $('.flightbuy_div').append('<label for="gender"><b>Gender</b></label>');
+  $('.flightbuy_div').append('<form class="gender_radio"></form>');
+  $('.gender_radio').append('<input type="radio" name="gender" value="male">');
+  $('.gender_radio').append('<input type="radio" name="gender" value="female">');
+  $('.gender_radio').append('<input type="radio" name="gender" value="other">');
+
+  $('.flightbuy_div').append('<button id="buyflight_btn">Buy Flight</button>');
+  $('.flightbuy_div').append('<div class="mesg_div"></div>');
+
+  $('.form').append('<div class="signup_div" style="background-color: #f1f1f1"></div>');
+  $('.signup_div').append('<button id="signup_btn" style="background-color: red; border-color: red;">Cancel</button>');
+
+  $('#buyflight_btn').on('click', () => {
+    let f_name = $('#first_name').val();
+    let m_name = $('#middle_init').val();
+    let l_name = $('#last_name').val();
+    let age = $('#age').val();
+    let gender = $("input[name="gender"]:checked").val();
+
+    $.ajax(root_url + 'tickets', {
+      type: 'POST',
+      xhrFields: { withCredentials: true },
+      data: {
+        "first_name": f_name,
+        "middle_name": m_name,
+        "last_name": l_name,
+        "age": age,
+        "gender": gender
+      },
+      success: (response) => {
+
+      },
+      error: () => {
+
+      }
+    });
+  });
+
 };
