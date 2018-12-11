@@ -103,18 +103,28 @@ button:focus {
 
 .navbar {
   background-color: black;
-  height: auto;
-  display: inline-flex;
   margin: auto;
-  width: 800px;
-  padding: 25px 0 25px 0;
+  width: 80%;
+  padding: 0;
+  margin: auto;
 }
 
 .home, .logout, .user {
   color: white;
-  width: 15%;
+  display: inline;
+  list-style-type: none;
+  margin: 0;
+}
+.navbar a {
+  color: #FFF;
   font-weight: bold;
   font-size: 18px;
+  text-decoration: none;
+  padding: 20px;
+  display: inline-block;
+  width: 6%;
+  cursor: pointer;
+  margin: 0px 15px 0px 15px;
 }
 
 .flight_div {
@@ -127,4 +137,15 @@ button:focus {
   max-height: 372px;
   max-width: 400px;
   margin: auto;
+}
+
+.active {
+  background-color: #09f;
+}
+
+.search {
+  background-color: white;
+  padding: 10px 0 10px 0;
+  width: 80%;
+  margin: 15px auto auto auto;
 }

@@ -96,10 +96,13 @@ let createMainPage = () => {
   $('*').css('text-align', 'center');
   body.empty();
   body.append('<h1 style="margin-bottom: 30px;">Bar Search Tool</h1>');
-  body.append('<nav class="navbar"><nav>');
-  $('.navbar').append('<div class="home">Home</div>');
-  $('.navbar').append('<div class="user">Username</div>');
-  $('.navbar').append('<div class="logout">Logout</div>');
+  body.append('<ul class="navbar"></ul>');
+  $('.navbar').append('<li class="home"></li>');
+  $('.home').append('<a aria-current="false" class="active">Home</a>');
+  $('.navbar').append('<li class="user"></li>');
+  $('.user').append('<a aria-current="false">User</a>');
+  $('.navbar').append('<li class="logout"></li>');
+  $('.logout').append('<a aria-current="false">Logout</a>');
 
   $('.home').on('click', () => {
     body.empty();
@@ -127,7 +130,7 @@ let createMainPage = () => {
   });
 
   body.append('<div class="search"><div>');
-  $('.search').append('<h2>Destination Search</h2>');
+  $('.search').append('<h2 style="margin-top: 0;">Destination Search</h2>');
   $('.search').append('Destination: <input type="text" id="location">');
   $('.search').append(' from <input type="text" id="start_location">');
   $('.search').append('<button id="search_location">Search</button>');
@@ -418,10 +421,13 @@ let createBuyPage = (instance_id) => {
   let body = $('body');
   body.empty();
 
-  body.append('<nav class="navbar"><nav>');
-  $('.navbar').append('<button class="home">Home</button');
-  $('.navbar').append('<button class="user">Username</button');
-  $('.navbar').append('<button class="logout">Logout</button');
+  body.append('<ul class="navbar"></ul>');
+  $('.navbar').append('<li class="home"></li>');
+  $('.home').append('<a aria-current="false">Home</a>');
+  $('.navbar').append('<li class="user"></li>');
+  $('.user').append('<a aria-current="false">User</a>');
+  $('.navbar').append('<li class="logout"></li>');
+  $('.logout').append('<a aria-current="false" class="active">Logout</a>');
 
   $('.home').on('click', () => {
     body.empty();
