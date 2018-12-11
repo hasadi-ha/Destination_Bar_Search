@@ -359,12 +359,12 @@ let getDates = (flight_id) => {
           type: 'GET',
           xhrFields: { withCredentials: true },
           success: (response) => {
-            startloc=response;
+            startloc = response;
             $.ajax(root_url + 'airports/' + flight.arrival_id, {
               type: 'GET',
               xhrFields: { withCredentials: true },
               success: (response) => {
-                endloc=response;
+                endloc = response;
                 buy_flight_page(endloc, startloc);
               }
             });
@@ -483,10 +483,9 @@ let createPlanePage = () => {
       let airport_data_list = [];
       let airport_list = [];
       for (let i = 0; i < data.length; i++) {
-        airport_list.push(data[i].city);
+        airport_list.push(data[i].code);
         airport_data_list.push(data[i]);
       }
-      console.log(airport_data_list);
       clean_airport_list = airport_list.slice();
       clean_airport_list = cleanArray(clean_airport_list);
       $('#location').autocomplete({ source: clean_airport_list });
@@ -495,54 +494,87 @@ let createPlanePage = () => {
     }
   });
 
-  let aDate = $('#date').val();
-  let destination = $('#location').val();
-  let from = $('#start_location').val();
-  let number = $('#people').val();
+
+  $('#book').on('click', () => {
+    let destination = $('#location').val();
+    let from = $('#start_location').val();
+    let aDate = $('#date').val();
+    let number = $('#people').val();
+    let dest_id = "";
+    let from_id = "";
+    let leaveTime = $('#leave_time').val();
+    $.ajax(root_url + 'airports', {
+      type: 'GET',
+      data: {
+        'filter[code]': destination,
+      },
+      xhrFields: { withCredentials: true },
+      success: (response) => {
+        dest_id = response[0].id;
+        $.ajax(root_url + 'airports', {
+          type: 'GET',
+          data: {
+            'filter[code]': from,
+          },
+          xhrFields: { withCredentials: true },
+          success: (response) => {
+            from_id = response[0].id;
+            postCalls(dest_id, from_id, aDate, number, leaveTime);
+          }
+        });
+      }
+    });
+  });
+
 
   // TODO: Create leavetime field
-  let leaveTime = $('#leave_time').val();
+
 
   // TODO: Get destination and from IDs
-  let dest_id = "";
-  let from_id = "";
+
 
   //Private Plane ID: 16505
   //Bar Airlines ID: 76332
 
   // TODO: Create confirmation before doing AJAX Calls
   // TODO: Create pricing page and plan before doing AJAX Calls
-  $.ajax(root_url + 'flights', {
-    type: 'POST',
-    xhrFields: { withCredentials: true },
-    data:{
-      departs_at: leaveTime,
-      arrives_at: "17:10",
-      number: "BA 0001",
-      departure_id: dest_id,
-      arrival_id: from_id
-    },
-    success: (response) => {
-      $.ajax(root_url + 'instances', {
-        type: 'POST',
-        xhrFields: { withCredentials: true },
-        data:{
-          flight_id: response['flight_id'],
-          date: aDate,
-        },
-        success: (response) => {
-          $('#flag').remove();
-          $('.search').append('<h5 style="color: green; text-align: center; margin: 10px 0 0 0;" id="flag">Plane booked! Enjoy!</h5>');
-        },
-        error: (xhr) => {
-          console.log(xhr);
-        }
-      });
-    },
-    error: (xhr) => {
-      console.log(xhr);
-    }
-  });
+  postCalls = (dest_id, from_id, aDate, number, leaveTime) => {
+    console.log('Dest_id: ' + dest_id);
+    console.log('From_id: ' + from_id);
+    console.log('aDate: ' + aDate);
+    console.log('leaveTime: ' + leaveTime);
+    $.ajax(root_url + 'flights', {
+      type: 'POST',
+      xhrFields: { withCredentials: true },
+      data: {
+        departs_at: leaveTime,
+        arrives_at: "17:10",
+        number: "BA 0001",
+        departure_id: dest_id,
+        arrival_id: from_id
+      },
+      success: (response) => {
+        $.ajax(root_url + 'instances', {
+          type: 'POST',
+          xhrFields: { withCredentials: true },
+          data: {
+            flight_id: response['flight_id'],
+            date: aDate,
+          },
+          success: (response) => {
+            $('#flag').remove();
+            $('.search').append('<h5 style="color: green; text-align: center; margin: 10px 0 0 0;" id="flag">Plane booked! Enjoy!</h5>');
+          },
+          error: (xhr) => {
+            console.log(xhr);
+          }
+        });
+      },
+      error: (xhr) => {
+        console.log(xhr);
+      }
+    });
+  }
 
 };
 
