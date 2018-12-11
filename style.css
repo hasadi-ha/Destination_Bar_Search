@@ -109,7 +109,7 @@ button:focus {
   margin: auto;
 }
 
-.home, .logout, .user {
+.home, .logout, .user, .plane {
   color: white;
   display: inline;
   list-style-type: none;
@@ -122,7 +122,7 @@ button:focus {
   text-decoration: none;
   padding: 20px;
   display: inline-block;
-  width: 6%;
+  width: 15%;
   cursor: pointer;
   margin: 0px 15px 0px 15px;
 }
@@ -148,4 +148,16 @@ button:focus {
   padding: 10px 0 10px 0;
   width: 80%;
   margin: 15px auto auto auto;
+}
+
+#people-button {
+  width: 146px !important;
+  height: 24px !important;
+  padding: 0 !important;
+  margin: 10px 0 10px 0;
+  text-align: center;
+}
+
+span.ui-selectmenu-text {
+  margin-top: 3px;
 }
