@@ -68,27 +68,6 @@ img.image {
     border: 1px solid black;
 }
 
-
-/* .unanswered_section {
-	max-height: 25em;
-	height: 25em;
-	overflow: scroll;
-	margin-top: 20px;
-	float: left;
-	width: 50%;
-	background-color: red;
-}
-
-.answered_section {
-	margin-top: 20px;
-	background-color: lightseagreen;
-	float: right;
-	overflow: scroll;
-	width: 50%;
-	max-height: 25em;
-	height: 25em;
-} */
-
 button:not(#login_btn) {
     color: white;
     background-color: #4CAF50;
