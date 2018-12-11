@@ -333,8 +333,18 @@ let getDates = (flight_id) => {
       'filter[flight_id]': flight_id,
     },
     success: (response) => {
-      console.log(response);
+      r_rev = response.reverse();
       //adding div with dates and a button that redirects to buying a ticket for that specific flight and instance
+      $('.f_div').append('<p>Select a date:</p>');
+      for (let i=0; i<r_rev.length;i++) {
+        let fixed_date = r_rev[i].date.split("-");
+        fixed_date = fixed_date[1]+'/'+fixed_date[2]+'/'+fixed_date[0];
+        $('.f_div').append('<div class="time_div">'+fixed_date+'</div>');
+      }
+      $('.time_div').on('click', () => {
+        clicked_div = event.target;
+      });
+
     }
   });
 
