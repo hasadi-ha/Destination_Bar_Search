@@ -35,17 +35,17 @@ $(document).ready(() => {
         type: 'POST',
         xhrFields: { withCredentials: true },
         data: {
-          "username": user,
-          "password": pass
+          username: user,
+          password: pass
         },
         success: (response) => {
           $.ajax(root_url + 'sessions', {
             type: 'POST',
             xhrFields: { withCredentials: true },
             data: {
-              "user": {
-                "username": user,
-                "password": pass
+              user: {
+                username: user,
+                password: pass
               }
             },
             success: (response) => {
@@ -78,17 +78,17 @@ $(document).ready(() => {
             type: 'POST',
             xhrFields: { withCredentials: true },
             data: {
-              "username": user,
-              "password": pass
+              username: user,
+              password: pass
             },
             success: (response) => {
               $.ajax(root_url + 'sessions', {
                 type: 'POST',
                 xhrFields: { withCredentials: true },
                 data: {
-                  "user": {
-                    "username": user,
-                    "password": pass
+                  user: {
+                    username: user,
+                    password: pass
                   }
                 },
                 success: (response) => {
@@ -103,7 +103,6 @@ $(document).ready(() => {
             error: () => {
               $('.mesg_div').empty();
               $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Sign Up Failed! Try Again!</h5>');
-
             }
           });
         }
@@ -125,9 +124,9 @@ $(document).ready(() => {
           type: 'POST',
           xhrFields: { withCredentials: true },
           data: {
-            "user": {
-              "username": user,
-              "password": pass
+            user: {
+              username: user,
+              password: pass
             }
           },
           success: (response) => {
@@ -150,9 +149,9 @@ $(document).ready(() => {
       type: 'POST',
       xhrFields: { withCredentials: true },
       data: {
-        "user": {
-          "username": user,
-          "password": pass
+        user: {
+          username: user,
+          password: pass
         }
       },
       success: (response) => {
@@ -632,7 +631,7 @@ let createPlanePage = () => {
       type: 'POST',
       xhrFields: { withCredentials: true },
       data: {
-        "flight": {
+        flight: {
           departs_at: leaveTime,
           arrives_at: "17:10",
           number: "BA 0001",
@@ -646,7 +645,7 @@ let createPlanePage = () => {
           type: 'POST',
           xhrFields: { withCredentials: true },
           data: {
-            "instance": {
+            instance: {
               flight_id: response['id'],
               date: aDate,
             },
@@ -717,6 +716,47 @@ let createUserPage = () => {
       }
     });
   });
+
+  body.append('<div class="search"><div>');
+  $('.search').append('<h2 style="margin-top: 0;">User Profile</h2>');
+  $('.search').append('<div class="first"></div>');
+  $('.first').append('New Password: <input type="password" id="newPass" style="margin-bottom: 10px">');
+  $('.search').append('<div class="second"></div>');
+  $('.second').append('Confirm New Password: <input type="password" id="confirmNew">');
+  $('.search').append('<button id="change" style="margin-top: 10px;">Change</button>');
+
+  $('#change').on('click', () => {
+    let pass = $('#newPass').val();
+    let confirmPas = $('#confirmNew').val();
+
+    if (pass !== confirmPas) {
+      $('.alert').remove();
+      $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0; class="alert">Passwords Do Not Match! Try Again!</h5>');
+      $('#confirmNew').css('color', 'red');
+    }
+    else {
+      $.ajax(root_url + 'passwords', {
+        type: 'PUT',
+        data: {
+          user: {
+            username: user,
+            old_password: pass,
+            new_password: newPass
+          }
+        },
+        success: (response) => {
+          $('.search').empty();
+          $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0; class="alert">Password Changed!</h3>');
+          setTimeout(() => {
+            createUserPage();
+          }, 2000);
+        },
+        error: (xhr) => {
+          console.log(xhr);
+        }
+      });
+    }
+  })
 }
 
 let createYelpandMapPage = (loc, rad, bus, lim) => {
@@ -930,17 +970,17 @@ let recreateLogin = () => {
         type: 'POST',
         xhrFields: { withCredentials: true },
         data: {
-          "username": user,
-          "password": pass
+          username: user,
+          password: pass
         },
         success: (response) => {
           $.ajax(root_url + 'sessions', {
             type: 'POST',
             xhrFields: { withCredentials: true },
             data: {
-              "user": {
-                "username": user,
-                "password": pass
+              user: {
+                username: user,
+                password: pass
               }
             },
             success: (response) => {
@@ -955,10 +995,84 @@ let recreateLogin = () => {
         error: () => {
           $('.mesg_div').empty();
           $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Sign Up Failed! Try Again!</h5>');
-
         }
       });
     });
+
+    $('#login_pass').on('keypress', (e) => {
+      if (e.which == 13) {
+        let user = $('#login_user').val();
+        let pass = $('#login_pass').val();
+        if (pass === "") {
+          $('.mesg_div').empty();
+          $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">All Fields Required! Try Again!</h5>');
+        }
+        else {
+          $.ajax(root_url + 'users', {
+            type: 'POST',
+            xhrFields: { withCredentials: true },
+            data: {
+              username: user,
+              password: pass
+            },
+            success: (response) => {
+              $.ajax(root_url + 'sessions', {
+                type: 'POST',
+                xhrFields: { withCredentials: true },
+                data: {
+                  user: {
+                    username: user,
+                    password: pass
+                  }
+                },
+                success: (response) => {
+                  createMainPage();
+                },
+                error: () => {
+                  $('.mesg_div').empty();
+                  $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>');
+                }
+              });
+            },
+            error: () => {
+              $('.mesg_div').empty();
+              $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Sign Up Failed! Try Again!</h5>');
+            }
+          });
+        }
+      }
+    });
+  });
+
+  $('#login_pass').on('keypress', (e) => {
+    if (e.which == 13) {
+      let user = $('#login_user').val();
+      let pass = $('#login_pass').val();
+
+      if (pass === "") {
+        $('.mesg_div').empty();
+        $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">All Fields Required! Try Again!</h5>');
+      }
+      else {
+        $.ajax(root_url + 'sessions', {
+          type: 'POST',
+          xhrFields: { withCredentials: true },
+          data: {
+            user: {
+              username: user,
+              password: pass
+            }
+          },
+          success: (response) => {
+            createMainPage();
+          },
+          error: () => {
+            $('.mesg_div').empty();
+            $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>');
+          }
+        });
+      }
+    }
   });
 
   $('#login_btn').on('click', () => {
@@ -969,9 +1083,9 @@ let recreateLogin = () => {
       type: 'POST',
       xhrFields: { withCredentials: true },
       data: {
-        "user": {
-          "username": user,
-          "password": pass
+        user: {
+          username: user,
+          password: pass
         }
       },
       success: (response) => {
@@ -1147,13 +1261,13 @@ let getPrice = (start, end) => {
   let slat = start.latitude;
   let slon = start.longitude;
   let elat = end.latitude;
-  let elon = end.longitude; 
-  let distance = Math.sqrt(Math.pow((elat-slat),2) + Math.pow((elon-slon),2));
+  let elon = end.longitude;
+  let distance = Math.sqrt(Math.pow((elat - slat), 2) + Math.pow((elon - slon), 2));
   console.log(distance);
-  return (50 + (7.59*distance));
+  return (50 + (7.59 * distance));
 }
 
 // For the tooltip
-$( function() {
-  $( document ).tooltip();
-} );
+$(function () {
+  $(document).tooltip();
+});
