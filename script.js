@@ -264,13 +264,10 @@ let createMainPage = () => {
             });
           }
         }
-
-        //functionality on button click to find flights based on specific airport
-
       }
     }
-    //createYelpList(location, 10000, 'bars', 20);
   });
+
   let airport_data_list = [];
   let airport_list = [];
   let clean_airport_list = [];
@@ -704,13 +701,19 @@ let createPlanePage = () => {
             },
           },
           success: (response) => {
-            $('#flag').remove();
             closePopup();
-            $('.search').append('<h5 style="color: green; text-align: center; margin: 10px 0 0 0;" id="flag">Plane booked! Enjoy!</h5>');
+            $('.search').remove();
+            body.append('<div class="search"><div>');
+            $('.search').append('<h2 style="margin-top: 0; color: green; margin-bottom: 0;">Plane Booked! Enjoy!</h2>');
+            body.append('<div class="search" id="2" style="overflow-y: scroll; max-height: 60vw;"><div>');
+            $('#2').append('<h2 style="margin: 0; border-bottom: 4px solid black; padding-bottom: 10px;">Bars In Area You Might Enjoy:</h2>');
+            $('#2').append('<div class="yelp_div"></div>');
             createYelpandMapPage(lat, lon, 10000, "bars", 20);
           },
           error: (xhr) => {
+            $('#flag').remove();
             body.append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;" id="flag">Error! Try Again!</h5>');
+            $('.search').append('<div class="yelp_div"></div>');
             console.log(xhr);
           }
         });
@@ -1010,8 +1013,7 @@ let createUserPage = () => {
 let createYelpandMapPage = (lat, lon, rad, bus, lim) => {
   let body = $('body');
 
-  body.append('<div class="yelp_div"></div>');
-  body.append('<div class="map_div"></div>');
+  // body.append('<div class="map_div"></div>');
 
   $.ajax(yelp_url, {
     type: 'GET',
@@ -1035,13 +1037,14 @@ let createYelpandMapPage = (lat, lon, rad, bus, lim) => {
         }
 
         $('.yelp_div').append('<div class="yelp_item" id="' + element['id'] + '"></div>');
-        $('.yelp_div').last().append('<p>Name: ' + element['name'] + '</p>');
-        $('.yelp_div').last().append('<p>Rating: ' + element['rating'] + '</p>');
-        $('.yelp_div').last().append('<p>Phone #: ' + element['display_phone'] + '</p>');
+        $('#'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Name:</b> ' + element['name'] + '</p>');
+        $('#'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Rating:</b> ' + element['rating'] + '</p>');
+        $('#'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Address:</b> ' + element['location']['address1'] + ', ' + element['location']['city'] + ', ' + element['location']['state'] + '</p>');
+        $('#'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Phone #:</b> ' + element['display_phone'] + '</p>');
 
-        $('#' + element['id']).on('click', () => {
-          initMap(element['coordinates']['latitude'], element['coordinates']['longitude'], element['name']);
-        });
+        // $('#' + element['id']).on('click', () => {
+        //   initMap(element['coordinates']['latitude'], element['coordinates']['longitude'], element['name']);
+        // });
       });
     },
     error: (xhr) => {
@@ -1409,11 +1412,17 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date, ins
       },
       success: (response) => {
         closePopup();
-        body.append('<h5 style="color: green; text-align: center; margin: 10px 0 0 0;" id="flag">Ticket purchased! Enjoy!</h5>');
+        $('.form').remove();
+        body.append('<div class="search"><div>');
+        $('.search').append('<h2 style="margin-top: 0; color: green; margin-bottom: 0;">Ticket Purchased! Enjoy!</h2>');
+        body.append('<div class="search" id="2" style="overflow-y: scroll; max-height: 60vw;"><div>');
+        $('#2').append('<h2 style="margin: 0; border-bottom: 4px solid black; padding-bottom: 10px;">Bars In Area You Might Enjoy:</h2>');
+        $('#2').append('<div class="yelp_div"></div>');
         createYelpandMapPage(destination.latitude, destination.longitude, 10000, "bars", 20);
       },
       error: (xhr) => {
         console.log(xhr);
+        $('#flag').remove();
         body.append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;" id="flag">Error! Try Again!</h5>');
       }
     });

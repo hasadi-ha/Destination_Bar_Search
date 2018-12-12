@@ -278,3 +278,10 @@ input {
 input[name="gender"] {
   margin: 0 5px 0 5px;
 }
+
+.yelp_item {
+  border-bottom: 2px solid black;
+  width: 60%;
+  margin: 10px auto auto auto;
+  text-align: left;
+}
