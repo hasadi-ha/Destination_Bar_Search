@@ -964,8 +964,18 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date)  =>
   $('.flightbuy_div').append('<button id="buyflight_btn">Buy Flight</button>');
   $('.flightbuy_div').append('<div class="mesg_div"></div>');
 
-  $('.form').append('<div class="signup_div" style="background-color: #f1f1f1"></div>');
+  $(' .form').append('<div class="signup_div" style="background-color: #f1f1f1"></div>');
   $('.signup_div').append('<button id="cancel_btn" style="background-color: red; border-color: red;">Cancel</button>');
+
+  let price_page = $('<div id="price_popup" class="modal"></div>');
+  let animated_page= $('<div class="modal-content animate"></div>');
+  animated_page.append('<div class=imgcontainer"><span class="close" onClick="closePopup()" title="Close Modal">&times;</span><button class="price_btn">Buy ticket</button></span></div>');
+  price_page.append(animated_page);
+
+  $('.form').append(price_page);
+  $('.price_btn').on('click', () => {
+    console.log('test');
+  });
 
   $('#cancel_btn').on('click', () => {
     $('.form_header').remove();
@@ -980,7 +990,10 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date)  =>
     let l_name = $('#last_name').val();
     let age = $('#age').val();
     let gender = $('input[name="gender"]:checked').val();
+    let toStyle = document.getElementById('price_popup');
+    toStyle.style.display="block";
 
+/*
     $.ajax(root_url + 'tickets', {
       type: 'POST',
       xhrFields: { withCredentials: true },
@@ -1004,6 +1017,11 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date)  =>
         body.append('<h1>Error, gotta fix something</h1>');
       }
     });
+    */
   });
 
+};
+let closePopup = () => {
+  let toStyle = document.getElementById('price_popup');
+  toStyle.style.display="none";
 };
