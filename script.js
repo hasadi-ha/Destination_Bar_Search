@@ -635,9 +635,14 @@ let createPlanePage = () => {
       alert("Must fill out all required fields!");
     } 
     else {
-      $('<p>Flight from ' + from + ' to '+destination+'</p>').insertBefore('.price_btn');
-      $('<p>Departs: '+aDate+ ' at '+leaveTime+'</p>').insertBefore('.price_btn');
-      $('<p>Party size: '+number+ '</p>').insertBefore('.price_btn');
+      var remove_these = document.getElementsByClassName('ticket_info');
+      for (let i=0;i<remove_these.length;i++) {
+        remove_these[i].remove();
+        i--;
+      }
+      $('<p class="ticket_info">Flight from ' + from + ' to '+destination+'</p>').insertBefore('.price_btn');
+      $('<p class="ticket_info">Departs: '+aDate+ ' at '+leaveTime+'</p>').insertBefore('.price_btn');
+      $('<p class="ticket_info">Party size: '+number+ '</p>').insertBefore('.price_btn');
       let toStyle = document.getElementById('price_popup');
       var dest_object;
       var from_object;
@@ -1438,10 +1443,15 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date, ins
     }
     else {
       let name = f_name + ' ' + m_name + ' ' + l_name;
-      $('<p>Name: ' + name + '</p>').insertBefore('.price_btn');
-      $('<p>Age: ' + age + '</p>').insertBefore('.price_btn');
-      $('<p>Gender: ' + gender + '</p>').insertBefore('.price_btn');
-      $('<p>Price: $' + price + '</p>').insertBefore('.price_btn');
+      var remove_these = document.getElementsByClassName('ticket_info');
+      for (let i=0;i<remove_these.length;i++) {
+        remove_these[i].remove();
+        i--;
+      }
+      $('<p class="ticket_info">Name: ' + name + '</p>').insertBefore('.price_btn');
+      $('<p class="ticket_info">Age: ' + age + '</p>').insertBefore('.price_btn');
+      $('<p class="ticket_info">Gender: ' + gender + '</p>').insertBefore('.price_btn');
+      $('<p class="ticket_info">Price: $' + price + '</p>').insertBefore('.price_btn');
       let toStyle = document.getElementById('price_popup');
       toStyle.style.display = "block";
     }
