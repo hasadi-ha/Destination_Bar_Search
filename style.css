@@ -172,7 +172,8 @@ button:focus {
 }
 
 span.ui-selectmenu-text {
-  margin-top: 3px;
+  margin-top: 8px;
+  font-weight: 800;
 }
 
 /* Center the image and position the close button */
@@ -214,18 +215,21 @@ span.psw {
 /* Modal Content/Box */
 .modal-content {
   background-color: #fefefe;
-  margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
-  border: 1px solid #888;
-  width: 50%; /* Could be more or less, depending on screen size */
+  margin: 5% auto 35% auto; /* 5% from the top, 15% from the bottom and centered */
+  border: 2px solid #888;
+  width: 25%; /* Could be more or less, depending on screen size */
 }
 
 /* The Close Button (x) */
 .close {
-  position: absolute;
-  right: 30vw;
+  /* position: absolute;
+  right: 30vw; */
+  float: right;
   color: #000;
-  font-size: 35px;
+  font-size: 30px;
   font-weight: bold;
+  margin-right: 10px;
+  height: 20px;
 }
 
 .close:hover,
@@ -251,11 +255,26 @@ span.psw {
 }
 
 .price_btn {
-    margin-bottom: 3px;
+    margin-bottom: 8px;
 }
 
 input {
   border: 1px solid #ccc;
   padding: 12px 12px;
   font: 800 13.3333px Inconsolata;
+}
+
+.ui-icon-triangle-1-s {
+  margin-top: 10px;
+}
+
+#buyflight_btn {
+  padding: 11px 0 11px 0 !important;
+  height: 45px !important;
+  width: 694px !important;
+  margin: 18px auto 18px auto !important;
+}
+
+input[name="gender"] {
+  margin: 0 5px 0 5px;
 }

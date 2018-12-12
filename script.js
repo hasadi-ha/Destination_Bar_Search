@@ -525,8 +525,8 @@ let createPlanePage = () => {
   body.append('<div class="search"><div>');
   $('.search').append('<div class="first"></div>')
   $('.first').append('<h2 style="margin-top: 0;">Destination Selection</h2>');
-  $('.first').append('Destination: <input type="text" title="Airport Code appearing in autocoplete" id="location" style="margin-bottom: 10px">');
-  $('.first').append(' From: <input type="text" title="Airport Code appearing in autocoplete" id="start_location">');
+  $('.first').append('Destination: <input type="text" title="Airport Code appearing in autocomplete" id="location" style="margin-bottom: 10px">');
+  $('.first').append(' From: <input type="text" title="Airport Code appearing in autocomplete" id="start_location">');
 
   $('.search').append('<div class="second"><div>');
   $('.second').append('<label for="people"># of People: </label>'
@@ -584,8 +584,8 @@ let createPlanePage = () => {
     }
   });
   let price_page = $('<div id="price_popup" class="modal"></div>');
-  let animated_page = $('<div class="modal-content animate"></div>');
-  animated_page.append('<div class=imgcontainer"><span class="close" onClick="closePopup()" title="Close Modal">&times;</span><button class="price_btn">Buy ticket</button></span></div>');
+  let animated_page = $('<div class="modal-content animate"><span class="close" onClick="closePopup()" title="Close Modal">&times;</span></div>');
+  animated_page.append('<div class=imgcontainer" style="margin-top: 29px;"><button class="price_btn">Buy ticket</button></span></div>');
   price_page.append(animated_page);
   $('.search').append(price_page);
 
@@ -631,18 +631,18 @@ let createPlanePage = () => {
     let aDate = $('#date').val();
     let number = $('#people').val();
     let leaveTime = $('#leave_time').val();
-    if (destination==''||from==''||aDate==''||leaveTime=='') {
+    if (destination == '' || from == '' || aDate == '' || leaveTime == '') {
       alert("Must fill out all required fields!");
-    } 
+    }
     else {
       var remove_these = document.getElementsByClassName('ticket_info');
-      for (let i=0;i<remove_these.length;i++) {
+      for (let i = 0; i < remove_these.length; i++) {
         remove_these[i].remove();
         i--;
       }
-      $('<p class="ticket_info">Flight from ' + from + ' to '+destination+'</p>').insertBefore('.price_btn');
-      $('<p class="ticket_info">Departs: '+aDate+ ' at '+leaveTime+'</p>').insertBefore('.price_btn');
-      $('<p class="ticket_info">Party size: '+number+ '</p>').insertBefore('.price_btn');
+      $('<p class="ticket_info">Flight from <b>' + from + '</b> to <b>' + destination + '</b></p>').insertBefore('.price_btn');
+      $('<p class="ticket_info">Departs: <b>' + aDate + '</b> at <b>' + leaveTime + '</b></p>').insertBefore('.price_btn');
+      $('<p class="ticket_info">Party size: <b>' + number + '</b></p>').insertBefore('.price_btn');
       let toStyle = document.getElementById('price_popup');
       var dest_object;
       var from_object;
@@ -663,9 +663,9 @@ let createPlanePage = () => {
             xhrFields: { withCredentials: true },
             success: (response) => {
               from_object = response[0]
-              price = getPrice(from_object,dest_object);
+              price = getPrice(from_object, dest_object);
               price = price.toFixed(2);
-              $('<p>Price: $'+(price*number)+ '</p>').insertBefore('.price_btn');
+              $('<p>Price: <b>$' + ((price * number).toFixed(2)) + '</b></p>').insertBefore('.price_btn');
             }
           });
         }
@@ -680,11 +680,7 @@ let createPlanePage = () => {
 
   // TODO: Create confirmation before doing AJAX Calls
   // TODO: Create pricing page and plan before doing AJAX Calls
-  postCalls = (dest_id, from_id, aDate, number, leaveTime, lat, lon) => {
-    console.log('Dest_id: ' + dest_id);
-    console.log('From_id: ' + from_id);
-    console.log('aDate: ' + aDate);
-    console.log('leaveTime: ' + leaveTime);
+  let postCalls = (dest_id, from_id, aDate, number, leaveTime, lat, lon) => {
     $.ajax(root_url + 'flights', {
       type: 'POST',
       xhrFields: { withCredentials: true },
@@ -698,7 +694,6 @@ let createPlanePage = () => {
         },
       },
       success: (response) => {
-        console.log(response['id']);
         $.ajax(root_url + 'instances', {
           type: 'POST',
           xhrFields: { withCredentials: true },
@@ -837,7 +832,7 @@ let createUserPage = () => {
 
               if (pass !== confirmPas) {
                 $('.alert').remove();
-                $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0; class="alert">Passwords Do Not Match! Try Again!</h5>');
+                $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;" class="alert">Passwords Do Not Match! Try Again!</h5>');
                 $('#confirmNew').css('color', 'red');
               }
               else {
@@ -852,7 +847,7 @@ let createUserPage = () => {
                   },
                   success: (response) => {
                     $('.search').empty();
-                    $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0; class="alert">Password Changed!</h3>');
+                    $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0;" class="alert">Password Changed!</h3>');
                     setTimeout(() => {
                       createUserPage();
                     }, 1000);
@@ -864,14 +859,14 @@ let createUserPage = () => {
               }
             });
 
-            $('#change').on('keypress', (x) => {
+            $('#confirmNew').on('keypress', (x) => {
               if (x.which == 13) {
                 let pass = $('#newPass').val();
                 let confirmPas = $('#confirmNew').val();
 
                 if (pass !== confirmPas) {
                   $('.alert').remove();
-                  $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0; class="alert">Passwords Do Not Match! Try Again!</h5>');
+                  $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;" class="alert">Passwords Do Not Match! Try Again!</h5>');
                   $('#confirmNew').css('color', 'red');
                 }
                 else {
@@ -886,7 +881,7 @@ let createUserPage = () => {
                     },
                     success: (response) => {
                       $('.search').empty();
-                      $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0; class="alert">Password Changed!</h3>');
+                      $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0;" class="alert">Password Changed!</h3>');
                       setTimeout(() => {
                         createUserPage();
                       }, 2000);
@@ -940,7 +935,7 @@ let createUserPage = () => {
 
           if (pass !== confirmPas) {
             $('.alert').remove();
-            $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0; class="alert">Passwords Do Not Match! Try Again!</h5>');
+            $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;" class="alert">Passwords Do Not Match! Try Again!</h5>');
             $('#confirmNew').css('color', 'red');
           }
           else {
@@ -955,7 +950,7 @@ let createUserPage = () => {
               },
               success: (response) => {
                 $('.search').empty();
-                $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0; class="alert">Password Changed!</h3>');
+                $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0;" class="alert">Password Changed!</h3>');
                 setTimeout(() => {
                   createUserPage();
                 }, 2000);
@@ -967,14 +962,14 @@ let createUserPage = () => {
           }
         });
 
-        $('#change').on('keypress', (x) => {
+        $('#confirmNew').on('keypress', (x) => {
           if (x.which == 13) {
             let pass = $('#newPass').val();
             let confirmPas = $('#confirmNew').val();
 
             if (pass !== confirmPas) {
               $('.alert').remove();
-              $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0; class="alert">Passwords Do Not Match! Try Again!</h5>');
+              $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;" class="alert">Passwords Do Not Match! Try Again!</h5>');
               $('#confirmNew').css('color', 'red');
             }
             else {
@@ -989,7 +984,7 @@ let createUserPage = () => {
                 },
                 success: (response) => {
                   $('.search').empty();
-                  $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0; class="alert">Password Changed!</h3>');
+                  $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0;" class="alert">Password Changed!</h3>');
                   setTimeout(() => {
                     createUserPage();
                   }, 2000);
@@ -1033,9 +1028,7 @@ let createYelpandMapPage = (lat, lon, rad, bus, lim) => {
       Authorization: 'Bearer eaTwgscQLIKIx8ZovotD79mww3utAeWyJDoX2Y0J2mJsqqaP_mfbRV9rUZXus6z_Oo6WqsR9REowDEC1UDEbb1pSsPmSZ5V4T1mmlhpMFle3hLYkCLuUZP-DQKgNXHYx',
     },
     success: (response) => {
-      // console.log(response);
       let data = response['businesses'];
-      // console.log(data);
       data.forEach(element => {
         if (element['display_phone'] === '') {
           element['display_phone'] = 'None'
@@ -1361,16 +1354,16 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date, ins
 
   $('.form').append('<div class="flightbuy_div"><div>');
 
-  $('.flightbuy_div').append('<label for="first_name"><b>First Name</b></label>');
-  $('.flightbuy_div').append('<input type="text" placeholder="First Name" id="first_name" required style=" margin: 8px 10px 8px 10px;">');
+  $('.flightbuy_div').append('<label for="first_name" style="margin-top: 10px;" class="notThis"><b>First Name</b></label>');
+  $('.flightbuy_div').append('<input type="text" placeholder="First Name" id="first_name" required style="margin: 8px 10px 8px 10px;">');
 
-  $('.flightbuy_div').append('<label for="middle_init"><b>Middle Initial</b></label>');
+  $('.flightbuy_div').append('<label for="middle_init" class="notThis"><b>Middle Initial</b></label>');
   $('.flightbuy_div').append('<input type="text" placeholder="Middle Initial (Optional)" id="middle_init" style="margin: 8px 10px 8px 10px;">');
 
-  $('.flightbuy_div').append('<label for="last_name"><b>Last Name</b></label>');
+  $('.flightbuy_div').append('<label for="last_name" class="notThis"><b>Last Name</b></label>');
   $('.flightbuy_div').append('<input type="text" placeholder="Last Name" id="last_name" required style="margin: 8px 10px 8px 10px;">');
 
-  $('.flightbuy_div').append('<label for="age"><b>Age</b></label>');
+  $('.flightbuy_div').append('<label for="age" class="notThis"><b>Age</b></label>');
   $('.flightbuy_div').append('<input type="number" placeholder="Age" id="age"  style="margin: 8px 10px 8px 10px">');
 
   $('.flightbuy_div').append('<label for="gender" style="margin: 8px 0 8px 0;"><b>Gender</b></label>');
@@ -1382,12 +1375,12 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date, ins
   $('.flightbuy_div').append('<button id="buyflight_btn">Buy Flight</button>');
   $('.flightbuy_div').append('<div class="mesg_div"></div>');
 
-  $(' .form').append('<div class="signup_div" style="background-color: #f1f1f1"></div>');
-  $('.signup_div').append('<button id="cancel_btn" style="background-color: red; border-color: red;">Cancel</button>');
+  $(' .form').append('<div class="signup_div" style="background-color: #f1f1f1; padding: 16px;"></div>');
+  $('.signup_div').append('<button id="cancel_btn" style="background-color: red; border-color: red; margin-left: 90%;">Cancel</button>');
 
   let price_page = $('<div id="price_popup" class="modal"></div>');
-  let animated_page = $('<div class="modal-content animate"></div>');
-  animated_page.append('<div class=imgcontainer"><span class="close" onClick="closePopup()" title="Close Modal">&times;</span><button class="price_btn">Buy ticket</button></span></div>');
+  let animated_page = $('<div class="modal-content animate"><span class="close" onClick="closePopup()" title="Close Modal">&times;</span></div>');
+  animated_page.append('<div class=imgcontainer" style="margin-top: 29px;"><button class="price_btn">Buy ticket</button></span></div>');
   price_page.append(animated_page);
   let price = getPrice(start, destination);
   price = price.toFixed(2);
@@ -1445,20 +1438,17 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date, ins
     else {
       let name = f_name + ' ' + m_name + ' ' + l_name;
       var remove_these = document.getElementsByClassName('ticket_info');
-      for (let i=0;i<remove_these.length;i++) {
+      for (let i = 0; i < remove_these.length; i++) {
         remove_these[i].remove();
         i--;
       }
-      $('<p class="ticket_info">Name: ' + name + '</p>').insertBefore('.price_btn');
-      $('<p class="ticket_info">Age: ' + age + '</p>').insertBefore('.price_btn');
-      $('<p class="ticket_info">Gender: ' + gender + '</p>').insertBefore('.price_btn');
-      $('<p class="ticket_info">Price: $' + price + '</p>').insertBefore('.price_btn');
+      $('<p class="ticket_info"><b>Name: </b>' + name + '</p>').insertBefore('.price_btn');
+      $('<p class="ticket_info"><b>Age: </b>' + age + '</p>').insertBefore('.price_btn');
+      $('<p class="ticket_info"><b>Gender: </b>' + gender + '</p>').insertBefore('.price_btn');
+      $('<p class="ticket_info"><b>Price: </b>$' + price + '</p>').insertBefore('.price_btn');
       let toStyle = document.getElementById('price_popup');
       toStyle.style.display = "block";
     }
-
-    /*
-        */
   });
 
 };
@@ -1473,17 +1463,16 @@ let getPrice = (start, end) => {
   let elat = end.latitude;
   let elon = end.longitude;
   let distance = Math.sqrt(Math.pow((elat - slat), 2) + Math.pow((elon - slon), 2));
-  console.log(distance);
   return (50 + (7.59 * distance));
 }
 
 // For the tooltip
 $(function () {
   $(document).tooltip({
-      position: {
-        my: "left top",
-        at: "right+5 top-5",
-        collision: "none"
-      }
+    position: {
+      my: "left top",
+      at: "right+5 top-5",
+      collision: "none"
+    }
   });
 });
