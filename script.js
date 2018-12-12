@@ -1057,9 +1057,9 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date) => 
 
   $('.flightbuy_div').append('<label for="gender"><b>Gender</b></label>');
   $('.flightbuy_div').append('<form class="gender_radio"></form>');
-  $('.gender_radio').append('M:<input type="radio" name="gender" value="male">');
-  $('.gender_radio').append('F:<input type="radio" name="gender" value="female">');
-  $('.gender_radio').append('O:<input type="radio" name="gender" value="other">');
+  $('.gender_radio').append('M:<input type="radio" name="gender" value="Male">');
+  $('.gender_radio').append('F:<input type="radio" name="gender" value="Female">');
+  $('.gender_radio').append('O:<input type="radio" name="gender" value="Other">');
 
   $('.flightbuy_div').append('<button id="buyflight_btn">Buy Flight</button>');
   $('.flightbuy_div').append('<div class="mesg_div"></div>');
@@ -1068,7 +1068,7 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date) => 
   $('.signup_div').append('<button id="cancel_btn" style="background-color: red; border-color: red;">Cancel</button>');
 
   let price_page = $('<div id="price_popup" class="modal"></div>');
-  let animated_page= $('<div class="modal-content animate"></div>');
+  let animated_page = $('<div class="modal-content animate"></div>');
   animated_page.append('<div class=imgcontainer"><span class="close" onClick="closePopup()" title="Close Modal">&times;</span><button class="price_btn">Buy ticket</button></span></div>');
   price_page.append(animated_page);
 
@@ -1090,38 +1090,47 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date) => 
     let l_name = $('#last_name').val();
     let age = $('#age').val();
     let gender = $('input[name="gender"]:checked').val();
-    let toStyle = document.getElementById('price_popup');
-    toStyle.style.display="block";
+    if (f_name == '' || l_name == '' || age == '') {
+      alert('Must fill out all required fields!');
+    }
+    else {
+      let name = f_name + ' ' + m_name + ' ' + l_name;
+      $('<p>Name: ' + name + '</p>').insertBefore('.price_btn');
+      $('<p>Age: ' + age + '</p>').insertBefore('.price_btn');
+      $('<p>Gender: ' + gender + '</p>').insertBefore('.price_btn');
+      let toStyle = document.getElementById('price_popup');
+      toStyle.style.display = "block";
+    }
 
-/*
-    $.ajax(root_url + 'tickets', {
-      type: 'POST',
-      xhrFields: { withCredentials: true },
-      data: {
-        "ticket": {
-          first_name: f_name,
-          midde_Name: m_name,
-          last_name: l_name,
-          age: age,
-          gender: gender
-        }
-      },
-      success: (response) => {
-        body.empty();
-        alert('Purchase successful!');
-        body.append('<h1>PURCHASE Successful</h1>');
-        createMainPage();
-      },
-      error: () => {
-        body.empty();
-        body.append('<h1>Error, gotta fix something</h1>');
-      }
-    });
-    */
+    /*
+        $.ajax(root_url + 'tickets', {
+          type: 'POST',
+          xhrFields: { withCredentials: true },
+          data: {
+            "ticket": {
+              first_name: f_name,
+              midde_Name: m_name,
+              last_name: l_name,
+              age: age,
+              gender: gender
+            }
+          },
+          success: (response) => {
+            body.empty();
+            alert('Purchase successful!');
+            body.append('<h1>PURCHASE Successful</h1>');
+            createMainPage();
+          },
+          error: () => {
+            body.empty();
+            body.append('<h1>Error, gotta fix something</h1>');
+          }
+        });
+        */
   });
 
 };
 let closePopup = () => {
   let toStyle = document.getElementById('price_popup');
-  toStyle.style.display="none";
+  toStyle.style.display = "none";
 };
