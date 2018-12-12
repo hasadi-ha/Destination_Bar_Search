@@ -525,8 +525,8 @@ let createPlanePage = () => {
   body.append('<div class="search"><div>');
   $('.search').append('<div class="first"></div>')
   $('.first').append('<h2 style="margin-top: 0;">Destination Selection</h2>');
-  $('.first').append('Destination: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="location" style="margin-bottom: 10px">');
-  $('.first').append(' From: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="start_location">');
+  $('.first').append('Destination: <input type="text" title="Airport Code appearing in autocoplete" id="location" style="margin-bottom: 10px">');
+  $('.first').append(' From: <input type="text" title="Airport Code appearing in autocoplete" id="start_location">');
 
   $('.search').append('<div class="second"><div>');
   $('.second').append('<label for="people"># of People: </label>'
@@ -1269,5 +1269,11 @@ let getPrice = (start, end) => {
 
 // For the tooltip
 $(function () {
-  $(document).tooltip();
+  $(document).tooltip({
+      position: {
+        my: "left top",
+        at: "right+5 top-5",
+        collision: "none"
+      }
+  });
 });
