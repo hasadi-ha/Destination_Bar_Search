@@ -715,6 +715,7 @@ let createPlanePage = () => {
             createYelpandMapPage(lat, lon, 10000, "bars", 20);
           },
           error: (xhr) => {
+            body.append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;" id="flag">Error! Try Again!</h5>');
             console.log(xhr);
           }
         });
