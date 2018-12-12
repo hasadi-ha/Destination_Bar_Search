@@ -28,10 +28,9 @@ $(document).ready(() => {
       recreateLogin();
     });
 
-    let user = $('#login_user').val();
-    let pass = $('#login_pass').val();
-
     $('#login_btn').on('click', () => {
+      let user = $('#login_user').val();
+      let pass = $('#login_pass').val();
       $.ajax(root_url + 'users', {
         type: 'POST',
         xhrFields: { withCredentials: true },
@@ -65,6 +64,82 @@ $(document).ready(() => {
         }
       });
     });
+
+    $('#login_pass').on('keypress', (e) => {
+      if (e.which == 13) {
+        let user = $('#login_user').val();
+        let pass = $('#login_pass').val();
+        if (pass === "") {
+          $('.mesg_div').empty();
+          $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">All Fields Required! Try Again!</h5>');
+        }
+        else {
+          $.ajax(root_url + 'users', {
+            type: 'POST',
+            xhrFields: { withCredentials: true },
+            data: {
+              "username": user,
+              "password": pass
+            },
+            success: (response) => {
+              $.ajax(root_url + 'sessions', {
+                type: 'POST',
+                xhrFields: { withCredentials: true },
+                data: {
+                  "user": {
+                    "username": user,
+                    "password": pass
+                  }
+                },
+                success: (response) => {
+                  createMainPage();
+                },
+                error: () => {
+                  $('.mesg_div').empty();
+                  $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>');
+                }
+              });
+            },
+            error: () => {
+              $('.mesg_div').empty();
+              $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Sign Up Failed! Try Again!</h5>');
+
+            }
+          });
+        }
+      }
+    });
+  });
+
+  $('#login_pass').on('keypress', (e) => {
+    if (e.which == 13) {
+      let user = $('#login_user').val();
+      let pass = $('#login_pass').val();
+
+      if (pass === "") {
+        $('.mesg_div').empty();
+        $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">All Fields Required! Try Again!</h5>');
+      }
+      else {
+        $.ajax(root_url + 'sessions', {
+          type: 'POST',
+          xhrFields: { withCredentials: true },
+          data: {
+            "user": {
+              "username": user,
+              "password": pass
+            }
+          },
+          success: (response) => {
+            createMainPage();
+          },
+          error: () => {
+            $('.mesg_div').empty();
+            $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>');
+          }
+        });
+      }
+    }
   });
 
   $('#login_btn').on('click', () => {
@@ -328,7 +403,7 @@ let getDates = (flight_id) => {
   let tdiv = $('.f_div').detach();
   $('.search_result').append('<div style="border:1px solid black" class="f_div"></div>');
   let today = new Date();
-  let currentdate =today.getFullYear() + '-' + (today.getMonth()+1) + '-' + today.getDate();
+  let currentdate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
   $.ajax(root_url + 'instances', {
     type: 'GET',
     xhrFields: { withCredentials: true },
@@ -344,7 +419,7 @@ let getDates = (flight_id) => {
       } else {
         $('.f_div').append('<p>Select a date:</p>');
         for (let i = 0; i < r_rev.length; i++) {
-          if (currentdate<r_rev[i].date) {
+          if (currentdate < r_rev[i].date) {
             let fixed_date = r_rev[i].date.split("-");
             fixed_date = fixed_date[1] + '/' + fixed_date[2] + '/' + fixed_date[0];
             $('.f_div').append('<div class="time_div">' + fixed_date + '</div>');
@@ -382,7 +457,7 @@ let getDates = (flight_id) => {
                 console.log(flight_date);
                 let search_div = $('.search').detach();
                 buy_flight_page(endloc, startloc, search_div, flight.number, flight_date);
-                
+
               }
             });
           }
@@ -608,8 +683,8 @@ let createUserPage = () => {
   $('.navbar').append('<li class="plane"></li>');
   $('.plane').append('<a aria-current="false">Rent Plane</a>');
 
-  $('.navbar').append('<li class="user" class="active"></li>');
-  $('.user').append('<a aria-current="false">User</a>');
+  $('.navbar').append('<li class="user"></li>');
+  $('.user').append('<a aria-current="false" class="active">User</a>');
 
   $('.navbar').append('<li class="logout"></li>');
   $('.logout').append('<a aria-current="false">Logout</a>');
@@ -912,7 +987,7 @@ let recreateLogin = () => {
   });
 };
 
-let buy_flight_page = (destination, start, back, flight_number, flight_date)  => {
+let buy_flight_page = (destination, start, back, flight_number, flight_date) => {
   let body = $('body');
   body.empty();
 
@@ -962,7 +1037,7 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date)  =>
     });
   });
 
-  body.append('<h1 class="form_header" style="text-align: center; margin-bottom: 15px;">Flight '+flight_number+' from ' + start.code + ' to ' + destination.code + ' on '+flight_date+'</h1>')
+  body.append('<h1 class="form_header" style="text-align: center; margin-bottom: 15px;">Flight ' + flight_number + ' from ' + start.code + ' to ' + destination.code + ' on ' + flight_date + '</h1>')
 
   body.append('<div class="form"></div>');
 
