@@ -717,7 +717,7 @@ let createUserPage = () => {
     });
   });
 
-  body.append('<div class="form" style="margin-top: 10px">' +
+  body.append('<div class="form" style="margin-top: 10px;">' +
 
     '<div class="image_container"><img src="yelp.png" alt="Login Image" class="image"></div>' +
 
@@ -802,6 +802,7 @@ let createUserPage = () => {
                 });
               }
             });
+
             $('#change').on('keypress', (e) => {
               if (e.which == 13) {
                 let pass = $('#newPass').val();
@@ -904,6 +905,7 @@ let createUserPage = () => {
             });
           }
         });
+
         $('#change').on('keypress', (e) => {
           if (e.which == 13) {
             let pass = $('#newPass').val();
