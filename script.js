@@ -706,7 +706,7 @@ let createPlanePage = () => {
             body.append('<div class="search"><div>');
             $('.search').append('<h2 style="margin-top: 0; color: green; margin-bottom: 0;">Plane Booked! Enjoy!</h2>');
             body.append('<div class="search" id="2" style="overflow-y: scroll; max-height: 60vw;"><div>');
-            $('#2').append('<h2 style="margin: 0; border-bottom: 4px solid black; padding-bottom: 10px;">Bars In Area You Might Enjoy:</h2>');
+            $('#2').append('<h2 style="margin: 0; border-bottom: 4px solid black; padding-bottom: 10px;">Bars In The Area You Might Enjoy:</h2>');
             $('#2').append('<div class="yelp_div"></div>');
             createYelpandMapPage(lat, lon, 10000, "bars", 20);
           },
@@ -1416,7 +1416,7 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date, ins
         body.append('<div class="search"><div>');
         $('.search').append('<h2 style="margin-top: 0; color: green; margin-bottom: 0;">Ticket Purchased! Enjoy!</h2>');
         body.append('<div class="search" id="2" style="overflow-y: scroll; max-height: 60vw;"><div>');
-        $('#2').append('<h2 style="margin: 0; border-bottom: 4px solid black; padding-bottom: 10px;">Bars In Area You Might Enjoy:</h2>');
+        $('#2').append('<h2 style="margin: 0; border-bottom: 4px solid black; padding-bottom: 10px;">Bars In The Area You Might Enjoy:</h2>');
         $('#2').append('<div class="yelp_div"></div>');
         createYelpandMapPage(destination.latitude, destination.longitude, 10000, "bars", 20);
       },
