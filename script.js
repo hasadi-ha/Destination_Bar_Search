@@ -453,7 +453,7 @@ let getDates = (flight_id) => {
               success: (response) => {
                 endloc = response;
                 let search_div = $('.search').detach();
-                buy_flight_page(endloc, startloc, search_div, flight.number, flight_date);
+                buy_flight_page(endloc, startloc, search_div, flight.number, flight_date, instance_id);
 
               }
             });
@@ -1289,7 +1289,7 @@ let recreateLogin = () => {
   });
 };
 
-let buy_flight_page = (destination, start, back, flight_number, flight_date) => {
+let buy_flight_page = (destination, start, back, flight_number, flight_date, instance_id) => {
   let body = $('body');
   body.empty();
 
@@ -1373,10 +1373,42 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date) => 
   let animated_page = $('<div class="modal-content animate"></div>');
   animated_page.append('<div class=imgcontainer"><span class="close" onClick="closePopup()" title="Close Modal">&times;</span><button class="price_btn">Buy ticket</button></span></div>');
   price_page.append(animated_page);
+  let price = getPrice(start, destination);
+  price = price.toFixed(2);
 
   $('.form').append(price_page);
   $('.price_btn').on('click', () => {
-    console.log('test');
+    let f_name = $('#first_name').val();
+    let m_name = $('#middle_init').val();
+    let l_name = $('#last_name').val();
+    let age = $('#age').val();
+    let gender = $('input[name="gender"]:checked').val();
+    $.ajax(root_url + 'tickets', {
+      type: 'POST',
+      xhrFields: { withCredentials: true },
+      data: {
+        "ticket": {
+          first_name: f_name,
+          midde_Name: m_name,
+          last_name: l_name,
+          age: age,
+          gender: gender,
+          price_paid: price,
+          is_purchased: true,
+          instance_id: instance_id
+        }
+      },
+      success: (response) => {
+        body.empty();
+        alert('Purchase successful!');
+        body.append('<h1>PURCHASE Successful</h1>');
+        createMainPage();
+      },
+      error: () => {
+        body.empty();
+        body.append('<h1>Error, gotta fix something</h1>');
+      }
+    });
   });
 
   $('#cancel_btn').on('click', () => {
@@ -1400,37 +1432,12 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date) => 
       $('<p>Name: ' + name + '</p>').insertBefore('.price_btn');
       $('<p>Age: ' + age + '</p>').insertBefore('.price_btn');
       $('<p>Gender: ' + gender + '</p>').insertBefore('.price_btn');
-      let price = getPrice(start, destination);
-      price = price.toFixed(2);
       $('<p>Price: $' + price + '</p>').insertBefore('.price_btn');
       let toStyle = document.getElementById('price_popup');
       toStyle.style.display = "block";
     }
 
     /*
-        $.ajax(root_url + 'tickets', {
-          type: 'POST',
-          xhrFields: { withCredentials: true },
-          data: {
-            "ticket": {
-              first_name: f_name,
-              midde_Name: m_name,
-              last_name: l_name,
-              age: age,
-              gender: gender
-            }
-          },
-          success: (response) => {
-            body.empty();
-            alert('Purchase successful!');
-            body.append('<h1>PURCHASE Successful</h1>');
-            createMainPage();
-          },
-          error: () => {
-            body.empty();
-            body.append('<h1>Error, gotta fix something</h1>');
-          }
-        });
         */
   });
 
