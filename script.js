@@ -583,9 +583,14 @@ let createPlanePage = () => {
 
     }
   });
+  let price_page = $('<div id="price_popup" class="modal"></div>');
+  let animated_page = $('<div class="modal-content animate"></div>');
+  animated_page.append('<div class=imgcontainer"><span class="close" onClick="closePopup()" title="Close Modal">&times;</span><button class="price_btn">Buy ticket</button></span></div>');
+  price_page.append(animated_page);
+  $('.search').append(price_page);
 
-
-  $('#book').on('click', () => {
+  $('.price_btn').on('click', () => {
+    console.log('test');
     let destination = $('#location').val();
     let from = $('#start_location').val();
     let aDate = $('#date').val();
@@ -614,6 +619,51 @@ let createPlanePage = () => {
         });
       }
     });
+  });
+
+
+  $('#book').on('click', () => {
+    let destination = $('#location').val();
+    let from = $('#start_location').val();
+    let aDate = $('#date').val();
+    let number = $('#people').val();
+    let leaveTime = $('#leave_time').val();
+    if (destination==''||from==''||aDate==''||leaveTime=='') {
+      alert("Must fill out all required fields!");
+    } 
+    else {
+      $('<p>Flight from ' + from + ' to '+destination+'</p>').insertBefore('.price_btn');
+      $('<p>Departs: '+aDate+ ' at '+leaveTime+'</p>').insertBefore('.price_btn');
+      $('<p>Party size: '+number+ '</p>').insertBefore('.price_btn');
+      let toStyle = document.getElementById('price_popup');
+      var dest_object;
+      var from_object;
+      var price = 0;
+      $.ajax(root_url + 'airports', {
+        type: 'GET',
+        data: {
+          'filter[code]': destination,
+        },
+        xhrFields: { withCredentials: true },
+        success: (response) => {
+          dest_object = response[0]
+          $.ajax(root_url + 'airports', {
+            type: 'GET',
+            data: {
+              'filter[code]': from,
+            },
+            xhrFields: { withCredentials: true },
+            success: (response) => {
+              from_object = response[0]
+              price = getPrice(from_object,dest_object);
+              price = price.toFixed(2);
+              $('<p>Price: $'+(price*number)+ '</p>').insertBefore('.price_btn');
+            }
+          });
+        }
+      });
+      toStyle.style.display = "block";
+    }
   });
 
 
@@ -652,6 +702,7 @@ let createPlanePage = () => {
           },
           success: (response) => {
             $('#flag').remove();
+            closePopup();
             $('.search').append('<h5 style="color: green; text-align: center; margin: 10px 0 0 0;" id="flag">Plane booked! Enjoy!</h5>');
           },
           error: (xhr) => {
@@ -1185,8 +1236,8 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date, ins
   price_page.append(animated_page);
   let price = getPrice(start, destination);
   price = price.toFixed(2);
-
   $('.form').append(price_page);
+
   $('.price_btn').on('click', () => {
     let f_name = $('#first_name').val();
     let m_name = $('#middle_init').val();
