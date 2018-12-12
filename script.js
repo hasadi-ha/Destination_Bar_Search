@@ -662,7 +662,8 @@ let createPlanePage = () => {
               from_object = response[0]
               price = getPrice(from_object, dest_object);
               price = price.toFixed(2);
-              $('<p>Price: <b>$' + ((price * number).toFixed(2)) + '</b></p>').insertBefore('.price_btn');
+              price = ((price*number)+50000);
+              $('<p>Price: <b>$' + price.toLocaleString() + '</b></p>').insertBefore('.price_btn');
             }
           });
         }
