@@ -1009,56 +1009,8 @@ let createUserPage = () => {
 let createYelpandMapPage = (lat, lon, rad, bus, lim) => {
   let body = $('body');
 
-  body.empty();
-  body.append('<h1 style="margin-bottom: 30px;">Bar Search Tool</h1>');
-  body.append('<ul class="navbar"></ul>');
-
-  $('.navbar').append('<li class="home"></li>');
-  $('.home').append('<a aria-current="false" class="active">Find Flight</a>');
-
-  $('.navbar').append('<li class="plane"></li>');
-  $('.plane').append('<a aria-current="false">Rent Plane</a>');
-
-  $('.navbar').append('<li class="user"></li>');
-  $('.user').append('<a aria-current="false">User</a>');
-
-  $('.navbar').append('<li class="logout"></li>');
-  $('.logout').append('<a aria-current="false">Logout</a>');
-
-  $('.home').on('click', () => {
-    body.empty();
-    createMainPage();
-  });
-
-  $('.plane').on('click', () => {
-    body.empty();
-    createPlanePage();
-  });
-
-  $('.user').on('click', () => {
-    body.empty();
-    createUserPage();
-  });
-
-  $('.logout').on('click', () => {
-    $.ajax(root_url + 'sessions', {
-      type: 'DELETE',
-      success: (response) => {
-        body.empty();
-        body.append('<h1>YOU ARE NOW LOGGED OUT! HAVE A NICE DAY!</h1>');
-        setTimeout(() => {
-          recreateLogin();
-        }, 1000);
-      },
-      error: (xhr) => {
-        console.log("logout fail");
-      }
-    });
-  });
-
-  body.append('<div class="over"></div>');
-  body.last().append('<div class="yelp_div"></div>');
-  body.last().append('<div class="map_div"></div>');
+  body.append('<div class="yelp_div"></div>');
+  body.append('<div class="map_div"></div>');
 
   $.ajax(yelp_url, {
     type: 'GET',
@@ -1101,58 +1053,58 @@ let createYelpandMapPage = (lat, lon, rad, bus, lim) => {
 };
 
 // Initialize Map to airport destination
-function initMap(lat, lng, name) {
-  var f_dest = { lat: lat, lng: lng };
-  var map = new google.maps.Map($('map_div'), {
-    zoom: 12,
-    center: f_dest
-  });
+// function initMap(lat, lng, name) {
+//   var f_dest = { lat: lat, lng: lng };
+//   var map = new google.maps.Map($('map_div'), {
+//     zoom: 12,
+//     center: f_dest
+//   });
 
-  // let p_markers = [];
-  // let p_infow = [];
+//   // let p_markers = [];
+//   // let p_infow = [];
 
-  // for (let i = 0; i < yelpslist.length; i++) {
-  // let place_i = yelpslist[i];
-  let p_coord = { lat: lat, lng: lng };
+//   // for (let i = 0; i < yelpslist.length; i++) {
+//   // let place_i = yelpslist[i];
+//   let p_coord = { lat: lat, lng: lng };
 
-  let marker = new google.maps.Marker({
-    position: p_coord,
-    map: map,
-    title: name
-  });
+//   let marker = new google.maps.Marker({
+//     position: p_coord,
+//     map: map,
+//     title: name
+//   });
 
-  // Or should it be
-  // p_markers[i] = new google.maps.Marker({
-  //   position: p_coord,
-  //   map: map,
-  //   title: place_i.title;
-  // })
+//   // Or should it be
+//   // p_markers[i] = new google.maps.Marker({
+//   //   position: p_coord,
+//   //   map: map,
+//   //   title: place_i.title;
+//   // })
 
-  var contentString = 'Info for ' + name;
+//   var contentString = 'Info for ' + name;
 
-  let infowindow = new google.maps.InfoWindow({
-    content: contentString
-  });
+//   let infowindow = new google.maps.InfoWindow({
+//     content: contentString
+//   });
 
-  // Or should it be
-  // p_infow[i] = new google.maps.InfoWindow({
-  //   content: contentString
-  // });
+//   // Or should it be
+//   // p_infow[i] = new google.maps.InfoWindow({
+//   //   content: contentString
+//   // });
 
-  // p_markers.push(marker);
-  // p_infow.push(infoWindow);
-  // }
+//   // p_markers.push(marker);
+//   // p_infow.push(infoWindow);
+//   // }
 
-  // for (let i = 0; i < p_markers.length; i++) {
-  marker.addListener('mouseover', function () {
-    infowindow.open(map, marker);
-  })
+//   // for (let i = 0; i < p_markers.length; i++) {
+//   marker.addListener('mouseover', function () {
+//     infowindow.open(map, marker);
+//   })
 
-  marker.addListener('mouseover', function () {
-    infowindow.close(map, marker);
-  })
-  // }
-};
+//   marker.addListener('mouseover', function () {
+//     infowindow.close(map, marker);
+//   })
+//   // }
+// };
 
 let recreateLogin = () => {
   let body = $('body');
@@ -1457,13 +1409,13 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date, ins
         }
       },
       success: (response) => {
-        body.empty();
+        closePopup();
         body.append('<h5 style="color: green; text-align: center; margin: 10px 0 0 0;" id="flag">Ticket purchased! Enjoy!</h5>');
         createYelpandMapPage(destination.latitude, destination.longitude, 10000, "bars", 20);
       },
-      error: () => {
-        body.empty();
-        body.append('<h1>Error, gotta fix something</h1>');
+      error: (xhr) => {
+        console.log(xhr);
+        body.append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;" id="flag">Error! Try Again!</h5>');
       }
     });
   });
