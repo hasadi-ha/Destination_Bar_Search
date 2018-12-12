@@ -249,8 +249,8 @@ let createMainPage = () => {
         for (let j = 0; j < search_list2.length; j++) {
           let this_airport = search_list[i];
           let start_airport = search_list2[j];
-          $(this_div).append('<div class="airbox" style="font-size:18px; margin-top: 5px;">From: ' + this_airport.code + ' - ' + this_airport.name + '</div>');
-          $(this_div).append('<div class="airbox" style="font-size:18px; margin-bottom: 5px;">To: ' + start_airport.code + ' - ' + start_airport.name + '</div>');
+          $(this_div).append('<div class="airbox" style="font-size:18px; margin-top: 5px;">From: ' + start_airport.code + ' - ' + start_airport.name + '</div>');
+          $(this_div).append('<div class="airbox" style="font-size:18px; margin-bottom: 5px;">To: ' + this_airport.code + ' - ' + this_airport.name + '</div>');
           if (i == search_list.length - 1 && j == search_list2.length - 1) {
             $('.search_result').append(this_div);
             $('.search_result').append('<button class="find_flights" style="margin-top: 10px;">Find flights</button>');
@@ -662,7 +662,7 @@ let createPlanePage = () => {
               from_object = response[0]
               price = getPrice(from_object, dest_object);
               price = price.toFixed(2);
-              price = ((price*number)+50000);
+              price = ((price * number) + 50000);
               $('<p>Price: <b>$' + price.toLocaleString() + '</b></p>').insertBefore('.price_btn');
             }
           });
@@ -1039,16 +1039,16 @@ let createYelpandMapPage = (lat, lon, rad, bus, lim) => {
         }
 
         $('.yelp_div').append('<div class="yelp_item" id="' + element['id'] + '"></div>');
-        $('#'+element['id']).append('<div id="1' + element['id'] + '"></div>')
-        $('#1'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Name:</b> ' + element['name'] + '</p>');
-        $('#1'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Rating:</b> ' + element['rating'] + '</p>');
-        $('#1'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Address:</b> ' + element['location']['address1'] + ', ' + element['location']['city'] + ', ' + element['location']['state'] + '</p>');
-        $('#1'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Phone #:</b> ' + element['display_phone'] + '</p>');
+        $('#' + element['id']).append('<div id="1' + element['id'] + '"></div>')
+        $('#1' + element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Name:</b> ' + element['name'] + '</p>');
+        $('#1' + element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Rating:</b> ' + element['rating'] + '</p>');
+        $('#1' + element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Address:</b> ' + element['location']['address1'] + ', ' + element['location']['city'] + ', ' + element['location']['state'] + '</p>');
+        $('#1' + element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Phone #:</b> ' + element['display_phone'] + '</p>');
 
-        $('#'+element['id']).append('<div class="yelp_item" id="2' + element['id'] + '" style="border: none;margin-top: 12px; margin-left: auto; width: 120px; margin-bottom: 8px; float: right;"></div>');
-        $('#2'+element['id']).append('<img src="'+ element['image_url'] +'" alt="Bar Image" class="image2"></img>');
+        $('#' + element['id']).append('<div class="yelp_item" id="2' + element['id'] + '" style="border: none;margin-top: 12px; margin-left: auto; width: 120px; margin-bottom: 8px; float: right;"></div>');
+        $('#2' + element['id']).append('<img src="' + element['image_url'] + '" alt="Bar Image" class="image2"></img>');
 
-        $('#'+element['id']).on('click', () => {
+        $('#' + element['id']).on('click', () => {
           window.open(element['url'], '_blank');
         });
 
@@ -1065,7 +1065,7 @@ let createYelpandMapPage = (lat, lon, rad, bus, lim) => {
 };
 
 // Initialize Map to airport destination
-// function initMap(lat, lng, name) {
+// function f(lat, lng, name) {
 //   var f_dest = { lat: lat, lng: lng };
 //   var map = new google.maps.Map($('map_div'), {
 //     zoom: 12,
