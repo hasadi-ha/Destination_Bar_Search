@@ -244,16 +244,16 @@ let createMainPage = () => {
           search_list2.push(airport_data_list[i]);
         }
       }
-      let this_div = $('<div style="border:1px solid black; width: auto; max-width: 550px; margin: auto;"></div>');
+      let this_div = $('<div style="border:1px solid black; width: auto; max-width: 550px; margin: 10px auto auto auto;"></div>');
       for (let i = 0; i < search_list.length; i++) {
         for (let j = 0; j < search_list2.length; j++) {
           let this_airport = search_list[i];
           let start_airport = search_list2[j];
-          $(this_div).append('<div class="airbox" style="font-size:18px;">From: ' + this_airport.code + ' - ' + this_airport.name + '</div>');
-          $(this_div).append('<div class="airbox" style="font-size:18px;">To: ' + start_airport.code + ' - ' + start_airport.name + '</div>');
+          $(this_div).append('<div class="airbox" style="font-size:18px; margin-top: 5px;">From: ' + this_airport.code + ' - ' + this_airport.name + '</div>');
+          $(this_div).append('<div class="airbox" style="font-size:18px; margin-bottom: 5px;">To: ' + start_airport.code + ' - ' + start_airport.name + '</div>');
           if (i == search_list.length - 1 && j == search_list2.length - 1) {
             $('.search_result').append(this_div);
-            $('.search_result').append('<button class="find_flights" style="margin-top: 5px;">Find flights</button>');
+            $('.search_result').append('<button class="find_flights" style="margin-top: 10px;">Find flights</button>');
             $('.find_flights').on('click', () => {
               if (search_list.length > 1 || search_list2.length > 1) {
                 flightsListMultiple(search_list, search_list2, location, start_location);
@@ -412,16 +412,16 @@ let getDates = (flight_id) => {
     },
     success: (response) => {
       r_rev = response.reverse();
-      $('.f_div').append('<button class="back_btn">Back to results</button>');
+      $('.f_div').append('<button class="back_btn" style="margin-top: 10px;">Back to results</button>');
       if (response.length == 0) {
         $('.f_div').append('<p>Sorry, there are no available dates for this flight</p>');
       } else {
-        $('.f_div').append('<p>Select a date:</p>');
+        $('.f_div').append('<p style="margin-bottom: 8px;">Select a date:</p>');
         for (let i = 0; i < r_rev.length; i++) {
           if (currentdate < r_rev[i].date) {
             let fixed_date = r_rev[i].date.split("-");
             fixed_date = fixed_date[1] + '/' + fixed_date[2] + '/' + fixed_date[0];
-            $('.f_div').append('<div class="time_div">' + fixed_date + '</div>');
+            $('.f_div').append('<div class="time_div" style="margin-bottom: 10px;">' + fixed_date + '</div>');
           }
         }
       }
@@ -768,7 +768,7 @@ let createUserPage = () => {
     });
   });
 
-  body.append('<div class="form" style="margin-top: 10px;">' +
+  body.append('<div class="form" style="margin-top: 10px; max-width: 2000px; width: 80%; margin: 15px auto auto auto;">' +
 
     '<div class="image_container"><img src="yelp.png" alt="Login Image" class="image"></div>' +
 
@@ -845,7 +845,7 @@ let createUserPage = () => {
                     $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0; class="alert">Password Changed!</h3>');
                     setTimeout(() => {
                       createUserPage();
-                    }, 2000);
+                    }, 1000);
                   },
                   error: (xhr) => {
                     console.log(xhr);
@@ -854,8 +854,8 @@ let createUserPage = () => {
               }
             });
 
-            $('#change').on('keypress', (e) => {
-              if (e.which == 13) {
+            $('#change').on('keypress', (x) => {
+              if (x.which == 13) {
                 let pass = $('#newPass').val();
                 let confirmPas = $('#confirmNew').val();
 
@@ -957,8 +957,8 @@ let createUserPage = () => {
           }
         });
 
-        $('#change').on('keypress', (e) => {
-          if (e.which == 13) {
+        $('#change').on('keypress', (x) => {
+          if (x.which == 13) {
             let pass = $('#newPass').val();
             let confirmPas = $('#confirmNew').val();
 
