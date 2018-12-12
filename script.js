@@ -525,8 +525,8 @@ let createPlanePage = () => {
   body.append('<div class="search"><div>');
   $('.search').append('<div class="first"></div>')
   $('.first').append('<h2 style="margin-top: 0;">Destination Selection</h2>');
-  $('.first').append('Destination: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="location" style="margin-bottom: 10px">');
-  $('.first').append(' From: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="start_location">');
+  $('.first').append('Destination: <input type="text" title="Airport Code appearing in autocoplete" id="location" style="margin-bottom: 10px">');
+  $('.first').append(' From: <input type="text" title="Airport Code appearing in autocoplete" id="start_location">');
 
   $('.search').append('<div class="second"><div>');
   $('.second').append('<label for="people"># of People: </label>'
@@ -768,46 +768,238 @@ let createUserPage = () => {
     });
   });
 
-  body.append('<div class="search"><div>');
-  $('.search').append('<h2 style="margin-top: 0;">User Profile</h2>');
-  $('.search').append('<div class="first"></div>');
-  $('.first').append('New Password: <input type="password" id="newPass" style="margin-bottom: 10px">');
-  $('.search').append('<div class="second"></div>');
-  $('.second').append('Confirm New Password: <input type="password" id="confirmNew">');
-  $('.search').append('<button id="change" style="margin-top: 10px;">Change</button>');
+  body.append('<div class="form" style="margin-top: 10px;">' +
 
-  $('#change').on('click', () => {
-    let pass = $('#newPass').val();
-    let confirmPas = $('#confirmNew').val();
+    '<div class="image_container"><img src="yelp.png" alt="Login Image" class="image"></div>' +
 
-    if (pass !== confirmPas) {
-      $('.alert').remove();
-      $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0; class="alert">Passwords Do Not Match! Try Again!</h5>');
-      $('#confirmNew').css('color', 'red');
-    }
-    else {
-      $.ajax(root_url + 'passwords', {
-        type: 'PUT',
-        data: {
-          user: {
-            username: user,
-            old_password: pass,
-            new_password: newPass
+    '<div class="login_div">' +
+
+    '<label for="login_user"><b>Username</b></label>' +
+    '<input type="text" placeholder="Enter Username" id="login_user" required>' +
+
+    '<label for="login_pass"><b>Password</b></label>' +
+    '<input type="password" placeholder="Enter Password" id="login_pass" required>' +
+
+    '<button id="login_btn">Login</button>' +
+
+    '<div class="mesg_div">' +
+
+    '</div>' +
+
+    '</div>' +
+
+    '</div>'
+  );
+
+  $('#login_pass').on('keypress', (e) => {
+    if (e.which == 13) {
+      let user = $('#login_user').val();
+      let pass = $('#login_pass').val();
+
+      if (pass === "") {
+        $('.mesg_div').empty();
+        $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">All Fields Required! Try Again!</h5>');
+      }
+      else {
+        $.ajax(root_url + 'sessions', {
+          type: 'POST',
+          xhrFields: { withCredentials: true },
+          data: {
+            user: {
+              username: user,
+              password: pass
+            }
+          },
+          success: (response) => {
+            $('.form').remove();
+
+            body.append('<div class="search"><div>');
+            $('.search').append('<h2 style="margin-top: 0;">User Profile</h2>');
+            $('.search').append('<div class="first"></div>');
+            $('.first').append('New Password: <input type="password" id="newPass" style="margin-bottom: 15px">');
+            $('.search').append('<div class="second"></div>');
+            $('.second').append('Confirm New Password: <input type="password" id="confirmNew">');
+            $('.search').append('<button id="change" style="margin-top: 10px;">Change</button>');
+
+            $('#change').on('click', () => {
+              let pass = $('#newPass').val();
+              let confirmPas = $('#confirmNew').val();
+
+              if (pass !== confirmPas) {
+                $('.alert').remove();
+                $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0; class="alert">Passwords Do Not Match! Try Again!</h5>');
+                $('#confirmNew').css('color', 'red');
+              }
+              else {
+                $.ajax(root_url + 'passwords', {
+                  type: 'PUT',
+                  data: {
+                    user: {
+                      username: user,
+                      old_password: pass,
+                      new_password: newPass
+                    }
+                  },
+                  success: (response) => {
+                    $('.search').empty();
+                    $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0; class="alert">Password Changed!</h3>');
+                    setTimeout(() => {
+                      createUserPage();
+                    }, 2000);
+                  },
+                  error: (xhr) => {
+                    console.log(xhr);
+                  }
+                });
+              }
+            });
+
+            $('#change').on('keypress', (e) => {
+              if (e.which == 13) {
+                let pass = $('#newPass').val();
+                let confirmPas = $('#confirmNew').val();
+
+                if (pass !== confirmPas) {
+                  $('.alert').remove();
+                  $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0; class="alert">Passwords Do Not Match! Try Again!</h5>');
+                  $('#confirmNew').css('color', 'red');
+                }
+                else {
+                  $.ajax(root_url + 'passwords', {
+                    type: 'PUT',
+                    data: {
+                      user: {
+                        username: user,
+                        old_password: pass,
+                        new_password: newPass
+                      }
+                    },
+                    success: (response) => {
+                      $('.search').empty();
+                      $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0; class="alert">Password Changed!</h3>');
+                      setTimeout(() => {
+                        createUserPage();
+                      }, 2000);
+                    },
+                    error: (xhr) => {
+                      console.log(xhr);
+                    }
+                  });
+                }
+              }
+            });
+          },
+          error: () => {
+            $('.mesg_div').empty();
+            $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>');
           }
-        },
-        success: (response) => {
-          $('.search').empty();
-          $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0; class="alert">Password Changed!</h3>');
-          setTimeout(() => {
-            createUserPage();
-          }, 2000);
-        },
-        error: (xhr) => {
-          console.log(xhr);
-        }
-      });
+
+        });
+
+      }
     }
-  })
+  });
+
+  $('#login_btn').on('click', () => {
+    let user = $('#login_user').val();
+    let pass = $('#login_pass').val();
+
+    $.ajax(root_url + 'sessions', {
+      type: 'POST',
+      xhrFields: { withCredentials: true },
+      data: {
+        user: {
+          username: user,
+          password: pass
+        }
+      },
+      success: (response) => {
+        $('.form').remove();
+
+        body.append('<div class="search"><div>');
+        $('.search').append('<h2 style="margin-top: 0;">User Profile</h2>');
+        $('.search').append('<div class="first"></div>');
+        $('.first').append('New Password: <input type="password" id="newPass" style="margin-bottom: 15px">');
+        $('.search').append('<div class="second"></div>');
+        $('.second').append('Confirm New Password: <input type="password" id="confirmNew">');
+        $('.search').append('<button id="change" style="margin-top: 10px;">Change</button>');
+
+        $('#change').on('click', () => {
+          let pass = $('#newPass').val();
+          let confirmPas = $('#confirmNew').val();
+
+          if (pass !== confirmPas) {
+            $('.alert').remove();
+            $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0; class="alert">Passwords Do Not Match! Try Again!</h5>');
+            $('#confirmNew').css('color', 'red');
+          }
+          else {
+            $.ajax(root_url + 'passwords', {
+              type: 'PUT',
+              data: {
+                user: {
+                  username: user,
+                  old_password: pass,
+                  new_password: newPass
+                }
+              },
+              success: (response) => {
+                $('.search').empty();
+                $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0; class="alert">Password Changed!</h3>');
+                setTimeout(() => {
+                  createUserPage();
+                }, 2000);
+              },
+              error: (xhr) => {
+                console.log(xhr);
+              }
+            });
+          }
+        });
+
+        $('#change').on('keypress', (e) => {
+          if (e.which == 13) {
+            let pass = $('#newPass').val();
+            let confirmPas = $('#confirmNew').val();
+
+            if (pass !== confirmPas) {
+              $('.alert').remove();
+              $('.search').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0; class="alert">Passwords Do Not Match! Try Again!</h5>');
+              $('#confirmNew').css('color', 'red');
+            }
+            else {
+              $.ajax(root_url + 'passwords', {
+                type: 'PUT',
+                data: {
+                  user: {
+                    username: user,
+                    old_password: pass,
+                    new_password: newPass
+                  }
+                },
+                success: (response) => {
+                  $('.search').empty();
+                  $('.search').append('<h3 style="color: green; text-align: center; margin: 10px 0 0 0; class="alert">Password Changed!</h3>');
+                  setTimeout(() => {
+                    createUserPage();
+                  }, 2000);
+                },
+                error: (xhr) => {
+                  console.log(xhr);
+                }
+              });
+            }
+          }
+        });
+      },
+      error: () => {
+        $('.mesg_div').empty();
+        $('.mesg_div').append('<h5 style="color: red; text-align: center; margin: 10px 0 0 0;">Login Failed! Try Again!</h5>');
+      }
+    });
+  });
+
+
 }
 
 let createYelpandMapPage = (loc, rad, bus, lim) => {
@@ -1320,5 +1512,11 @@ let getPrice = (start, end) => {
 
 // For the tooltip
 $(function () {
-  $(document).tooltip();
+  $(document).tooltip({
+      position: {
+        my: "left top",
+        at: "right+5 top-5",
+        collision: "none"
+      }
+  });
 });
