@@ -281,7 +281,14 @@ input[name="gender"] {
 
 .yelp_item {
   border-bottom: 2px solid black;
-  width: 60%;
+  width: 80%;
   margin: 10px auto auto auto;
   text-align: left;
+  display: flex;
+  cursor: pointer;
+}
+
+.image2 {
+  height: 73px;
+  float: right;
 }

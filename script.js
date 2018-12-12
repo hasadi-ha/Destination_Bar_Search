@@ -1031,16 +1031,25 @@ let createYelpandMapPage = (lat, lon, rad, bus, lim) => {
     },
     success: (response) => {
       let data = response['businesses'];
+
       data.forEach(element => {
         if (element['display_phone'] === '') {
           element['display_phone'] = 'None'
         }
 
         $('.yelp_div').append('<div class="yelp_item" id="' + element['id'] + '"></div>');
-        $('#'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Name:</b> ' + element['name'] + '</p>');
-        $('#'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Rating:</b> ' + element['rating'] + '</p>');
-        $('#'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Address:</b> ' + element['location']['address1'] + ', ' + element['location']['city'] + ', ' + element['location']['state'] + '</p>');
-        $('#'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Phone #:</b> ' + element['display_phone'] + '</p>');
+        $('#'+element['id']).append('<div id="1' + element['id'] + '"></div>')
+        $('#1'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Name:</b> ' + element['name'] + '</p>');
+        $('#1'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Rating:</b> ' + element['rating'] + '</p>');
+        $('#1'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Address:</b> ' + element['location']['address1'] + ', ' + element['location']['city'] + ', ' + element['location']['state'] + '</p>');
+        $('#1'+element['id']).append('<p style="margin: 5px 5px 5px 0;"><b>Phone #:</b> ' + element['display_phone'] + '</p>');
+
+        $('#'+element['id']).append('<div class="yelp_item" id="2' + element['id'] + '" style="border: none;margin-top: 12px; margin-left: auto; width: 120px; margin-bottom: 8px; float: right;"></div>');
+        $('#2'+element['id']).append('<img src="'+ element['image_url'] +'" alt="Bar Image" class="image2"></img>');
+
+        $('#'+element['id']).on('click', () => {
+          window.open(element['url'], '_blank');
+        });
 
         // $('#' + element['id']).on('click', () => {
         //   initMap(element['coordinates']['latitude'], element['coordinates']['longitude'], element['name']);
@@ -1378,7 +1387,7 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date, ins
   $('.flightbuy_div').append('<button id="buyflight_btn">Buy Flight</button>');
   $('.flightbuy_div').append('<div class="mesg_div"></div>');
 
-  $(' .form').append('<div class="signup_div" style="background-color: #f1f1f1; padding: 16px;"></div>');
+  $(' .form').append('<div class="signup_div" style="background-color: #d4d4d4; padding: 16px;"></div>');
   $('.signup_div').append('<button id="cancel_btn" style="background-color: red; border-color: red; margin-left: 90%;">Cancel</button>');
 
   let price_page = $('<div id="price_popup" class="modal"></div>');
