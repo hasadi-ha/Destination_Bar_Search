@@ -453,8 +453,6 @@ let getDates = (flight_id) => {
               xhrFields: { withCredentials: true },
               success: (response) => {
                 endloc = response;
-                console.log(flight.number);
-                console.log(flight_date);
                 let search_div = $('.search').detach();
                 buy_flight_page(endloc, startloc, search_div, flight.number, flight_date);
 
@@ -1098,6 +1096,9 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date) => 
       $('<p>Name: ' + name + '</p>').insertBefore('.price_btn');
       $('<p>Age: ' + age + '</p>').insertBefore('.price_btn');
       $('<p>Gender: ' + gender + '</p>').insertBefore('.price_btn');
+      let price = getPrice(start, destination);
+      price = price.toFixed(2);
+      $('<p>Price: $' + price + '</p>').insertBefore('.price_btn');
       let toStyle = document.getElementById('price_popup');
       toStyle.style.display = "block";
     }
@@ -1134,3 +1135,13 @@ let closePopup = () => {
   let toStyle = document.getElementById('price_popup');
   toStyle.style.display = "none";
 };
+
+let getPrice = (start, end) => {
+  let slat = start.latitude;
+  let slon = start.longitude;
+  let elat = end.latitude;
+  let elon = end.longitude; 
+  let distance = Math.sqrt(Math.pow((elat-slat),2) + Math.pow((elon-slon),2));
+  console.log(distance);
+  return (50 + (7.59*distance));
+}
