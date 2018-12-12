@@ -219,8 +219,8 @@ let createMainPage = () => {
 
   body.append('<div class="search"><div>');
   $('.search').append('<h2 style="margin-top: 0;">Destination Search</h2>');
-  $('.search').append('Destination: <input type="text" id="location" style="margin-bottom: 10px">');
-  $('.search').append(' From: <input type="text" id="start_location">');
+  $('.search').append('Destination: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="location" style="margin-bottom: 10px">');
+  $('.search').append(' From: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="start_location">');
   $('.search').append('<button id="search_location">Search</button>');
   $('.search').append('<div class="search_result"></div>');
 
@@ -528,8 +528,8 @@ let createPlanePage = () => {
   body.append('<div class="search"><div>');
   $('.search').append('<div class="first"></div>')
   $('.first').append('<h2 style="margin-top: 0;">Destination Selection</h2>');
-  $('.first').append('Destination: <input type="text" id="location" style="margin-bottom: 10px">');
-  $('.first').append(' From: <input type="text" id="start_location">');
+  $('.first').append('Destination: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="location" style="margin-bottom: 10px">');
+  $('.first').append(' From: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="start_location">');
 
   $('.search').append('<div class="second"><div>');
   $('.second').append('<label for="people"># of People: </label>'
@@ -553,7 +553,7 @@ let createPlanePage = () => {
   $('.second').append(' Date: <input type="text" id="date">');
 
   $('.search').append('<div class="third"><div>');
-  $('.third').append(' Departure Time: <input type="text" id="leave_time">');
+  $('.third').append(' Departure Time: <input type="text" title="Enter in 24 hr style (Example: 18:00 for 5pm)" id="leave_time">');
   $('.third').append('<button id="book">Book Plane</button>');
   $('.search').append('<div class="search_result"></div>');
 
@@ -1125,3 +1125,8 @@ let closePopup = () => {
   let toStyle = document.getElementById('price_popup');
   toStyle.style.display="none";
 };
+
+// For the tooltip
+$( function() {
+  $( document ).tooltip();
+} );
