@@ -590,13 +590,14 @@ let createPlanePage = () => {
   $('.search').append(price_page);
 
   $('.price_btn').on('click', () => {
-    console.log('test');
     let destination = $('#location').val();
     let from = $('#start_location').val();
     let aDate = $('#date').val();
     let number = $('#people').val();
     let dest_id = "";
     let from_id = "";
+    var dest_lat;
+    var dest_lon;
     let leaveTime = $('#leave_time').val();
     $.ajax(root_url + 'airports', {
       type: 'GET',
@@ -606,6 +607,8 @@ let createPlanePage = () => {
       xhrFields: { withCredentials: true },
       success: (response) => {
         dest_id = response[0].id;
+        dest_lat = response[0].latitude;
+        dest_lon = response[0].longitude;
         $.ajax(root_url + 'airports', {
           type: 'GET',
           data: {
@@ -614,7 +617,7 @@ let createPlanePage = () => {
           xhrFields: { withCredentials: true },
           success: (response) => {
             from_id = response[0].id;
-            postCalls(dest_id, from_id, aDate, number, leaveTime);
+            postCalls(dest_id, from_id, aDate, number, leaveTime, dest_lat, dest_lon);
           }
         });
       }
@@ -672,7 +675,7 @@ let createPlanePage = () => {
 
   // TODO: Create confirmation before doing AJAX Calls
   // TODO: Create pricing page and plan before doing AJAX Calls
-  postCalls = (dest_id, from_id, aDate, number, leaveTime) => {
+  postCalls = (dest_id, from_id, aDate, number, leaveTime, lat, lon) => {
     console.log('Dest_id: ' + dest_id);
     console.log('From_id: ' + from_id);
     console.log('aDate: ' + aDate);
@@ -704,6 +707,7 @@ let createPlanePage = () => {
             $('#flag').remove();
             closePopup();
             $('.search').append('<h5 style="color: green; text-align: center; margin: 10px 0 0 0;" id="flag">Plane booked! Enjoy!</h5>');
+            createYelpandMapPage(lat, lon, 10000, "bars", 20);
           },
           error: (xhr) => {
             console.log(xhr);
@@ -1002,7 +1006,7 @@ let createUserPage = () => {
 
 }
 
-let createYelpandMapPage = (loc, rad, bus, lim) => {
+let createYelpandMapPage = (lat, lon, rad, bus, lim) => {
   let body = $('body');
 
   body.empty();
@@ -1059,7 +1063,8 @@ let createYelpandMapPage = (loc, rad, bus, lim) => {
   $.ajax(yelp_url, {
     type: 'GET',
     data: {
-      location: loc,
+      latitude: lat,
+      longitude: lon,
       radius: rad,
       categories: bus,
       limit: lim,
@@ -1453,9 +1458,8 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date, ins
       },
       success: (response) => {
         body.empty();
-        alert('Purchase successful!');
-        body.append('<h1>PURCHASE Successful</h1>');
-        createMainPage();
+        body.append('<h5 style="color: green; text-align: center; margin: 10px 0 0 0;" id="flag">Ticket purchased! Enjoy!</h5>');
+        createYelpandMapPage(destination.latitude, destination.longitude, 10000, "bars", 20);
       },
       error: () => {
         body.empty();
