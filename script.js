@@ -549,7 +549,7 @@ let createPlanePage = () => {
     + '</select>');
   $('.second').append(' Date: <input type="text" id="date">');
 
-  $('.search').append('<div class="third"><div>');
+  $('.search').append('<div class="third" style="margin-top: 10px;"><div>');
   $('.third').append(' Departure Time: <input type="text" title="Enter in 24 hr style (Example: 18:00 for 5pm)" id="leave_time">');
   $('.third').append('<button id="book">Book Plane</button>');
   $('.search').append('<div class="search_result"></div>');
@@ -1349,25 +1349,25 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date, ins
     });
   });
 
-  body.append('<h1 class="form_header" style="text-align: center; margin-bottom: 15px;">Flight ' + flight_number + ' from ' + start.code + ' to ' + destination.code + ' on ' + flight_date + '</h1>')
+  body.append('<div class="form" style="max-width: 2000px; width: 80%; margin: 15px auto auto auto;"></div>');
 
-  body.append('<div class="form"></div>');
+  $('.form').append('<h1 class="form_header" style="text-align: center; margin-bottom: 15px;">Flight ' + flight_number + ' from ' + start.code + ' to ' + destination.code + ' on ' + flight_date + '</h1>')
 
   $('.form').append('<div class="flightbuy_div"><div>');
 
   $('.flightbuy_div').append('<label for="first_name"><b>First Name</b></label>');
-  $('.flightbuy_div').append('<input type="text" placeholder="First Name" id="first_name" required>');
+  $('.flightbuy_div').append('<input type="text" placeholder="First Name" id="first_name" required style=" margin: 8px 10px 8px 10px;">');
 
   $('.flightbuy_div').append('<label for="middle_init"><b>Middle Initial</b></label>');
-  $('.flightbuy_div').append('<input type="text" placeholder="Middle Initial (Optional)" id="middle_init">');
+  $('.flightbuy_div').append('<input type="text" placeholder="Middle Initial (Optional)" id="middle_init" style="margin: 8px 10px 8px 10px;">');
 
   $('.flightbuy_div').append('<label for="last_name"><b>Last Name</b></label>');
-  $('.flightbuy_div').append('<input type="text" placeholder="Last Name" id="last_name" required>');
+  $('.flightbuy_div').append('<input type="text" placeholder="Last Name" id="last_name" required style="margin: 8px 10px 8px 10px;">');
 
   $('.flightbuy_div').append('<label for="age"><b>Age</b></label>');
-  $('.flightbuy_div').append('<input type="number" placeholder="Age" id="age" required>');
+  $('.flightbuy_div').append('<input type="number" placeholder="Age" id="age"  style="margin: 8px 10px 8px 10px">');
 
-  $('.flightbuy_div').append('<label for="gender"><b>Gender</b></label>');
+  $('.flightbuy_div').append('<label for="gender" style="margin: 8px 0 8px 0;"><b>Gender</b></label>');
   $('.flightbuy_div').append('<form class="gender_radio"></form>');
   $('.gender_radio').append('M:<input type="radio" name="gender" value="Male">');
   $('.gender_radio').append('F:<input type="radio" name="gender" value="Female">');
