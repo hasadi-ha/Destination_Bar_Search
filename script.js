@@ -218,8 +218,8 @@ let createMainPage = () => {
 
   body.append('<div class="search"><div>');
   $('.search').append('<h2 style="margin-top: 0;">Destination Search</h2>');
-  $('.search').append('Destination: <input type="text" id="location" style="margin-bottom: 10px">');
-  $('.search').append(' From: <input type="text" id="start_location">');
+  $('.search').append('Destination: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="location" style="margin-bottom: 10px">');
+  $('.search').append(' From: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="start_location">');
   $('.search').append('<button id="search_location">Search</button>');
   $('.search').append('<div class="search_result"></div>');
 
@@ -452,8 +452,6 @@ let getDates = (flight_id) => {
               xhrFields: { withCredentials: true },
               success: (response) => {
                 endloc = response;
-                console.log(flight.number);
-                console.log(flight_date);
                 let search_div = $('.search').detach();
                 buy_flight_page(endloc, startloc, search_div, flight.number, flight_date);
 
@@ -527,8 +525,8 @@ let createPlanePage = () => {
   body.append('<div class="search"><div>');
   $('.search').append('<div class="first"></div>')
   $('.first').append('<h2 style="margin-top: 0;">Destination Selection</h2>');
-  $('.first').append('Destination: <input type="text" id="location" style="margin-bottom: 10px">');
-  $('.first').append(' From: <input type="text" id="start_location">');
+  $('.first').append('Destination: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="location" style="margin-bottom: 10px">');
+  $('.first').append(' From: <input type="text" title="Locations shown in autocomplete are the only locations with airports" id="start_location">');
 
   $('.search').append('<div class="second"><div>');
   $('.second').append('<label for="people"># of People: </label>'
@@ -552,7 +550,7 @@ let createPlanePage = () => {
   $('.second').append(' Date: <input type="text" id="date">');
 
   $('.search').append('<div class="third"><div>');
-  $('.third').append(' Departure Time: <input type="text" id="leave_time">');
+  $('.third').append(' Departure Time: <input type="text" title="Enter in 24 hr style (Example: 18:00 for 5pm)" id="leave_time">');
   $('.third').append('<button id="book">Book Plane</button>');
   $('.search').append('<div class="search_result"></div>');
 
@@ -741,7 +739,7 @@ let createUserPage = () => {
         type: 'PUT',
         data: {
           user: {
-            username:     user,
+            username: user,
             old_password: pass,
             new_password: newPass
           }
@@ -1171,15 +1169,25 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date) => 
 
   $('.flightbuy_div').append('<label for="gender"><b>Gender</b></label>');
   $('.flightbuy_div').append('<form class="gender_radio"></form>');
-  $('.gender_radio').append('M:<input type="radio" name="gender" value="male">');
-  $('.gender_radio').append('F:<input type="radio" name="gender" value="female">');
-  $('.gender_radio').append('O:<input type="radio" name="gender" value="other">');
+  $('.gender_radio').append('M:<input type="radio" name="gender" value="Male">');
+  $('.gender_radio').append('F:<input type="radio" name="gender" value="Female">');
+  $('.gender_radio').append('O:<input type="radio" name="gender" value="Other">');
 
   $('.flightbuy_div').append('<button id="buyflight_btn">Buy Flight</button>');
   $('.flightbuy_div').append('<div class="mesg_div"></div>');
 
-  $('.form').append('<div class="signup_div" style="background-color: #f1f1f1"></div>');
+  $(' .form').append('<div class="signup_div" style="background-color: #f1f1f1"></div>');
   $('.signup_div').append('<button id="cancel_btn" style="background-color: red; border-color: red;">Cancel</button>');
+
+  let price_page = $('<div id="price_popup" class="modal"></div>');
+  let animated_page = $('<div class="modal-content animate"></div>');
+  animated_page.append('<div class=imgcontainer"><span class="close" onClick="closePopup()" title="Close Modal">&times;</span><button class="price_btn">Buy ticket</button></span></div>');
+  price_page.append(animated_page);
+
+  $('.form').append(price_page);
+  $('.price_btn').on('click', () => {
+    console.log('test');
+  });
 
   $('#cancel_btn').on('click', () => {
     $('.form_header').remove();
@@ -1194,30 +1202,65 @@ let buy_flight_page = (destination, start, back, flight_number, flight_date) => 
     let l_name = $('#last_name').val();
     let age = $('#age').val();
     let gender = $('input[name="gender"]:checked').val();
+    if (f_name == '' || l_name == '' || age == '') {
+      alert('Must fill out all required fields!');
+    }
+    else {
+      let name = f_name + ' ' + m_name + ' ' + l_name;
+      $('<p>Name: ' + name + '</p>').insertBefore('.price_btn');
+      $('<p>Age: ' + age + '</p>').insertBefore('.price_btn');
+      $('<p>Gender: ' + gender + '</p>').insertBefore('.price_btn');
+      let price = getPrice(start, destination);
+      price = price.toFixed(2);
+      $('<p>Price: $' + price + '</p>').insertBefore('.price_btn');
+      let toStyle = document.getElementById('price_popup');
+      toStyle.style.display = "block";
+    }
 
-    $.ajax(root_url + 'tickets', {
-      type: 'POST',
-      xhrFields: { withCredentials: true },
-      data: {
-        ticket: {
-          first_name: f_name,
-          midde_Name: m_name,
-          last_name: l_name,
-          age: age,
-          gender: gender
-        }
-      },
-      success: (response) => {
-        body.empty();
-        alert('Purchase successful!');
-        body.append('<h1>PURCHASE Successful</h1>');
-        createMainPage();
-      },
-      error: () => {
-        body.empty();
-        body.append('<h1>Error, gotta fix something</h1>');
-      }
-    });
+    /*
+        $.ajax(root_url + 'tickets', {
+          type: 'POST',
+          xhrFields: { withCredentials: true },
+          data: {
+            "ticket": {
+              first_name: f_name,
+              midde_Name: m_name,
+              last_name: l_name,
+              age: age,
+              gender: gender
+            }
+          },
+          success: (response) => {
+            body.empty();
+            alert('Purchase successful!');
+            body.append('<h1>PURCHASE Successful</h1>');
+            createMainPage();
+          },
+          error: () => {
+            body.empty();
+            body.append('<h1>Error, gotta fix something</h1>');
+          }
+        });
+        */
   });
 
 };
+let closePopup = () => {
+  let toStyle = document.getElementById('price_popup');
+  toStyle.style.display = "none";
+};
+
+let getPrice = (start, end) => {
+  let slat = start.latitude;
+  let slon = start.longitude;
+  let elat = end.latitude;
+  let elon = end.longitude;
+  let distance = Math.sqrt(Math.pow((elat - slat), 2) + Math.pow((elon - slon), 2));
+  console.log(distance);
+  return (50 + (7.59 * distance));
+}
+
+// For the tooltip
+$(function () {
+  $(document).tooltip();
+});
